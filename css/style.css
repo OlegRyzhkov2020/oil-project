@@ -1,0 +1,248 @@
+
+html, body {
+  height: 100%;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+  color: #222;
+}
+.first-container {
+  padding-top: 75px;
+}
+.navbar {
+  padding: .8rem;
+  border-bottom: solid;
+}
+.navbar-brand img{
+  height: 70px;
+}
+.navbar-nav li {
+  padding-right: 20px;
+}
+.nav-link {
+  font-size: 1.1em !important;
+}
+button
+{
+    color: #000000;
+    border: 1px solid #00008B;
+}
+span.anchor {
+    margin-top: -110px !important; /* height of nav, in this case 54px */
+    display: block;
+    height: 100px; /* height of nav, in this case 54px */
+    visibility: hidden;
+    position: relative;
+}
+
+.btn-primary {
+  background-color: rgb(248, 248, 249);
+  border: 0px;
+  color: #111;
+}
+.btn-primary :hover {
+  background-color: #87CEFA;
+  border: 1px solid #000000;
+  color: #FFFFFF;
+}
+
+.padding {
+  padding-bottom: 2rem;
+}
+
+footer {
+  background-color: #3f3f3f;
+  color: #d5d5d5;
+  padding-top: 1rem;
+}
+footer img {
+  height: 50px;
+}
+hr.light {
+  border-top: 1px solid #d5d5d5;
+  width: 75%;
+  margin-top: .8rem;
+  margin-bottom: 1 rem;
+}
+footer a {
+  color: #d5d5d5;
+}
+footer h6 {
+  color: #FFFFFF;
+  text-shadow: 1px 1px 1px 10px #000;
+}
+/*---Media Queries --*/
+@media (max-width: 992px) {
+  .social a {
+    fon-size: 4em;
+    padding: 2 rem;
+  }
+
+  }
+@media (max-width: 768px) {
+  .carousel-caption {
+    top: 45%;
+    transform: translateY(-50%)
+  }
+  .carousel-caption h1 {
+    font-size: 350%;
+  }
+  .carousel-caption h3 {
+    font-size: 140%;
+    font-weight: 400;
+    padding-bottom: 2rem;
+  }
+  .carousel.caption.btn {
+    font-size: 95%;
+    padding: 8px 14px;
+  }
+  .display-4 {
+    font-size: 200%;
+  }
+  .social a {
+    font-size: 1.5em;
+    padding: 0.8rem;
+  }
+  .col-12 h5,
+  col-md-4 h5 {
+    font-size: 90%;
+  }
+}
+@media (max-width: 576px) {
+  .carousel-caption {
+    top: 40%;
+    transform: translateY(-50%)
+  }
+  .carousel-caption h1 {
+    font-size: 250%;
+  }
+  .carousel-caption h3 {
+    font-size: 110%;
+  }
+  .carousel.caption.btn {
+    font-size: 90%;
+    padding: 4px 9px;
+  }
+  .carousel-indicators {
+    .display: none:
+  }
+  .display-4 {
+    font-size: 160%;
+  }
+  .social a {
+    font-size: 2em;
+    padding: .7rem;
+  }
+  .navbar-brand img {
+    height: 40px;
+  }
+  .col-12 h5,
+  col-md-4 h5,
+  col-md-12 {
+    font-size: 80%;
+  }
+/*---Table --*/
+}
+body {
+  --table-width: 100%; /* Or any value, this will change dinamically */
+}
+table {
+  width: 100%;
+}
+.table-primary th {
+  background-color: darkblue;
+  color: white;
+}
+thead, tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
+}
+tbody {
+  display: block;
+  overflow-y: scroll;
+  overflow-x: auto;
+  table-layout: fixed;
+}
+
+.h520 tbody {
+  max-height: 390px;
+}
+.h580 tbody {
+  max-height: 590px;
+}
+
+.h600 tbody {
+  max-height: 600px;
+}
+
+.anyClass {
+  height:430px;
+  overflow-y:auto;
+  overflow-x: auto;
+}
+
+tr:hover {
+  color: white;
+  background: darkblue !important;
+}
+
+.box-content {overflow-x:auto;}
+
+/*---Firefox Bug Fix --*/
+.carousel-item {
+  transition: -webkit-transform 0.5s ease;
+  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, -webkit-transform 0.5s ease;
+  -webkit-backface-visibility: visible;
+  backface-visibility: visible;
+}
+/*--- Fixed Background Image --*/
+figure {
+  position: relative;
+  width: 100%;
+  height: 60%;
+  margin: 0!important;
+}
+.fixed-wrap {
+  clip: rect(0, auto, auto, 0);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+#fixed {
+  background-image: url('images/tools/html_code.png');
+  position: fixed;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center center;
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
+  will-change: transform;
+}
+/*--- Bootstrap Padding Fix --*/
+[class*="col-"] {
+    padding: 1rem;
+}
+
+/*
+Extra small (xs) devices (portrait phones, less than 576px)
+No media query since this is the default in Bootstrap
+
+Small (sm) devices (landscape phones, 576px and up)
+@media (min-width: 576px) { ... }
+
+Medium (md) devices (tablets, 768px and up)
+@media (min-width: 768px) { ... }
+
+Large (lg) devices (desktops, 992px and up)
+@media (min-width: 992px) { ... }
+
+Extra (xl) large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) { ... }
+*/

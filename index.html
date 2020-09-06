@@ -1,14 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="js/main.js"/>
-  <script>console.log("hello");</script>
-  <title>Stocks</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link href="css/style.css" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+<script src= "https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 </head>
-<body>
-
-<ol id="container"></ol>
+<body onload ="document.getElementById('demo').innerHTML = Date()">
+  <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand signature" href="#">SmartTraderApp
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="btn btn-primary" href="#home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-primary" href="#price">Price</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-primary" href="#world">World Market</a>
+        </li>
+        <li class="nav-item">
+          <div class="dropdown">
+            <span class="btn btn-primary dropdown-toggle" role="button" id="#dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              US Market
+            </span>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" href="#indicators">Key Indicators</a>
+              <a class="dropdown-item" href="#infrastructure">Infrastructure</a>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-primary" href="#Contacts">Contacts</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  <div class="container-fluid padding first-container">
+    <span class="anchor" id="home"></span>
+    <p id="demo"></p>
+    <input id="number_of_elements"></input>
+    <button onclick="perform_request();">Submit</button>
+    <ol id="container"></ol>
+  </div>
+  <div class="container-fluid padding">
+  <style>
+    .container {
+        width: 50%;
+        height: 50%;
+    }
+  </style>
+    <button id="renderBtn">
+        Render
+    </button>
+    <canvas id="myChart"></canvas>
+  </div>
 </body>
 </html>
+<script src="config.js"></script>
+<script src="app.js"></script>
