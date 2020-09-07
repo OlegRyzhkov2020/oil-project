@@ -5,6 +5,10 @@ html, body {
   font-family: 'Poppins', sans-serif;
   color: #222;
 }
+h4 {
+  background-color: darkblue;
+  color:white;
+}
 .first-container {
   padding-top: 75px;
 }
@@ -27,7 +31,7 @@ button
     border: 1px solid #00008B;
 }
 span.anchor {
-    margin-top: -110px !important; /* height of nav, in this case 54px */
+    margin-top: -100px !important; /* height of nav, in this case 54px */
     display: block;
     height: 100px; /* height of nav, in this case 54px */
     visibility: hidden;
@@ -76,7 +80,9 @@ footer h6 {
     fon-size: 4em;
     padding: 2 rem;
   }
-
+  h4 {
+    font-size: 100%;
+  }
   }
 @media (max-width: 768px) {
   .carousel-caption {
@@ -104,6 +110,9 @@ footer h6 {
   }
   .col-12 h5,
   col-md-4 h5 {
+    font-size: 90%;
+  }
+  h4 {
     font-size: 90%;
   }
 }
@@ -140,8 +149,12 @@ footer h6 {
   col-md-12 {
     font-size: 80%;
   }
-/*---Table --*/
+  h4 {
+    font-size: 90%;
+  }
 }
+/*---Table --*/
+
 body {
   --table-width: 100%; /* Or any value, this will change dinamically */
 }
@@ -184,6 +197,10 @@ tbody {
 tr:hover {
   color: white;
   background: darkblue !important;
+}
+.chart {
+    width: 50%;
+    height: 50%;
 }
 
 .box-content {overflow-x:auto;}

@@ -11,10 +11,10 @@
 <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 <script src= "https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 </head>
-<body onload ="document.getElementById('demo').innerHTML = Date()">
+<body onload = "document.getElementById('demo').innerHTML = Date()">
   <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
     <div class="container-fluid">
-      <a class="navbar-brand signature" href="#">SmartTraderApp
+      <a class="navbar-brand signature" href="#">SmartAnalytics
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse"
       data-target="#navbarResponsive">
@@ -48,24 +48,13 @@
       </ul>
     </div>
   </nav>
-  <div class="container-fluid padding first-container">
+  <div class="container-fluid padding text-center first-container">
     <span class="anchor" id="home"></span>
+    <h4>Quantitative Oil Trader Dashboard</h4>
     <p id="demo"></p>
     <input id="number_of_elements"></input>
-    <button onclick="perform_request();">Submit</button>
-    <ol id="container"></ol>
-  </div>
-  <div class="container-fluid padding">
-  <style>
-    .container {
-        width: 50%;
-        height: 50%;
-    }
-  </style>
-    <button id="renderBtn">
-        Render
-    </button>
-    <canvas id="myChart"></canvas>
+    <button onclick="quandl_request();">Submit</button>
+    <canvas id="myChart" class ="chart"></canvas>
   </div>
 </body>
 </html>
