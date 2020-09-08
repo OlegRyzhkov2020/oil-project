@@ -9,6 +9,14 @@ h4 {
   background-color: darkblue;
   color:white;
 }
+h5 {
+  background-color: darkslateblue;
+  color:white;
+  font-size: 120%;
+}
+
+.bar { fill: darkslateblue; }
+
 .first-container {
   padding-top: 75px;
 }
@@ -17,7 +25,7 @@ h4 {
   border-bottom: solid;
 }
 .navbar-brand img{
-  height: 70px;
+  height:30px;
 }
 .navbar-nav li {
   padding-right: 20px;
@@ -44,7 +52,7 @@ span.anchor {
   color: #111;
 }
 .btn-primary :hover {
-  background-color: #87CEFA;
+  background-color: darkblue !important;
   border: 1px solid #000000;
   color: #FFFFFF;
 }
@@ -80,8 +88,8 @@ footer h6 {
     fon-size: 4em;
     padding: 2 rem;
   }
-  h4 {
-    font-size: 100%;
+  h4, h5 {
+    font-size: 110%;
   }
   }
 @media (max-width: 768px) {
@@ -112,8 +120,8 @@ footer h6 {
   col-md-4 h5 {
     font-size: 90%;
   }
-  h4 {
-    font-size: 90%;
+  h4, h5 {
+    font-size: 100%;
   }
 }
 @media (max-width: 576px) {
@@ -149,8 +157,8 @@ footer h6 {
   col-md-12 {
     font-size: 80%;
   }
-  h4 {
-    font-size: 90%;
+  h4, h5 {
+    font-size: 95%;
   }
 }
 /*---Table --*/
@@ -203,6 +211,10 @@ tr:hover {
     height: 50%;
 }
 
+::placeholder { /* Most modern browsers support this now. */
+   color:    #909;
+}
+
 .box-content {overflow-x:auto;}
 
 /*---Firefox Bug Fix --*/
@@ -244,7 +256,7 @@ figure {
 }
 /*--- Bootstrap Padding Fix --*/
 [class*="col-"] {
-    padding: 1rem;
+    padding: 0.2rem;
 }
 
 /*

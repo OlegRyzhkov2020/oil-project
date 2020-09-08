@@ -4,6 +4,9 @@ __pycache__/
 *$py.class
 
 config.js
+js/config.js
+config.py
+postrgreSQL/config.py
 
 # C extensions
 *.so

@@ -1,6 +1,5 @@
-# Final Project - Oil Market Analysis: Critical Price Factors
+# Oil Data Analytics
 
-Data Science and Visualization Boot Camp (Northwestern University)
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/OlegRyzhkov2020/oil-project)
 ![GitHub top language](https://img.shields.io/github/languages/top/OlegRyzhkov2020/oil-project)
@@ -10,9 +9,9 @@ Data Science and Visualization Boot Camp (Northwestern University)
 ![GitHub followers](https://img.shields.io/github/followers/OlegRyzhkov2020?label=Follow&style=social)
 [![](https://data.jsdelivr.com/v1/package/npm/chart.js/badge)](https://www.jsdelivr.com/package/npm/chart.js)
 
-## Project Hypothesis
+## Main Dashboard
 
-![presentation_slide](images/oil_prod_2019.png)
+![dashboard_slide](images/oil_dashboard.png)
 
 ## Data Collection, Cleaning, Normalization
 
@@ -50,11 +49,13 @@ GROUP BY p1.year
 ORDER BY p1.year DESC
 ```
 
-## Data Exploration and Analysis
+## World Market
+
+![presentation_slide](images/oil_prod_2019.png)
 
 
 
-## Data Visualization
+## US Market
 
 
 
