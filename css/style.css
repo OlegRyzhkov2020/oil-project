@@ -1,3 +1,23 @@
+import url('https://fonts.googleapis.com/css?family=Poppins:400,500,700');
+
+.blink_me {
+  animation: blinker 5s linear infinite;
+}
+
+.blink_me:hover {
+  color: white !important;
+}
+
+.signature {
+  font-weight: 500;
+  font-style: oblique;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
 
 html, body {
   height: 100%;
@@ -60,7 +80,13 @@ span.anchor {
 .padding {
   padding-bottom: 2rem;
 }
-
+.social a {
+  font-size: 4 em;
+  padding: 3rem;
+}
+.fa-facebook {
+  color: #3b5998;
+}
 footer {
   background-color: #3f3f3f;
   color: #d5d5d5;
@@ -82,6 +108,33 @@ footer h6 {
   color: #FFFFFF;
   text-shadow: 1px 1px 1px 10px #000;
 }
+/*---scrolling breaking news ticker --*/
+.news {
+  width: 160px
+}
+.bg-news {
+  background-color: darkblue;
+}
+.news-scroll a {
+    text-decoration: none;
+    color: black;
+}
+
+.news-scroll a:hover {
+    color: darkblue;
+}
+
+.dot {
+    height: 6px;
+    width: 6px;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 2px !important;
+    background-color: darkblue;
+    border-radius: 50%;
+    display: inline-block
+}
+
 /*---Media Queries --*/
 @media (max-width: 992px) {
   .social a {
@@ -124,6 +177,7 @@ footer h6 {
     font-size: 100%;
   }
 }
+
 @media (max-width: 576px) {
   .carousel-caption {
     top: 40%;

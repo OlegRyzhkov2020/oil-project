@@ -53,6 +53,7 @@
       </ul>
     </div>
   </nav>
+<!--- Home Page Dashboard -->
   <div class="container-fluid padding first-container">
     <span class="anchor" id="home"></span>
     <div class="row">
@@ -78,14 +79,14 @@
             <form action="/action_page.php" style="margin-left: 15px">
               <label for="oil">Choose indicator:</label>
               <select name="oil" id="oil">
-                <option value="wti">WTI</option>
-                <option value="brent">Brent</option>
-                <option value="urals">URALS</option>
+                <option value="EIA/PET_RWTC_D">WTI</option>
+                <option value="FRED/DCOILBRENTEU">Brent</option>
+                <option value="EIA/PET_ISA4990008_A">Arabian Light</option>
               </select>
             </form>
-            <input id="number_of_elements" placeholder="Input number of last records" style="width:20%; margin-left: 10px"></input>
+            <input id="number_of_elements" placeholder="Input number of last records" style="width:18%; margin-left: 10px"></input>
             <button onclick="quandl_request();">Submit</button>
-            <input id="number_of_elements" placeholder="Input data period" style="width:20%; margin-left: 10px"></input>
+            <input id="number_of_elements" placeholder="Input data period" style="width:18%; margin-left: 10px"></input>
             <button onclick="quandl_request();">Submit</button>
             <form action="/action_page.php" style="margin-left: 10px">
               <label for="chart_type">Choose chart type:</label>
@@ -100,6 +101,91 @@
       </div>
     </div>
   </div>
+<!--- About Data Page  -->
+  <div class="container-fluid padding first-container">
+    <span class="anchor" id="about"></span>
+    <div class="row">
+      <div class="col-md-8">
+
+      </div>
+      <div class="col-md-4">
+        <div class="table-responsive">
+          <table class="table table-sm h520" style="margin-bottom: 0">
+            <thead>
+              <tr class="table-primary">
+                <th>Schema</th>
+                <th>Dataset Table</th>
+                <th>Records Number</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <h5 class="card-title">PostgreSQL, Oil Project Database ERD</h5>
+        <img class="card-img-bottom" style="height: 500px" src="images/oil_erd.png">
+      </div>
+    </div>
+  </div>
+
+
+<!--- Connect -->
+<div class="container-fluid">
+  <div class="row text-center">
+    <span class="anchor" id="Contacts"></span>
+    <div class="col-12">
+      <h2>Contacts</h2>
+    </div>
+    <div class="col-12 social padding">
+      <a href="https://www.facebook.com/oleg.ryzhkov.90"><i class="fab fa-facebook" style="font-size:48px;color:#3b5998"></i></a>
+      <a href="https://www.linkedin.com/in/oleg-n-ryzhkov/"><i class="fab fa-linkedin" style="font-size:48px;color:black"></i></a>
+      <a href="https://github.com/OlegRyzhkov2020"><i class="fab fa-github" style="font-size:48px;color:red"></i></a>
+      <br/>
+      <br/>
+    </div>
+  </div>
+</div>
+<!--- Footer -->
+<footer>
+  <div class="container-fluid">
+    <div class="row text-center">
+      <div class="col-md-4">
+        <hr class="light">
+        <h3>Preffered Locations:</h3>
+        <hr class="light">
+        <p> USA: IL, TX, NY, WA</p>
+        <p> Canada, Eastern Europe</p>
+        <p> Asia: China, India, Singapore</p>
+      </div>
+      <div class="col-md-4">
+        <hr class="light">
+        <h3>Preffered Industries:</h3>
+        <hr class="light">
+        <p>Oil Trading, Utilities</p>
+        <p>Finance, Commodities</p>
+        <p>Information Technologies</p>
+      </div>
+      <div class="col-md-4">
+        <hr class="light">
+        <h3>Areas of Interest:</h3>
+        <hr class="light">
+        <p>Data Analysis</p>
+        <p>Quantitative Trading</p>
+        <p>Asset Management/Equity/Investments</p>
+      </div>
+      <div class="container mt-5">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="d-flex justify-content-between align-items-center breaking-news bg-white">
+              <div class="d-flex flex-row flex-grow-1 flex-fill justify-content-center bg-news py-2 text-white px-1 news"><span class="d-flex align-items-center">&nbsp;Data Quotes</span></div>
+              <marquee class="news-scroll" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();"> <a href="#">“In God we trust, all others bring data.” — W Edwards Deming </a> <span class="dot"></span> <a href="#">“If we have data, let’s look at data. If all we have are opinions, let’s go with mine.” — Jim Barksdale</a> </marquee>
+            </div>
+            <hr class="light">
+            <a class="blink_me" href="mailto:oleg.n.ryzhkov@gmail.com?subject = Feedback&body = Message"> Created by Oleg Ryzhkov 2020&emsp;<i class="far fa-envelope"></i>&emsp;oleg.n.ryzhkov@gmail.com>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>
 <script src="js/config.js"></script>
