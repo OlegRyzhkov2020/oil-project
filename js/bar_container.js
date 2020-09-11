@@ -49,7 +49,10 @@ d3.csv("outputs/product_2019.csv", function(data) {
   // add the x Axis
   svg.append("g")
   .attr("transform", "translate(0," + height + ")")
-  .call(d3.axisBottom(x));
+  .call(d3.axisBottom(x)
+          .ticks(8)
+          //.tickFormat(d => d + 'br')
+        );
 
   // add the y Axis
   svg.append("g")
