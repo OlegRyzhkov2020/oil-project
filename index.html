@@ -11,6 +11,7 @@
   <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
   <script src= "https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
   <script src = "https://d3js.org/d3.v4.min.js"></script>
+
 </head>
 <body onload = "document.getElementById('demo').innerHTML = Date()">
   <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
@@ -120,12 +121,36 @@
             </thead>
           </table>
         </div>
-        <h5 class="card-title">PostgreSQL, Oil Project Database ERD</h5>
+        <h6 class="card-title">PostgreSQL, Oil Project Database ERD</h6>
         <img class="card-img-bottom" style="height: 500px" src="images/oil_erd.png">
       </div>
     </div>
   </div>
 
+<!--- World Market Dashboard -->
+  <div class="container-fluid padding first-container">
+    <span class="anchor" id="world"></span>
+    <div class="row">
+      <div class="col-md-4 text-center" >
+        <h5>Top Oil Producers</h5>
+        <div class="card">
+          <div id="donut_container">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-8">
+        <div class="text-center">
+          <h5>World Map</h5>
+        </div>
+        <div class="card">
+          <div class="row">
+            <div id="world_map">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <!--- Connect -->
 <div class="container-fluid">
@@ -191,3 +216,5 @@
 <script src="js/config.js"></script>
 <script src="js/chart.js"></script>
 <script src="js/bar_container.js"></script>
+<script src="js/donut_container.js"></script>
+<script src="js/world_map.js"></script>
