@@ -71,7 +71,7 @@ span.anchor {
   border: 0px;
   color: #111;
 }
-.btn-primary :hover {
+.btn-primary:hover {
   background-color: darkblue !important;
   border: 1px solid #000000;
   color: #FFFFFF;
@@ -146,6 +146,9 @@ footer h6 {
   }
   }
 @media (max-width: 768px) {
+  svg {
+    width: 75%;
+  }
   .carousel-caption {
     top: 45%;
     transform: translateY(-50%)
@@ -179,6 +182,9 @@ footer h6 {
 }
 
 @media (max-width: 576px) {
+  svg {
+    width: 50%;
+  }
   .carousel-caption {
     top: 40%;
     transform: translateY(-50%)

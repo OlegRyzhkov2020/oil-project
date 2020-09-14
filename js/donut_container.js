@@ -1,4 +1,5 @@
 let donut_container = d3.select("#donut_container");
+
 d3.csv("outputs/product_2019.csv", function(data) {
   var filteredData = data.filter(d=> {
     return d.production>2000
@@ -51,8 +52,8 @@ function showData(filteredData) {
 
   // Another arc that won't be drawn. Just for labels positioning
   var outerArc = d3.arc()
-    .innerRadius(radius * 0.9)
-    .outerRadius(radius * 1.2)
+    .innerRadius(radius * 0.8)
+    .outerRadius(radius * 0.9)
 
 
   // Build the pie chart: Basically, each part of the pie is a path that we build using the arc function.
@@ -84,7 +85,7 @@ function showData(filteredData) {
         var posB = outerArc.centroid(d) // line break: we use the other arc generator that has been built only for that
         var posC = outerArc.centroid(d); // Label position = almost the same as posB
         var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2 // we need the angle to see if the X position will be at the extreme right or extreme left
-        posC[0] = radius * 1 * (midangle < Math.PI ? 1 : -1); // multiply by 1 or -1 to put it on the right or on the left
+        posC[0] = radius * 0.95 * (midangle < Math.PI ? 1 : -1); // multiply by 1 or -1 to put it on the right or on the left
         return [posA, posB, posC]
       })
       // Add the polylines between chart and labels:
@@ -97,7 +98,7 @@ function showData(filteredData) {
       .attr('transform', function(d) {
           var pos = outerArc.centroid(d);
           var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
-          pos[0] = radius * 1.0 * (midangle < Math.PI ? 1 : -1);
+          pos[0] = radius * 0.99 * (midangle < Math.PI ? 1 : -1);
           return 'translate(' + pos + ')';
       })
       .style('text-anchor', function(d) {

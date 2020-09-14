@@ -1,5 +1,8 @@
 function quandl_request () {
   number_of_elements = document.getElementById("number_of_elements").value
+  if (!number_of_elements) {
+    number_of_elements = 30
+  };
   chart_type = document.getElementById("chart_type").value
   oil_type = document.getElementById("oil").value
   var baseurl = "https://www.quandl.com/api/v3/datasets/";
@@ -60,3 +63,6 @@ function renderChart(data, labels, chart_type) {
     }
   });
 }
+window.addEventListener('load', function () {
+  quandl_request()
+});

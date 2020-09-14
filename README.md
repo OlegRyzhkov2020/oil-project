@@ -13,6 +13,15 @@
 
 ![dashboard_slide](images/oil_dashboard.png)
 
+## Installation
+* Install HTTP server (The easiest is to install http-server globally using node's package manager):
+
+npm install -g http-server
+
+* Then simply run http-server in any of your project directories:
+
+Eg. d:\my_project> http-server
+
 ## Data Collection, Cleaning, Normalization
 
 ```python
