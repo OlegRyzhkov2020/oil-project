@@ -267,8 +267,8 @@ tr:hover {
   background: darkblue !important;
 }
 .chart {
-    width: 50%;
-    height: 50%;
+    height: 400px;
+    min-width: 310px;
 }
 
 ::placeholder { /* Most modern browsers support this now. */
