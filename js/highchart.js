@@ -42,7 +42,14 @@
 var seriesOptions = [],
     seriesCounter = 0,
     names = ['CME_TY1', 'CME_TY2', "CME_FV1"];
-console.log('Begin creating chart');
+var baseurl = "https://www.quandl.com/api/v3/datasets/";
+var endurl = `&api_key=${QUANDL_API_KEY}&order=asc`;
+var quandlcode1 = "CHRIS/CME_TY1"; //
+var quandlcode2 = "CHRIS/CME_TY2"; //
+var quandlcode3 = "CHRIS/CME_FV1"; //
+var url1 = baseurl + quandlcode1 + ".json?" + endurl; //
+var url2 = baseurl + quandlcode2 + ".json?" + endurl; //
+var url3 = baseurl + quandlcode3 + ".json?" + endurl; //
 
 function createChart() {
 
@@ -114,15 +121,12 @@ function success(dat) {
 }
 
 Highcharts.getJSON(
-    'https://www.quandl.com/api/v3/datasets/CHRIS/CME_TY1.json?api_key=jGucPTayi9Dn2y7Z_-Vj&order=asc',
-    success
+    url1, success
 );
 Highcharts.getJSON(
-    'https://www.quandl.com/api/v3/datasets/CHRIS/CME_TY2.json?api_key=jGucPTayi9Dn2y7Z_-Vj&order=asc',
-    success
+    url2, success
 );
 
 Highcharts.getJSON(
-    'https://www.quandl.com/api/v3/datasets/CHRIS/CME_FV1.json?api_key=jGucPTayi9Dn2y7Z_-Vj&order=asc',
-    success
+    url3, success
 );
