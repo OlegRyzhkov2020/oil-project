@@ -9,6 +9,10 @@
 ![GitHub followers](https://img.shields.io/github/followers/OlegRyzhkov2020?label=Follow&style=social)
 [![](https://data.jsdelivr.com/v1/package/npm/chart.js/badge)](https://www.jsdelivr.com/package/npm/chart.js)
 
+## Project Proposal
+
+![dashboard_slide](images/project-proposal.png)
+
 ## Main Dashboard
 
 ![dashboard_slide](images/oil_dashboard.png)
