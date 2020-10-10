@@ -1,6 +1,6 @@
 let donut_container = d3.select("#donut_container");
 
-d3.csv("outputs/product_2019.csv", function(data) {
+d3.csv("static/data/product_2019.csv", function(data) {
   var filteredData = data.filter(d=> {
     return d.production>2000
   });
@@ -44,7 +44,7 @@ function showData(filteredData) {
   var pie = d3.pie()
     .value(function(d) {return d.value; })
   var data_ready = pie(d3.entries(data))
-
+  console.log(data_ready);
     // The arc generator
   var arc = d3.arc()
     .innerRadius(radius * 0.5)         // This is the size of the donut hole
@@ -70,8 +70,6 @@ function showData(filteredData) {
     .attr("stroke", "black")
     .style("stroke-width", "2px")
     .style("opacity", 0.7);
-
-console.log(svg);
 
     // Add the polylines between chart and labels:
   svg
