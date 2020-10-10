@@ -1,4 +1,4 @@
-let container = d3.select("#donut_container");
+let container = d3.select("#bar_container");
 d3.csv("static/data/product_2019.csv", function(data) {
   let filteredData = data.filter(d=> {
     return d.production>2000

@@ -1,4 +1,5 @@
 //
+var QUANDL_API_KEY = "xq44Ss4a-fZGqgecyG1o"
 var seriesOptions = [],
     seriesCounter = 0,
     names = ['CME_CL1', 'CME_TY2', "CME_FV1"];
@@ -13,7 +14,7 @@ var url3 = baseurl + quandlcode3 + ".json?" + endurl; //
 
 function createChart() {
 
-    Highcharts.stockChart('container', {
+    Highcharts.stockChart('highchart', {
 
         rangeSelector: {
             selected: 4
@@ -74,12 +75,11 @@ function success(dat) {
     // As we're loading the data asynchronously, we don't know what order it
     // will arrive. So we keep a counter and create the chart when all the data is loaded.
     seriesCounter += 1;
-
+    console.log(seriesCounter);
     if (seriesCounter === names.length) {
         createChart();
     }
 }
-
 Highcharts.getJSON(
     url1, success
 );

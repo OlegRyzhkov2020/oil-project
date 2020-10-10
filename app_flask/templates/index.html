@@ -1,4 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Home Page</title>
+  <script>
+  function scroll_to(target_id) {
+    var container = document.getElementById('target-container');
+    var scrollTo = document.getElementById(" " + target_id);
+    container.scrollTop = scrollTo.offsetTop;
+  }
+  </script>
+  <script src ="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="http://d3js.org/topojson.v0.min.js"></script>
 
+</head>
+<body>
+  {% extends "menu.html" %}
+  {% block content %}
+  <div class="container-fluid padding first-container">
+    <span class="anchor" id="Home"></span>
+    <div class="col-md-12">
+      <div class="d-flex justify-content-between align-items-center breaking-news bg-white">
+        <div class="d-flex flex-row flex-grow-1 flex-fill justify-content-center bg-news py-2 text-white px-1 news"><span class="d-flex align-items-center">&nbsp;Latest News</span></div>
+        <marquee class="news-scroll" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();"> <a >WTI CRUDE 40.60</a> <span class="dot"></span><a > BRENT CRUDE 42.85</a> <span class="dot"></span><a > ARAB LIGHT 42.32</a> <span class="dot"></span>><a URALS 39.60</a></marquee>
+      </div>
+    </div>
+    <div class="row">
+      <div class="row">
+        <div class="col-md-5 text-center" >
+          <h5>Energy Consumption by Energy Sources</h5>
+
+            <div id="donut_container">
+            </div>
+
+        </div>
+      <div class="col-md-3">
+        <div class="table-responsive" style="height:460px">
+          <table class="table table-sm" style="margin-bottom: 0">
+            <thead>
+              <tr class="table-dark">
+                <th style="width: 35%">Date</th>
+                <th style="width: 65%">News Title</th>
+              </tr>
+              {% for news in data %}
+              <tr style='cursor: pointer; cursor: hand;' onclick="scroll_to('{{news['ID']}}');" class= "small">
+                <td style="width: 35%">{{news['Date']}}</td>
+                <td style="width: 65%">{{news['News_Title']}}</td>
+              </tr >
+              {% endfor %}
+            </thead>
+          </table>
+        </div>
+      </div>
+      <div class="col-md-4 anyClass" id="target-container">
+        {% for news in data %}
+        <span class="picture" id=" {{news['ID']}}"></span>
+        <div class="card">
+          <img class="card-img-top" src={{news['Image_URL']}}>
+          <div class="card-body">
+            <h5 class="card-title">{{news['Image_Name']}}</h5>
+            <p class="card-text">{{news['News_Paragraph']}}
+            </p>
+          </div>
+          <hr class="light">
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <figure>
+    <div class="fixed-wrap">
+      <div id="fixed">
+      </div>
+    </div>
+  </figure>
+
+<script>
 d3.csv("static/data/product_2019.csv", function(data) {
   var filteredData = data.filter(d=> {
     return d.production>2000
@@ -9,7 +87,8 @@ d3.csv("static/data/product_2019.csv", function(data) {
 function showData(filteredData) {
   let bodyHeight = 200;
   let bodyWidth = 400;
-let donut_container = d3.select("#donut_container");
+
+  let donut_container = d3.select("#donut_container");
   data = {}
   for (var i=0; i<filteredData.length; i++) {
     data[filteredData[i].country_code] = filteredData[i].production;
@@ -107,3 +186,8 @@ console.log(svg);
           return (midangle < Math.PI ? 'start' : 'end')
       })
   }
+</script>
+
+{% endblock %}
+</body>
+</html>

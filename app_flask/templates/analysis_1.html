@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Time Series Analysis</title>
+
+  <script src ="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="http://d3js.org/topojson.v0.min.js"></script>
+  <script src="https://code.highcharts.com/stock/highstock.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+  <script type=text/javascript src="{{url_for('static', filename='js/highchart.js') }}"></script>
+  <script type=text/javascript src="{{url_for('static', filename='js/config.js') }}"></script>
+
+</head>
+<body>
+  {% extends "menu.html" %}
+  {% block content %}
+  <div class="container-fluid padding first-container">
+    <span class="anchor" id="Analysis_1"></span>
+
+    <div class="row">
+      <div class="row">
+        <div class="col-md-4 text-center" >
+          <h5>Arima Model Results</h5>
+          <div class="card">
+            <div id="">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-8 text-center" >
+          <h5>Time Series Analysis</h5>
+          <div id="higchart" class ="chart">
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <figure>
+    <div class="fixed-wrap">
+      <div id="fixed">
+      </div>
+    </div>
+  </figure>
+  {% endblock %}
+</body>
+</html>

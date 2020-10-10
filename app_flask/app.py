@@ -38,7 +38,7 @@ def home():
         if id == 1: head_news = [s['News_Title'], s['News_Paragraph']]
         id +=1
     # Return template and data
-    return render_template("home.html", data=latest_news, head_news = head_news)
+    return render_template("index.html", data=latest_news, head_news = head_news)
 
 # Route that will trigger the scrape function
 @app.route("/scrape")
@@ -55,8 +55,8 @@ def scrape():
     return redirect("/")
 
 # Route that will trigger the facts html page
-@app.route("/facts")
-def facts():
+@app.route("/dashboard_2")
+def dash_2():
     # Find records of data from the mongo database mars_facts
     facts_data = mongo.db.mars_facts
     mars_facts = []
@@ -65,11 +65,11 @@ def facts():
     # Find records of data from the mongo database mars_images
     image_data = mongo.db.mars_images.find_one()
     # Return template and data
-    return render_template("facts.html", data=mars_facts, image = image_data['Image_url'])
+    return render_template("dashboard_2.html", data=mars_facts, image = image_data['Image_url'])
 
 # Route that will trigger the hemisphere html page
-@app.route("/hem_1")
-def hem_1():
+@app.route("/an_1")
+def an_1():
     hem_data = mongo.db.mars_hem
     hem_1 = []
     id = 1
@@ -78,10 +78,10 @@ def hem_1():
             hem_1.append({'title' : s['title'], 'img' : s['img_url']})
         id +=1
     # Return template and data
-    return render_template("hem_1.html", data=hem_1)
+    return render_template("analysis_1.html")
 
-@app.route("/hem_2")
-def hem_2():
+@app.route("/an_2")
+def an_2():
     hem_data = mongo.db.mars_hem
     hem_2 = []
     id = 1
@@ -90,7 +90,7 @@ def hem_2():
             hem_2.append({'title' : s['title'], 'img' : s['img_url']})
         id +=1
     # Return template and data
-    return render_template("hem_2.html", data=hem_2)
+    return render_template("analysis_2.html", data=hem_2)
 
 # Route that will trigger the contacts html page
 @app.route("/contacts")
