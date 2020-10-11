@@ -14,7 +14,8 @@ from matplotlib import cm
 from matplotlib.colors import to_hex
 
 # Census & gmaps API Keys
-from config import census_key, g_key
+#from config import census_key, g_key
+from config import g_key
 
 class GoogleMapClient(object):
     lat = None
