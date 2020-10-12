@@ -32,11 +32,11 @@
     <div class="row">
       <div class="row">
         <div class="col-md-5 text-center" >
-          <h5>Energy Consumption by Energy Sources</h5>
+          <h6>Energy Consumption by Energy Sources in 2019 (World/USA)</h6>
 
           <svg id="chart" preserveAspectRatio="xMinYMin meet" viewBox="-30 0 260 200"></svg>
           <div class="text-right" >
-          <button onclick="draw()">World/USA</button>
+          <button onclick="draw()">World</button>
           </div>
         </div>
       <div class="col-md-3">
@@ -157,6 +157,8 @@ function draw() {
     .innerRadius(radius * 0.9)
     .outerRadius(radius * 0.9)
 
+  var key = function(d){ return d.data.key; };
+
   arcs.transition()
     .duration(durations.entryAnimation)
     .attrTween("d", d => {
@@ -188,7 +190,7 @@ function draw() {
 
   	var text = d3.select("#chart")
       .selectAll('allLabels')
-      .data(data_ready);
+      .data(data_ready, key);
 
   	text.enter()
   		.append("text")
@@ -196,6 +198,8 @@ function draw() {
   		.text(function(d) {
   			return d.data.key;
   		});
+
+    console.log("Text: ", text);
 
   	function midAngle(d){
   		return d.startAngle + (d.endAngle - d.startAngle)/2;
@@ -224,6 +228,8 @@ function draw() {
   				return midAngle(d2) < Math.PI ? "start":"end";
   			};
   		});
+
+    console.log("Text: ", text);
 
   	text.exit()
   		.remove();

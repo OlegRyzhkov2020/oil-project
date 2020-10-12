@@ -42,7 +42,6 @@ def home():
     for p in prices_data.find():
         latest_prices.append({'ID':id, 'Oil' : p['Oil_Symbol'], 'Price' : p['Oil_Price'],
                             'Price_Change':p['Oil_Change_Value']})
-    print(latest_prices)
     # Return template and data
     return render_template("home.html", data=latest_news, head_news = head_news, prices = latest_prices)
 
@@ -61,9 +60,25 @@ def scrape():
     return redirect("/")
 
 # Route that will trigger the facts html page
+@app.route("/project_overview")
+def about_1():
+
+
+    # Return template and data
+    return render_template("about_1.html")
+
+# Route that will trigger the facts html page
+@app.route("/database_structure")
+def about_2():
+
+
+    # Return template and data
+    return render_template("about_2.html")
+
+# Route that will trigger the facts html page
 @app.route("/dashboard_1")
 def dash_1():
-    # Find records of data from the mongo database mars_facts
+
 
     # Return template and data
     return render_template("dashboard_1.html")
@@ -87,27 +102,15 @@ def dash_3():
 # Route that will trigger the hemisphere html page
 @app.route("/an_1")
 def an_1():
-    hem_data = mongo.db.mars_hem
-    hem_1 = []
-    id = 1
-    for s in hem_data.find():
-        if id == 1 or id == 4:
-            hem_1.append({'title' : s['title'], 'img' : s['img_url']})
-        id +=1
+
     # Return template and data
     return render_template("analysis_1.html")
 
 @app.route("/an_2")
 def an_2():
-    hem_data = mongo.db.mars_hem
-    hem_2 = []
-    id = 1
-    for s in hem_data.find():
-        if id == 2 or id == 3:
-            hem_2.append({'title' : s['title'], 'img' : s['img_url']})
-        id +=1
+
     # Return template and data
-    return render_template("analysis_2.html", data=hem_2)
+    return render_template("analysis_2.html")
 
 # Route that will trigger the facts html page
 @app.route("/findings")

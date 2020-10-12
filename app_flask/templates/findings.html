@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>USA Infrastructure</title>
-  
+
   <script src ="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
   <script src="http://d3js.org/topojson.v0.min.js"></script>
@@ -15,26 +15,65 @@
   <div class="container-fluid padding first-container">
     <span class="anchor" id="Dashboard_1"></span>
       <div class="row">
-        <div class="col-md-4 text-center" >
-          <h5>Top Producers of Oil, NPLG and other liquids, 2019</h5>
+        <div class="col-md-12 text-center" >
           <div class="card">
-            <div id="bar_container">
+            <div id="letters">
             </div>
           </div>
         </div>
-        <div class="col-md-8 text-center" >
-          <h5>World Oil Statistics</h5>
-          <div id="" class ="chart">
-          </div>
-        </div>
-        </div>
       </div>
-  <figure>
-    <div class="fixed-wrap">
-      <div id="fixed">
-      </div>
-    </div>
-  </figure>
+
+
+  <script>
+
+  let data = 'Is DATA becoming the new oil?'.split('').map( (d, i) => ({
+    letter  : d,
+    index   : i,
+    pos     : i
+  }));
+  const LETTER_WIDTH = 22;
+  const WIDTH        = LETTER_WIDTH * data.length;
+  const HEIGHT       = 60;
+  const svg = d3.select('#letters').append('svg')
+    .attr('width', WIDTH)
+    .attr('height', HEIGHT)
+    .append('g')
+      .attr('transform', 'translate(0,' + (HEIGHT/2) + ')');
+
+  function update (data) {
+        const text = svg.selectAll('text').data(data, d => d.index);
+        text.enter().append('text')
+          .attr('fill', d => d.letter === '?' ? 'tomato' : '#000')
+          .attr('x', (d, i) => LETTER_WIDTH*d.pos)
+          .style('font-size', '40px')
+          .style('font-family', 'monospace')
+          .text(d => d.letter)
+          .merge(text)
+            .transition().duration(1000)
+            .attr('x', (d, i) => LETTER_WIDTH*d.pos);
+  }
+
+  function loop () {
+  update(data);
+  window.setTimeout(function () {
+    data = d3.shuffle(data).map( (d, i) => {
+      d.pos = i;
+      return d;
+    });
+    update(data);
+    window.setTimeout(function () {
+      data = data.map( (d, i) => {
+        d.pos = d.index;
+        return d;
+      });
+      loop();
+    }, 5000);
+  }, 5000);
+}
+loop();
+
+
+  </script>
   {% endblock %}
 </body>
 </html>
