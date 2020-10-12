@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Home Page</title>
+  <script>
+  function scroll_to(target_id) {
+    var container = document.getElementById('target-container');
+    var scrollTo = document.getElementById(" " + target_id);
+    container.scrollTop = scrollTo.offsetTop;
+  }
+  </script>
+  <script src ="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="http://d3js.org/topojson.v0.min.js"></script>
+  <script src="https://d3js.org/colorbrewer.v1.min.js"></script>
+</head>
+<body>
+  {% extends "menu.html" %}
+  {% block content %}
+  <div class="container-fluid padding first-container">
+    <span class="anchor" id="Home"></span>
+    <div class="col-md-12">
+      <div class="d-flex justify-content-between align-items-center breaking-news bg-white">
+        <div class="d-flex flex-row flex-grow-1 flex-fill justify-content-center bg-news py-2 text-white px-1 news"><span class="d-flex align-items-center">&nbsp;Latest Prices</span></div>
+        <marquee class="news-scroll" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();"> <a >{{prices[0]['Oil']}} {{prices[0]['Price']}}</a> <span class="dot"></span>
+          <a > {{prices[1]['Oil']}} {{prices[1]['Price']}}</a> <span class="dot"></span><a > {{prices[6]['Oil']}} {{prices[6]['Price']}}</a> <span class="dot"></span>
+          <a > {{prices[7]['Oil']}} {{prices[7]['Price']}}</a><span class="dot"></span> <a > {{prices[8]['Oil']}} {{prices[8]['Price']}}</a><span class="dot"></span>
+        <a > {{prices[9]['Oil']}} {{prices[9]['Price']}}</a><span class="dot"></span><a > {{prices[10]['Oil']}} {{prices[10]['Price']}}</a></marquee>
+      </div>
+    </div>
+    <div class="row">
+      <div class="row">
+        <div class="col-md-5 text-center" >
+          <h5>Energy Consumption by Energy Sources</h5>
+
+          <svg id="chart" preserveAspectRatio="xMinYMin meet" viewBox="-30 0 260 200"></svg>
+          <div class="text-right" >
+          <button onclick="draw()">World/USA</button>
+          </div>
+        </div>
+      <div class="col-md-3">
+        <div class="table-responsive" style="height:460px">
+          <table class="table table-sm" style="margin-bottom: 0">
+            <thead>
+              <tr class="table-dark">
+                <th style="width: 30%">Date</th>
+                <th style="width: 70%">News Title</th>
+              </tr>
+              {% for news in data %}
+              <tr style='cursor: pointer; cursor: hand;' onclick="scroll_to('{{news['ID']}}');" class= "small">
+                <td style="width: 30%">{{news['Date']}}</td>
+                <td style="width: 70%">{{news['News_Title']}}</td>
+              </tr >
+              {% endfor %}
+            </thead>
+          </table>
+        </div>
+      </div>
+      <div class="col-md-4 anyClass" id="target-container">
+        {% for news in data %}
+        <span class="picture" id=" {{news['ID']}}"></span>
+        <div class="card">
+          <img class="card-img-top" src={{news['Image_URL']}}>
+          <div class="card-body">
+            <h6 class="card-title">Written by:{{news['Author']}}</h6>
+            <p class="card-text">{{news['News_Paragraph']}}
+            </p>
+          </div>
+          <hr class="light">
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  <figure>
+    <div class="fixed-wrap">
+      <div id="fixed">
+      </div>
+    </div>
+  </figure>
+
+<script>
+
+let world_data = [48, 21, 65, 30, 16, 2];
+let usa_data = [100, 10, 40, 70, 6, 20];
+let world_colors = colorbrewer.Dark2[world_data.length];
+let usa_colors = colorbrewer.Dark2[usa_data.length];
+var data, colors;
+var data_button = true;
+
+let sizes = {
+  innerRadius: 50,
+  outerRadius: 100
+};
+
+let durations = {
+  entryAnimation: 2000
+};
+
+draw();
+
+function draw() {
+
+  if (data_button == true) {
+    data = world_data;
+    colors = world_colors;
+    data_button = false;
+  }
+  else {
+    data = usa_data;
+    colors = usa_colors;
+    data_button = true;
+  }
+
+  d3.select("#chart").html("");
+
+  let generator = d3.pie()
+    .sort(null);
+
+  var pie = d3.pie()
+    .value(function(d) {return d.value; });
+
+  var data_ready = pie(d3.entries(data));
+  console.log(data_ready);
+
+  let chart = generator(data);
+
+  let arcs = d3.select("#chart")
+    .append("g")
+    .attr("transform", "translate(100, 100)")
+    .selectAll("path")
+    .data(chart)
+    .enter()
+    .append("path")
+    .style("fill", (d, i) => colors[i]);
+
+  let angleInterpolation = d3.interpolate(generator.startAngle()(), generator.endAngle()());
+
+  let innerRadiusInterpolation = d3.interpolate(0, sizes.innerRadius);
+  let outerRadiusInterpolation = d3.interpolate(0, sizes.outerRadius);
+
+  let arc = d3.arc();
+
+  // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
+  var width = 460,
+    height = 450,
+	radius = Math.min(width, height) / 2;
+
+  // The arc generator
+  var innerArc = d3.arc()
+    .innerRadius(radius * 0.4)         // This is the size of the donut hole
+    .outerRadius(radius * 0.8)
+
+  // Another arc that won't be drawn. Just for labels positioning
+  var outerArc = d3.arc()
+    .innerRadius(radius * 0.9)
+    .outerRadius(radius * 0.9)
+
+  arcs.transition()
+    .duration(durations.entryAnimation)
+    .attrTween("d", d => {
+      let originalEnd = d.endAngle;
+      return t => {
+        let currentAngle = angleInterpolation(t);
+        if (currentAngle < d.startAngle) {
+          return "";
+        }
+
+        d.endAngle = Math.min(currentAngle, originalEnd);
+
+        return arc(d);
+      };
+    });
+
+  var svg = d3.select("#chart")
+    .transition()
+    .duration(durations.entryAnimation)
+    .tween("arcRadii", () => {
+      return t => arc
+        .innerRadius(innerRadiusInterpolation(t))
+        .outerRadius(outerRadiusInterpolation(t));
+    });
+
+  /* ------- TEXT LABELS -------*/
+    var data_ready = pie(d3.entries(data));
+    console.log(data_ready);
+
+  	var text = d3.select("#chart")
+      .selectAll('allLabels')
+      .data(data_ready);
+
+  	text.enter()
+  		.append("text")
+  		.attr("dy", ".35em")
+  		.text(function(d) {
+  			return d.data.key;
+  		});
+
+  	function midAngle(d){
+  		return d.startAngle + (d.endAngle - d.startAngle)/2;
+  	}
+
+  	text.transition()
+      .duration(durations.entryAnimation)
+  		.attrTween("transform", function(d) {
+  			this._current = this._current || d;
+  			var interpolate = d3.interpolate(this._current, d);
+  			this._current = interpolate(0);
+        console.log(this._current, interpolate);
+  			return function(t) {
+  				var d2 = interpolate(t);
+  				var pos = outerArc.centroid(d2);
+  				pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
+  				return "translate("+ pos +")";
+  			};
+  		})
+  		.styleTween("text-anchor", function(d){
+  			this._current = this._current || d;
+  			var interpolate = d3.interpolate(this._current, d);
+  			this._current = interpolate(0);
+  			return function(t) {
+  				var d2 = interpolate(t);
+  				return midAngle(d2) < Math.PI ? "start":"end";
+  			};
+  		});
+
+  	text.exit()
+  		.remove();
+
+      /* ------- SLICE TO TEXT POLYLINES -------*/
+
+    	var polyline = d3.select("#chart").selectAll("polyline")
+    		.data(data_ready);
+
+    	polyline.enter()
+    		.append("polyline");
+
+    	polyline.transition()
+        .duration(durations.entryAnimation)
+    		.attrTween("points", function(d){
+    			this._current = this._current || d;
+    			var interpolate = d3.interpolate(this._current, d);
+    			this._current = interpolate(0);
+    			return function(t) {
+    				var d2 = interpolate(t);
+    				var pos = outerArc.centroid(d2);
+    				pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+    				return [arc.centroid(d2), outerArc.centroid(d2), pos];
+    			};
+    		});
+
+    	polyline.exit()
+    		.remove();
+
+}
+
+</script>
+
+{% endblock %}
+</body>
+</html>

@@ -364,6 +364,11 @@ figure {
           transform: translateZ(0);
   will-change: transform;
 }
+
+#chart {
+  display: block;
+  margin: 20px auto 0;
+}
 /*--- Bootstrap Padding Fix --*/
 [class*="col-"] {
     padding: 1rem;
