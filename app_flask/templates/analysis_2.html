@@ -23,8 +23,17 @@
             <div id="chart" class ="chart">
             </div>
         </div>
-        <div class="col-md-4 text-center" >
-          <h5>Test Results</h5>
+        <div class="col-md-4" >
+          <div class="text-center" >
+            <h5>Test Results</h5>
+          </div>
+          <div class="type-js headline">
+              <h6 class="text-js"> NULL HYPOTHESIS: </h6>
+          </div>
+          <div class="type-js-2 headline">
+              <p class="text-js"> There is a statistical difference between..</p>
+          </div>
+          <div class="tiper-js-container"></div>
           <div>
           </div>
         </div>
@@ -498,6 +507,47 @@
   d3.select(window).on("resize", makeResponsive);
 
   </script>
+
+
+  <script>
+
+  function autoType(elementClass, typingSpeed){
+  var thhis = $(elementClass);
+  thhis.css({
+    "position": "relative",
+    "display": "inline-block"
+  });
+  thhis.prepend('<div class="cursor" style="right: initial; left:0;"></div>');
+  thhis = thhis.find(".text-js");
+  var text = thhis.text().trim().split('');
+  var amntOfChars = text.length;
+  var newString = "";
+  thhis.text("|");
+  setTimeout(function(){
+    thhis.css("opacity",1);
+    thhis.prev().removeAttr("style");
+    thhis.text("");
+    for(var i = 0; i < amntOfChars; i++){
+      (function(i,char){
+        setTimeout(function() {
+          newString += char;
+          thhis.text(newString);
+        },i*typingSpeed);
+      })(i+1,text[i]);
+    }
+  },1500);
+}
+
+  $(document).ready(function(){
+    // Now to start autoTyping just call the autoType function with the
+    // class of outer div
+    // The second paramter is the speed between each letter is typed.
+    autoType(".type-js",200);
+    autoType(".type-js-2",200);
+  });
+
+  </script>
+
   {% endblock %}
 </body>
 </html>

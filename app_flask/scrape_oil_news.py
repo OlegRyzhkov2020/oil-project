@@ -1,6 +1,9 @@
 from splinter import Browser
 from bs4 import BeautifulSoup as bs
 import time
+import re
+import pandas as pd
+import requests
 
 
 def init_browser():
@@ -23,53 +26,67 @@ def soup_url (url):
 
     return soup_url
 
-def soup_class (soup, class_name):
-
-    # Soup data list
-    soup_class = soup.find(class_= class_name)
-
-    return soup_class
-
-def soup_class_list (soup, class_name):
-
-    # Soup data list
-    soup_class_list = soup.find_all(class_= class_name)
-
-    return soup_class_list
-
 def text_list (soup_class_list):
     text_list = []
     [text_list.append(record.text.replace("\n", "")) for record in soup_class_list]
     return text_list
 
 def latest_news():
-    # Visit mars.nasa.gov
-    mars_url = "https://mars.nasa.gov"
-    url_news = "https://mars.nasa.gov/news/?page=0&per_page=40&order=publish_date+desc%2Ccreated_at+desc&search=&category=19%2C165%2C184%2C204&blank_scope=Latest"
+    # Visit oilprice.com
+    base_url = "https://oilprice.com"
+    url_news = "https://oilprice.com/Latest-Energy-News/World-News/"
     soup = soup_url(url_news)
-    # Collect the latest News Dates
-    date_news = text_list(soup_class_list(soup, "list_date"))
-    # Collect the latest News Titles
-    title_news = text_list(soup_class_list(soup, "content_title"))
-    title_news.pop(0)
-    # Collect the latest News Paragraphs
-    par_news = text_list(soup_class_list(soup, "article_teaser_body"))
-    # Create news images list
-    image_news = soup_class_list(soup, "list_image")
-    image_name_list = []
-    image_url_list = []
-    for image in image_news:
-        image_name_list.append(image("img")[0].get('alt'))
-        image_url_list.append(mars_url + image("img")[0].get('src'))
-    # Create final list of dictionaries
+    # Scrapping News Data
+    articles = soup.find_all(class_= "categoryArticle")
+    title_list = []
+    date_list = []
+    excerpt_list = []
+    author_list = []
+    link_list = []
+    for article in articles:
+        image_holder = article.find(class_= "categoryArticle__imageHolder")
+        img =image_holder.findAll('img')
+        link = img[0].get('data-src')
+        link_list.append(link)
+        title = article.find_all(class_= "categoryArticle__title")
+        full_date = article.find_all(class_= "categoryArticle__meta")
+        date = full_date[0].text.strip().split("|")[0]
+        author = full_date[0].text.strip().split("|")[1]
+        excerpt = article.find_all(class_= "categoryArticle__excerpt")
+        title_list.append(title[0].text.strip())
+        date_list.append(date)
+        author_list.append(author)
+        excerpt_list.append(excerpt[0].text.strip())
+
     news = []
-    for i in range(len(date_news)):
+    for i in range(len(title_list)):
         row = {}
-        row['Date'] = date_news[i]
-        row["News_Title"] = title_news[i]
-        row["News_Paragraph"] = par_news[i]
-        row["Image_Name"] = image_name_list[i]
-        row["Image_URL"] = image_url_list[i]
+        row['Date'] = date_list[i]
+        row["News_Title"] = title_list[i]
+        row["News_Paragraph"] = excerpt_list[i]
+        row["Author"] = author_list[i]
+        row["Image_URL"] = link_list[i]
         news.append(row)
 
     return news
+
+def latest_prices():
+    # Visit oilprice.com
+    url_prices = "https://oilprice.com/oil-price-charts/#prices"
+    soup_prices = soup_url(url_prices)
+
+    r = requests.get(url_prices)
+    price_list = pd.read_html(r.text) # this parses all the tables in webpages to a list
+    price_df = price_list[0]
+
+    prices = []
+    for price_row in price_df.iterrows():
+        row = {}
+        row['Oil_Symbol'] = price_row[1][1]
+        row['Oil_Price'] = price_row[1][2]
+        row['Oil_Change_Value'] = price_row[1][3]
+        row['Oil_Change_Interest'] = price_row[1][4].split("(")[0]
+        row['Oil_Price_Delay'] = price_row[1][5]
+        prices.append(row)
+
+    return prices

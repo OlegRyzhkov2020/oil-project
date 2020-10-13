@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>USA Infrastructure</title>
-  
+
   <script src ="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
   <script src="http://d3js.org/topojson.v0.min.js"></script>
@@ -16,25 +16,19 @@
     <span class="anchor" id="Dashboard_1"></span>
       <div class="row">
         <div class="col-md-4 text-center" >
-          <h5>Top Producers of Oil, NPLG and other liquids, 2019</h5>
+          <h5>PostrgreSQL Database</h5>
           <div class="card">
-            <div id="bar_container">
-            </div>
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/oil_erd.png')}}">
           </div>
         </div>
         <div class="col-md-8 text-center" >
-          <h5>World Oil Statistics</h5>
+          <h5>Data Collection</h5>
           <div id="" class ="chart">
           </div>
         </div>
         </div>
       </div>
-  <figure>
-    <div class="fixed-wrap">
-      <div id="fixed">
-      </div>
-    </div>
-  </figure>
+  
   {% endblock %}
 </body>
 </html>
