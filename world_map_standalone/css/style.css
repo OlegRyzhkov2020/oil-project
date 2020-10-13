@@ -1,0 +1,30 @@
+/* #container { 
+    border:1px dotted blue; 
+    width: 750px; 
+    height: 450px;
+    position: relative; 
+} */
+
+body {
+    margin: 20px;
+    overflow: hidden;
+    background-color: white;
+}
+
+.sphere {
+    fill: #00bcd433;
+    fill-opacity: 0.4;
+    stroke:black;
+    stroke-opacity: 0.5; 
+}
+.country {
+    stroke: black;
+    stroke-width: 0.3px;
+    stroke-opacity: initial;
+/*     fill: steelblue; */
+}
+
+/* styling for hover over the country */
+.country:hover {
+    fill: orange;
+}

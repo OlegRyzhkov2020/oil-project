@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="UTF-8">
+        <!-- <meta name="viewport" content="width=device-width"> -->
+        <title>Worldmap</title>
+        <!-- Our CSS -->
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <!-- <link rel="stylesheet" type="text/css" href="css/style_d3geo.css"> -->
+<!--         <style>
+          #container { border:1px dotted blue; width: 750px; height: 450px; position: relative; }
+        </style> -->
+    </head>
+
+    <!-- VERSION OF DATAMAPS working only with d3.v3 -->
+    <!-- <body>
+    
+        <h1>World map</h1> -->
+
+        <!-- The div where we will inject our map -->
+        <!-- <div id="container"></div> -->
+      
+       
+        <!-- <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script>
+            d3v3 = d3
+            // window.d3=null
+        </script> -->
+        <!-- <script src="https://d3js.org/d3.v4.min.js"></script> -->
+        <!-- <script>
+            // test it works
+            console.log('v3:', d3v3.version)
+            console.log('v4:', d3.version)
+        </script> -->
+
+        <!-- <script src="http://d3js.org/topojson.v1.min.js"></script>
+        <script src="http://datamaps.github.io/scripts/0.5.0/datamaps.world.hires.js"></script>
+
+        <script type="text/javascript" src="js/logic.js"></script> -->
+
+          
+    <!-- </body> -->
+
+    <!-- VERSION WITH d3 geo.projection map  -->
+    <!-- <body>
+        <div id="wrapper">	
+            <div id="map"></div>
+            <button id="play">play</button>
+            <span id="clock">year</span>
+        </div>
+ 
+ 
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <script>
+        d3v3 = d3
+        window.d3=null
+    </script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script>
+        // test it works
+        console.log('v3:', d3v3.version)
+        console.log('v4:', d3.version)
+    </script>
+    
+    <script src="https://d3js.org/d3.geo.projection.v0.min.js"></script>
+    <script src="https://d3js.org/queue.v1.min.js"></script>
+    <script src="https://d3js.org/topojson.v1.min.js"></script>
+
+    <script type="text/javascript" src="js/logic_d3geo.js"></script>
+    
+    </body> -->
+
+    <!-- MY VERSION, TRY -->
+    <body>
+        <!-- <h1>World map</h1> -->
+
+        <!-- <div id="container"></div> -->
+
+        <script src="https://d3js.org/d3.v4.min.js"></script>
+<!--         <script src="https://d3js.org/d3-array.v2.min.js"></script>
+        <script src="https://d3js.org/d3-geo.v2.min.js"></script> -->
+        <!-- This link need to be used if we want geo-projections version of globe shape-->
+        <script src="https://d3js.org/d3-geo-projection.v3.min.js"></script>
+<!--         <script src="https://d3js.org/queue.v1.min.js"></script> -->
+        <script src="https://d3js.org/topojson.v1.min.js"></script>
+        <script src='https://unpkg.com/simple-statistics@7.3.0/dist/simple-statistics.min.js'>
+        </script>
+
+        <!-- This one is for logic_world_ZSV.js -->
+<!--         <svg width="960" height="500"></svg>  -->
+        <!-- <script type="text/javascript" src="js/logic_world_ZSV.js"></script> -->
+
+        <div id="worldMap">
+            <div id="ui">
+                <output id="output">2008</output>
+                <button id="play">play</button>
+                <input id="sequence" type='range' min="2008", max="2013", value="2008", step="1" >
+            </div>
+        </div>
+
+        <script type="text/javascript" src="js/logic_world_ZSV_NEW.js"></script>
+
+
+
+    </body>
+</html>
+
+    

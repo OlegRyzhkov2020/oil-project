@@ -1,3 +1,11 @@
+# Zuzana - my files not to upload:
+testing/
+style_d3geo.css
+data/
+logic.js
+logic_d3geo.js
+logic_world_ZSV.js
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
