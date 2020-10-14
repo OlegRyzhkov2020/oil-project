@@ -1,0 +1,101 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "tiper-js",
+        "scope": null,
+        "escapedName": "tiper-js",
+        "name": "tiper-js",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/Users/olegryzhkov/Desktop/github/final_oil_project/app_flask"
+    ]
+  ],
+  "_from": "tiper-js@latest",
+  "_hasShrinkwrap": false,
+  "_id": "tiper-js@1.1.0",
+  "_inCache": true,
+  "_location": "/tiper-js",
+  "_nodeVersion": "12.16.3",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/tiper-js_1.1.0_1596406006740_0.7080750245945513"
+  },
+  "_npmUser": {
+    "name": "devplex",
+    "email": "carloseliesersantos@gmail.com"
+  },
+  "_npmVersion": "6.14.7",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "tiper-js",
+    "scope": null,
+    "escapedName": "tiper-js",
+    "name": "tiper-js",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/tiper-js/-/tiper-js-1.1.0.tgz",
+  "_shasum": "1a128c66167d365bde765ab2abf510839509e2ac",
+  "_shrinkwrap": null,
+  "_spec": "tiper-js",
+  "_where": "/Users/olegryzhkov/Desktop/github/final_oil_project/app_flask",
+  "author": {
+    "name": "Carlos E. Santos"
+  },
+  "bugs": {
+    "url": "https://github.com/carlelieser/tiper-js/issues"
+  },
+  "dependencies": {
+    "set-interval-async": "^1.0.33"
+  },
+  "description": "A library for creating awesome typing animations.",
+  "devDependencies": {
+    "ts-loader": "^8.0.1",
+    "typescript": "^3.9.7",
+    "webpack": "^4.44.0",
+    "webpack-cli": "^3.3.12"
+  },
+  "directories": {},
+  "dist": {
+    "integrity": "sha512-uMsRsiAJStKCEotK8VXNr9ra7pNv6s+uc4hDYRhSR0FseDVyypquNT1bNY1HZ58ijlsMldj6mGXBuCInlcmYwQ==",
+    "shasum": "1a128c66167d365bde765ab2abf510839509e2ac",
+    "tarball": "https://registry.npmjs.org/tiper-js/-/tiper-js-1.1.0.tgz",
+    "fileCount": 10,
+    "unpackedSize": 40244,
+    "npm-signature": "-----BEGIN PGP SIGNATURE-----\r\nVersion: OpenPGP.js v3.0.4\r\nComment: https://openpgpjs.org\r\n\r\nwsFcBAEBCAAQBQJfJzj3CRA9TVsSAnZWagAAUXkQAInN7WXObIoc0vbgwdVw\nrgozXEYIiYn1mxFtYJD6ADkbmO1zZZBaglwwSEMx4ar7bd8DHCMIIHS5Lnir\nIaTRFcSN8B2ahA81wnd/CB115CLflGyPUaQWAmvlLnHPGmHpXVnriqTa9UOn\nLc3vEJfqxVeqHQFBwReNVlErsHUY23ZfFh0TCA6Koj9LcMUrMtjwHoI6Hh5B\no/08Hpv12NRr/nkj4KmgdrFxBculgUW0GgB+XORxe1O1aYYQ8obFaA7ALQ4f\ntu3Lv82UVxwrYXEnLjr+FcrK88T4b6rsCRhQFX90BIam/V/23W09O24Whuf6\nSHex+4klVAImKubTTYNMutzvdy7/xwqN34bHm97sX7EPfGEqSeNhX8VLlNdZ\nFfSa5Nl1X9CdvGxGE7KaaUKkP7wFThfOHscJnhx01QrDokF1rirpo5/ilNSH\nj4TTprLHSoqIhU492i3h1Dwz8eEBGspZ+iToruOTW2xYw74M7lT/nLorqiwp\nuh2cv2Wce1puTKJBAV2ynQxz1xT1Rw9c5t6IlqfYrsGCHZktPQsYHm+9PwYX\nwwq7HG5u2uPPupB08/aeQiq1ArjCuMWZxMaBmCxTmCdOOPqUGEQtrKXExw4j\nv1aEZBx1qjeuVjoSCBOSyRyOiH9epsAgSkTP1u+q23Iwa29x6S47b8ZDwcbf\nCKro\r\n=1MMv\r\n-----END PGP SIGNATURE-----\r\n"
+  },
+  "gitHead": "22307dabb5304f956324deb278d415779aca83ce",
+  "homepage": "https://github.com/carlelieser/tiper-js#readme",
+  "keywords": [
+    "typing",
+    "typer",
+    "auto typing"
+  ],
+  "license": "MIT",
+  "main": "./lib/index.js",
+  "maintainers": [
+    {
+      "name": "devplex",
+      "email": "carloseliesersantos@gmail.com"
+    }
+  ],
+  "name": "tiper-js",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "url": "git+https://github.com/carlelieser/tiper-js.git"
+  },
+  "scripts": {
+    "build": "tsc && webpack",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "types": "./lib/index.d.ts",
+  "version": "1.1.0"
+}

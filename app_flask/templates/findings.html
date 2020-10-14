@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>USA Infrastructure</title>
+
+  <script src ="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="http://d3js.org/topojson.v0.min.js"></script>
+
+</head>
+<body>
+  {% extends "menu.html" %}
+  {% block content %}
+  <div class="container-fluid padding first-container">
+    <span class="anchor" id="Dashboard_1"></span>
+      <div class="row">
+        <div class="col-md-12 text-center" >
+          <div class="card">
+            <div id="letters">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6" >
+          <div class="text-center" >
+            <h5>Key Findings and Observations</h5>
+          </div>
+          <div class="type-js-0 headline">
+              <h6 > MARKET FUNDUMENTAL FACTORS</h6>
+              <p class="text-js" > 1) Demand side: energy consumption </p>
+          </div>
+          <div class="type-js-0-1 headline">
+              <p class="text-js"> 2) Supply side: oil production </p>
+          </div>
+              <h6 > NON MARKET FORCES</h6>
+          <div class="type-js-0-2 headline">
+              <p class="text-js"> 1) Wars and International Conflicts </p>
+          </div>
+              <h6 > FORECAST AND PREDICTION MODEL</h6>
+          <div class="type-js-0-3 headline">
+              <p class="text-js"> 1) Relatiionship Oil  Price vs Oil Production, Oil Rig Count, Oil Stocks </p>
+          </div>
+
+        </div>
+        <div class="col-md-6" >
+          <div class="text-center" >
+            <h5>Future Research Questions</h5>
+          </div>
+          <h6>MARKET FUNDUMENTAL FACTORS</h6>
+          <div class="type-js-1 headline">
+              <p class="text-js ">
+                1) The recent decline in oil prices has several drivers but one stands out:
+                gasoline demand has underwhelmed and stocks of the fuel are too high.
+                2) Hedge Funds positioning - Inputs on the speculative side are certainly more
+                 bearish than bullish and crude fundamentals could certainly be used to make a case that there is some more downside to prices yet to be flushed out.
+               </p>
+
+          </div>
+            <h6>NON MARKET FORCES</h6>
+          <div class="type-js-2 headline">
+              <p class="text-js ">
+                1) Weather conditions 2) Technologies
+              </p>
+          </div>
+          <h6>FORCAST AND PREDICTION MODEL</h6>
+          <div class="type-js-3 headline">
+              <p class="text-js ">
+              1) Multiple Regression Analysis 2) Machine Learning Models</p>
+          </div>
+            </div>
+        </div>
+      </div>
+
+  </div>
+
+
+  <script>
+
+  let data = 'Is DATA becoming the new oil?'.split('').map( (d, i) => ({
+    letter  : d,
+    index   : i,
+    pos     : i
+  }));
+  const LETTER_WIDTH = 22;
+  const WIDTH        = LETTER_WIDTH * data.length;
+  const HEIGHT       = 60;
+  const svg = d3.select('#letters').append('svg')
+    .attr('width', WIDTH)
+    .attr('height', HEIGHT)
+    .append('g')
+      .attr('transform', 'translate(0,' + (HEIGHT/2) + ')');
+
+  function update (data) {
+        const text = svg.selectAll('text').data(data, d => d.index);
+        text.enter().append('text')
+          .attr('fill', d => d.letter === '?' ? 'tomato' : '#000')
+          .attr('x', (d, i) => LETTER_WIDTH*d.pos)
+          .style('font-size', '40px')
+          .style('font-family', 'monospace')
+          .text(d => d.letter)
+          .merge(text)
+            .transition().duration(1000)
+            .attr('x', (d, i) => LETTER_WIDTH*d.pos);
+  }
+
+  function loop () {
+  update(data);
+  window.setTimeout(function () {
+    data = d3.shuffle(data).map( (d, i) => {
+      d.pos = i;
+      return d;
+    });
+    update(data);
+    window.setTimeout(function () {
+      data = data.map( (d, i) => {
+        d.pos = d.index;
+        return d;
+      });
+      loop();
+    }, 5000);
+  }, 5000);
+}
+loop();
+
+
+  </script>
+
+  <script>
+
+  function autoType(elementClass, typingSpeed){
+  var thhis = $(elementClass);
+  thhis.css({
+    "position": "relative",
+    "display": "inline-block"
+  });
+  thhis.prepend('<div class="cursor" style="right: initial; left:0;"></div>');
+  thhis = thhis.find(".text-js");
+  var text = thhis.text().trim().split('');
+  var amntOfChars = text.length;
+  var newString = "";
+  thhis.text("|");
+  setTimeout(function(){
+    thhis.css("opacity",1);
+    thhis.prev().removeAttr("style");
+    thhis.text("");
+    for(var i = 0; i < amntOfChars; i++){
+      (function(i,char){
+        setTimeout(function() {
+          newString += char;
+          thhis.text(newString);
+        },i*typingSpeed);
+      })(i+1,text[i]);
+    }
+  },1500);
+}
+
+  $(document).ready(function(){
+    // Now to start autoTyping just call the autoType function with the
+    // class of outer div
+    // The second paramter is the speed between each letter is typed.
+    autoType(".type-js-0",200);
+    autoType(".type-js-0-1",200);
+    autoType(".type-js-0-2",200);
+    autoType(".type-js-0-3",200);
+    autoType(".type-js-1",150);
+    autoType(".type-js-2",200);
+    autoType(".type-js-3",200);
+
+  });
+
+  </script>
+
+  {% endblock %}
+</body>
+</html>

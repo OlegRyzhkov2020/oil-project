@@ -15,6 +15,17 @@
   }
 }
 
+h5 {
+  background-color: #20735b;
+  color:white;
+}
+h6 {
+  color: solid black;
+}
+p {
+  color: darkgrey !important;
+}
+
 html, body {
   height: 100%;
   width: 100%;
@@ -96,7 +107,7 @@ span.anchor {
 
 .show .dropdown-toggle,
 .btn-primary:hover {
-  background-color: #8B4513 !important;
+  background-color: #20735b !important;
   border: 1px solid #000000;
   color: #FFFFFF;
 }
@@ -200,7 +211,7 @@ hr.light-100 {
   width: 160px
 }
 .bg-news {
-  background-color: #8B4513;
+  background-color: #20735b;
 }
 .news-scroll a {
     text-decoration: none;
@@ -300,6 +311,10 @@ body {
 table {
   width: 100%;
 }
+
+th {
+  background: black !important;
+}
 thead, tbody tr {
   display: table;
   width: 100%;
@@ -319,10 +334,15 @@ tbody {
   overflow-y:auto;
   overflow-x: auto;
 }
+.analysisClass {
+  height:550px;
+  overflow-y:auto;
+  overflow-x: auto;
+}
 
 tr:hover {
   color: white;
-  background: #8B4513 !important;
+  background: #20735b !important;
 }
 
 .box-content {overflow-x:auto;}
@@ -351,7 +371,7 @@ figure {
   height: 100%;
 }
 #fixed {
-  background-image: url('https://www.jpl.nasa.gov/spaceimages/images/wallpaper/PIA14316-1920x1200.jpg');
+  background-image: url('../images/digital_oil.jpg');
   position: fixed;
   display: block;
   top: 0;
@@ -364,6 +384,68 @@ figure {
           transform: translateZ(0);
   will-change: transform;
 }
+
+#chart {
+  display: block;
+  margin: 20px auto 0;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.dot {
+  stroke: #000;
+}
+.line{
+stroke: darkred;
+stroke-width:2px;
+}
+
+.tooltip {
+  position: absolute;
+  width: 135px;
+  height: 60px;
+  padding: 2px;
+  padding-top: 8px;
+  font: 12px sans-serif;
+  color: white;
+  text-align: center;
+  background: darkred;
+  border: 0;
+  border-radius: 10px;
+}
+
+.axis-text {
+  font-family: sans-serif;
+  font-weight: bold;
+  fill: #551aaf;
+  text-anchor: middle;
+}
+
+.active {
+  font-weight: bold;
+  fill: #000;
+  fill: #483D8B;
+  transition: fill 0.3s ease-out;
+  text-anchor: middle;
+}
+
+.inactive {
+  font-weight: lighter;
+  fill: #4682B4;
+  transition: fill 0.3s ease-out;
+  text-anchor: middle;
+}
+
+.inactive:hover {
+  fill: darkred;
+  cursor: pointer;
+}
+
 /*--- Bootstrap Padding Fix --*/
 [class*="col-"] {
     padding: 1rem;

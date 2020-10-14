@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Non Market Forces</title>
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+
+  <script src= "https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+  <script src ="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="http://d3js.org/topojson.v0.min.js"></script>
+
+</head>
+<body>
+  {% extends "menu.html" %}
+  {% block content %}
+  <div class="container-fluid padding first-container">
+    <span class="anchor" id="Dashboard_3"></span>
+    <div class="row">
+      <div class="col-md-5 text-center" >
+        <h5>Top Producers of Oil, NPLG and other liquids, 2019</h5>
+        <div class="card">
+          <div id="bar_container">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-7 text-center" >
+        <h5>World Oil Statistics</h5>
+        <div id="" class ="chart">
+        </div>
+      </div>
+    </div>
+  </div>
+  <figure>
+    <div class="fixed-wrap">
+      <div id="fixed">
+      </div>
+    </div>
+  </figure>
+
+  <script>
+  let container = d3.select("#bar_container");
+  d3.csv("static/data/product_2019.csv", function(data) {
+    let filteredData = data.filter(d=> {
+      return d.production>2000
+    })
+    // set the dimensions and margins of the graph
+    var margin = {top: 20, right: 20, bottom: 30, left: 30},
+    width = 960/2 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+    // set the ranges
+    var y = d3.scaleBand()
+    .range([height, 0])
+    .padding(0.1);
+
+    var x = d3.scaleLinear()
+    .range([0, width]);
+
+    // append the svg object to the body of the page
+    // append a 'group' element to 'svg'
+    // moves the 'group' element to the top left margin
+    var svg = container.append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform",
+    "translate(" + margin.left + "," + margin.top + ")");
+
+    // format the data
+    filteredData.forEach(function(d) {
+      d.production = +d.production;
+    });
+
+    // Scale the range of the data in the domains
+    x.domain([0, d3.max(filteredData, function(d){ return d.production; })])
+    y.domain(filteredData.map(function(d) { return d.country_code; }));
+    //y.domain([0, d3.max(data, function(d) { return d.country; })]);
+
+    // append the rectangles for the bar chart
+    svg.selectAll(".bar")
+    .data(filteredData)
+    .enter().append("rect")
+    .attr("class", "bar")
+    //.attr("x", function(d) { return x(d.country); })
+    .attr("width", function(d) {return x(d.production); } )
+    .attr("y", function(d) { return y(d.country_code); })
+    .attr("fill", function(d) {
+      if (d > 12000) {
+        return "red";
+      } else if (d > 5000) {
+        return "orange";
+      }
+      return "darkgreen";
+    })
+    .attr("height", y.bandwidth());
+
+    // add the x Axis
+    svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x).ticks(8));
+    //.tickFormat(d => d + 'br')
+    
+    // add the y Axis
+    svg.append("g")
+    .call(d3.axisLeft(y));
+
+    //showData(filteredData); // print out the top oil producers
+  });
+
+  function showData(clients) {
+    for (let client of clients){ write(client.country+", "+client.production)};
+  }
+  function write(text) {
+    container.append("div").text(text)
+  }
+</script>
+
+{% endblock %}
+</body>
+</html>

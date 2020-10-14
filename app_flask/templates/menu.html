@@ -14,6 +14,8 @@
   <script src="https://code.highcharts.com/stock/modules/data.js"></script>
   <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
   <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+  <script type=text/javascript src="{{url_for('static', filename='js/config.js') }}"></script>
+
   <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
   <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/static.css') }}">
 </head>
@@ -40,8 +42,8 @@
               About
             </span>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <a class="dropdown-item" href="{{ url_for('hem_1') }}">Project Overview</a>
-              <a class="dropdown-item" href="{{ url_for('hem_2') }}">Data Structure</a>
+              <a class="dropdown-item" href="{{ url_for('about_1') }}">Project Overview</a>
+              <a class="dropdown-item" href="{{ url_for('about_2') }}">Data Structure</a>
             </div>
           </div>
         <li class="nav-item">
@@ -50,9 +52,9 @@
               Dashboard
             </span>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <a class="dropdown-item" href="{{ url_for('hem_1') }}">US Oil Infrastructure</a>
-              <a class="dropdown-item" href="{{ url_for('hem_2') }}">World Oil Statistics</a>
-              <a class="dropdown-item" href="{{ url_for('hem_2') }}">Non-Market Forces</a>
+              <a class="dropdown-item" href="{{ url_for('dash_1') }}">US Oil Infrastructure</a>
+              <a class="dropdown-item" href="{{ url_for('dash_2') }}">World Oil Statistics</a>
+              <a class="dropdown-item" href="{{ url_for('dash_3') }}">Non-Market Forces</a>
             </div>
           </div>
         </li>
@@ -62,13 +64,13 @@
               Forecasting
             </span>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-              <a class="dropdown-item" href="{{ url_for('hem_1') }}">Time Series Analysis</a>
-              <a class="dropdown-item" href="{{ url_for('hem_2') }}">Regression Analysis</a>
+              <a class="dropdown-item" href="{{ url_for('an_1') }}">Time Series Analysis</a>
+              <a class="dropdown-item" href="{{ url_for('an_2') }}">Regression Analysis</a>
             </div>
           </div>
         </li>
         <li class="nav-item">
-          <a class="btn btn-primary" href="{{ url_for('contacts') }}">Future Research</a>
+          <a class="btn btn-primary" href="{{ url_for('findings') }}">Future Research</a>
         </li>
       </ul>
     </div>
