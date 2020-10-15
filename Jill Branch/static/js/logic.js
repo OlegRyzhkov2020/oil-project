@@ -6,6 +6,7 @@ oil_and_natural_gas = "static/data/Oil_and_Natural_Gas_Platforms.geojson"
 crude_pipeline = "static/data/global_oil_pipelines_7z9.json"
 oil_gas_fields = "static/data/Oil_and_Natural_Gas_Fields.geojson"
 consumption = "static/data/db_json.geojson"
+petrolium_ports_json = "static/data/petrolium_ports.json"
 
 // Initialize & Create Two Separate LayerGroups: earthquakeLayer & tectonicLayer
 var stateLayer = new L.LayerGroup();
@@ -63,32 +64,71 @@ L.control.layers(baseMaps, overlayMaps).addTo(myMap);
 
 
 // Define a markerSize function that will give each city a different radius based on its population
-function markerSize(population) {
-    return population/70 ;
+function markerSize(ranking) {
+    switch (true) {
+        case ranking>140:
+            return radius = 3;
+        case ranking>100:
+            return radius = 4;  
+        case ranking>60:
+            return radius = 5;
+        case ranking>20:
+            return radius = 6;  
+        case ranking>10:
+            return radius = 8; 
+        case ranking>5:
+            return radius = 12; 
+        case ranking>0:
+            return radius =18;    
+        case ranking<0:
+            return radius = 2;          
+    }
+    
 }
 //Define a marker color function based on status of oil refineries (inservice or closed)
 //FYI: magnitude can tell depth of the earthquake
-function markerColor(STATUS){
-    switch (true) {
-        case STATUS == "IN SERVICE":
-            //Green color
-            return "#006400";
-        case STATUS == "CLOSED":
-            //Red
-            return "#FF0000";
-        default:
-            //Yellow color
-            return "#FFC300";
-        }
+function markerColor(US_RANK){
+        switch (true) {
+            case US_RANK > 140:
+                //Magenta color
+                return "#acace6";
+            case US_RANK > 100:
+                //Reddish purple
+                return "#c71585";
+            case US_RANK > 60:
+                //Red
+                return "#0000ff";
+            case US_RANK > 20:
+                //Reddish orange
+                return "#ffae42";
+            case US_RANK > 0:
+                //Bright Red
+                return "#ff0000";
+            default:
+                //Yellow
+                return "#ADFF2F";
+            }
 };
-//Set up marker style based on oil refineries status and population/capacity
+//Set up marker style based on oil refineries USA ranking
 function markerStyle(feature){
     return {
         opacity: 1,
         fillOpacity: 1,
-        fillColor: markerColor(feature.properties.STATUS),
+        fillColor: markerColor(feature.properties.US_RANK),
         color: "#000000",
-        radius: markerSize(feature.properties.POPULATION),
+        radius: markerSize(feature.properties.US_RANK),
+        stroke: true,
+        weight: 0.5
+      };
+} 
+//Set up marker style based on state consumption/production
+function stateMarkerStyle(feature){
+    return {
+        opacity: 1,
+        fillOpacity: 1,
+        fillColor:"ADF22F",
+        color: "ADF22F",
+        radius: 5,
         stroke: true,
         weight: 0.5
       };
@@ -115,68 +155,59 @@ function platformMarkerStyle(feature){
         weight: 0.5
       };
 }
-// function getColor(d) {
-//     return d > 1000000 ? '#800026' :
-//            d > 50000  ? '#BD0026' :
-//            d > 20000  ? '#E31A1C' :
-//            d > 10000  ? '#FC4E2A' :
-//            d > 5000   ? '#FD8D3C' :
-//            d > 2000   ? '#FEB24C' :
-//            d > 1000   ? '#FED976' :
-//                         '#FFEDA0';
-// }
-// function style(feature) {
-//     return {
-//         fillColor: getColor(feature.properties.consumption),
-//         weight: 2,
-//         opacity: 1,
-//         color: 'white',
-//         dashArray: '3',
-//         fillOpacity: 0.7
-//     };
-// }
-// function highlightFeature(e) {
-//     var layer = e.target;
+//setting up icon for clustermarker
+var myIcon = L.icon({
+    iconSize: [29, 24],
+    iconAnchor: [9, 21],
+    popupAnchor: [0, -14]
+  })
 
-//     layer.setStyle({
-//         weight: 5,
-//         color: '#666',
-//         dashArray: '',
-//         fillOpacity: 0.7
-//     });
 
-//     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
-//         layer.bringToFront();
-//     }
-// }
-// function resetHighlight(e) {
-//     geojson.resetStyle(e.target);
-// }
-// L.geoJson(consumption, {style: style}).addTo(stateLayer);
-
-// Retrieve both tectonic and earthquake URLs  with D3
+// Retrieve data needed to create layers  with D3
 d3.json(oil_refineries, function(oil_ref_Data) {
     L.geoJSON(oil_ref_Data, {
         pointToLayer: function(feature, coordinates) {
         return L.circleMarker(coordinates);
         },
         style: markerStyle,
+        
     // Function to Run Once For Each feature in the features Array
     // Give Each feature a Popup Describing the Place & Time of the Earthquake
         onEachFeature: function(feature, layer) {
-            layer.bindPopup("<h4>Name: " + feature.properties.NAME + 
+            layer.bindPopup("<h4>Oil Refinery Name: " + feature.properties.NAME + 
             "</h4><hr><p>Address: " + feature.properties.ADDRESS + 
             "</p><hr><p>OWNER: " + feature.properties.OWNER + "</p>"+
-            "<hr><p>Capacity: " + feature.properties.CAPACITY + "</p>");
+            "<hr><p>Capacity: " + feature.properties.CAPACITY + "</p>"+
+            "<hr><p>USA Ranking: " + feature.properties.US_RANK + "</p>");
         }
     // Add oil_ref_Data to oil_refineries_Layer
     }).addTo(oil_refineries_Layer);
     //Add oil_refineries_Layer to myMaps
     oil_refineries_Layer.addTo(myMap);
+
+    // Set Up Legend
+    var legend = L.control({ position: "bottomright" });
+    legend.onAdd = function() {
+        var div = L.DomUtil.create("div", "info legend"), 
+        labels = ["<strong>Refinery Ranking</strong>"]
+        rankingLevels = [0, 20, 60, 100, 140];
+
+        div.innerHTML += "<h3>Refinery Ranking</h3>"
+
+        for (var i = 0; i < rankingLevels.length; i++) {
+            div.innerHTML +=
+                '<li style=\"background-color: ' + markerColor(rankingLevels[i] + 1) + '"></li> ' +
+                rankingLevels[i] + (rankingLevels[i + 1] ? '&ndash;' + rankingLevels[i + 1] + '<br>' : '+');
+        }
+        return div;
+    };
+    // Add Legend to the Map
+    legend.addTo(myMap);
+    
     
     //Retrieve petrolium_ports with D3
-    d3.json(petrolium_ports, function(ports_Data) {
-        L.geoJSON(ports_Data, {
+    d3.json(petrolium_ports_json, function(portsData) {
+        L.geoJSON(portsData, {
             pointToLayer: function(feature, coordinates) {
             return L.marker(coordinates);},
             style: portMarkerStyle,
@@ -218,13 +249,14 @@ d3.json(oil_refineries, function(oil_ref_Data) {
                 // Function to Run Once For Each feature in the features Array
                 // Give Each feature a Popup Describing the Place & Time of the Earthquake
                 onEachFeature: function(feature, layer) {
-                        layer.bindPopup("<h4> State: " + feature.properties.NAME);
-                    }
+                    layer.bindPopup("<h4> State: " + feature.properties.NAME);
+                }
         //Add oilData to oil_and_natural_gas_Layer    
         }).addTo(stateLayer);
         //Add stateLayer to myMap
         stateLayer.addTo(myMap);
     }); 
+
     //Retrieve crude_pipeline with D3
     d3.json(crude_pipeline, function(pipelineData) {
         L.geoJSON(pipelineData, {
@@ -244,56 +276,6 @@ d3.json(oil_refineries, function(oil_ref_Data) {
         //Add oil_gas_fields_Layer to myMap
         oil_gas_fields_Layer.addTo(myMap);
     });             
-    // d3.json(consumption, function(data) {
-    //     L.geoJson(data).addTo(stateLayer);
-    //     // Create a new choropleth layer
-    //     geojson = L.choropleth(data, {
-
-    //         // Define what  property in the features to use
-    //         valueProperty: "production",
-
-    //         // Set color scale
-    //         scale: ["#ffffb2", "#b10026"],
-
-    //         // Number of breaks in step range
-    //         steps: 10,
-
-    //         // q for quartile, e for equidistant, k for k-means
-    //         mode: "q",
-    //         style: {
-    //             // Border color
-    //             color: "#fff",
-    //             weight: 1,
-    //             fillOpacity: 0.8
-    //         },
-
-    //         // // Binding a pop-up to each layer
-    //         // onEachFeature: function(feature, layer) {
-    //         //     layer.bindPopup("Year: " + feature.properties.Year + "<br>Oil Consumption:<br>" +
-    //         //          + feature.properties.consumption);
-    //         // }
-    // }).addTo(stateLayer);
-
-    // // Set up the legend
-    // var legend = L.control({ position: "bottomright" });
-    // legend.onAdd = function() {
-    //     var div = L.DomUtil.create("div", "info legend");
-    //     grades = [0, 1000, 2000, 5000, 10000, 200000, 500000, 1000000],
-    //     labels = [];
-
-    //     // loop through our density intervals and generate a label with a colored square for each interval
-    //     for (var i = 0; i < grades.length; i++) {
-    //     div.innerHTML +=
-    //         '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-    //         grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
-    //     }
-
-    //     return div;
-    // };
-
-    // // Adding legend to the map
-    // legend.addTo(stateLayer);
-
-    // });
+    
 
 })});

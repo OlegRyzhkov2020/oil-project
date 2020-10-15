@@ -6,7 +6,7 @@ oil_and_natural_gas = "static/data/Oil_and_Natural_Gas_Platforms.geojson"
 crude_pipeline = "static/data/global_oil_pipelines_7z9.json"
 oil_gas_fields = "static/data/Oil_and_Natural_Gas_Fields.geojson"
 consumption = "static/data/db_json.geojson"
-
+petrolium_ports_json = "static/data/petrolium_ports.json"
 // Initialize & Create Two Separate LayerGroups: earthquakeLayer & tectonicLayer
 var stateLayer = new L.LayerGroup();
 var petrolium_ports_Layer = new L.LayerGroup();
@@ -142,6 +142,13 @@ function platformMarkerStyle(feature){
         weight: 0.5
       };
 }
+//setting up icon for clustermarker
+var myIcon = L.icon({
+    iconSize: [29, 24],
+    iconAnchor: [9, 21],
+    popupAnchor: [0, -14]
+  })
+
 // function getColor(d) {
 //     return d > 1000000 ? '#800026' :
 //            d > 50000  ? '#BD0026' :
@@ -222,9 +229,39 @@ d3.json(oil_refineries, function(oil_ref_Data) {
     // Add Legend to the Map
     legend.addTo(myMap);
     
+    // // Create a new marker cluster group
+    // var markers = L.markerClusterGroup();
+
+    // var geoJsonLayer = L.geoJson(petrolium_ports_json, {
+    //     onEachFeature: function (feature, layer) {
+    //         layer.bindPopup(feature.properties.NAME);
+    //     }
+    // });
+    // markers.addLayer(geoJsonLayer);
+
+    // map.addLayer(markers);
+    // map.fitBounds(markers.getBounds());
+
+    
+    //     // Create a new marker cluster group
+    //     var markers = L.markerClusterGroup();
+
+    //     // Loop through data
+    //     for (var i = 0; i < markers.length; i++) {
+    //             var popup = markers[i].name +
+    //                         '<br/>' + markers[i].NAME;
+               
+    //             var m = L.marker( [markers[i].LATITUDE, markers[i].LONGITUDE], {icon: myIcon} )
+    //                             .bindPopup( popup );
+               
+    //             markers.addLayer( m );
+    //     }
+               
+    //     myMap.addLayer( markers );
+    // });
     //Retrieve petrolium_ports with D3
-    d3.json(petrolium_ports, function(ports_Data) {
-        L.geoJSON(ports_Data, {
+    d3.json(petrolium_ports_json, function(portsData) {
+        L.geoJSON(portsData, {
             pointToLayer: function(feature, coordinates) {
             return L.marker(coordinates);},
             style: portMarkerStyle,
@@ -291,7 +328,26 @@ d3.json(oil_refineries, function(oil_ref_Data) {
         }).addTo(oil_gas_fields_Layer);
         //Add oil_gas_fields_Layer to myMap
         oil_gas_fields_Layer.addTo(myMap);
-    });             
+    }); 
+    // //Retrive consumption data with D3    
+    // d3.json(consumption, function(consumptionData) {
+    //     L.geoJSON(consumptionData, {
+    //         pointToLayer: function(feature, coordinates) {
+    //             return L.circleMarker(coordinates);},
+    //             style: stateMarkerStyle,
+    //             // Function to Run Once For Each feature in the features Array
+    //             // Give Each feature a Popup Describing the Place & Time of the Earthquake
+    //             onEachFeature: function(feature, layer) {
+    //                     layer.bindPopup("<h4> State: " + feature.properties.state+
+    //                                     "</p><hr><p>Oil Consumption: " + feature.properties.consumption + "</p>"  +
+    //                                     "</p><hr><p>Oil Production: " + feature.properties.production + "</p>");
+    //                 }
+    //     //Add oilData to oil_and_natural_gas_Layer    
+    //     }).addTo(stateLayer);
+    //     //Add stateLayer to myMap
+    //     stateLayer.addTo(myMap);
+    // }); 
+                
     // d3.json(consumption, function(data) {
     //     L.geoJson(data).addTo(stateLayer);
     //     // Create a new choropleth layer
