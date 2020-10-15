@@ -19,6 +19,7 @@ app = Flask(__name__)
 #######################################################
 # Use PyMongo to establish Mongo connection
 mongo = PyMongo(app, uri="mongodb://localhost:27017/oil_db")
+
 #######################################################
 # Flask Routes
 #######################################################
@@ -51,10 +52,15 @@ def scrape():
 
     # Run the scrape function
     oil_news = scrape_oil_news.latest_news()
+    oil_prices = scrape_oil_news.latest_prices()
 
     # Update the Mongo database using update and upsert=True
     for news in oil_news:
-        mongo.db.collection.update({}, news, upsert=True)
+        mongo.db.oil_news.update({}, news, upsert=True)
+
+    # Update the Mongo database using update and upsert=True
+    for prices in oil_prices:
+        mongo.db.oil_prices.update({}, prices, upsert=True)
 
     # Redirect back to home page
     return redirect("/")
@@ -127,4 +133,5 @@ def contacts():
     return render_template("contacts.html")
 
 if __name__ == "__main__":
+    scrape()
     app.run(debug=True)
