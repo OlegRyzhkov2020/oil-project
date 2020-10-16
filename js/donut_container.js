@@ -1,5 +1,3 @@
-let donut_container = d3.select("#donut_container");
-
 d3.csv("outputs/product_2019.csv", function(data) {
   var filteredData = data.filter(d=> {
     return d.production>2000
@@ -11,6 +9,7 @@ function showData(filteredData) {
   let bodyHeight = 200;
   let bodyWidth = 400;
 
+  let donut_container = d3.select("#donut_container");
   data = {}
   for (var i=0; i<filteredData.length; i++) {
     data[filteredData[i].country_code] = filteredData[i].production;
@@ -70,6 +69,8 @@ function showData(filteredData) {
     .attr("stroke", "black")
     .style("stroke-width", "2px")
     .style("opacity", 0.7);
+
+console.log(svg);
 
     // Add the polylines between chart and labels:
   svg

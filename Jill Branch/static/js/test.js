@@ -259,9 +259,10 @@ d3.json(oil_refineries, function(oil_ref_Data) {
                
     //     myMap.addLayer( markers );
     // });
-    //Retrieve petrolium_ports with D3
-    d3.json(petrolium_ports_json, function(portsData) {
-        L.geoJSON(portsData, {
+});
+//Retrieve petrolium_ports with D3
+d3.json(petrolium_ports_json, function(portsData) {
+    L.geoJSON(portsData, {
             pointToLayer: function(feature, coordinates) {
             return L.marker(coordinates);},
             style: portMarkerStyle,
@@ -275,11 +276,12 @@ d3.json(oil_refineries, function(oil_ref_Data) {
             // Add ports_Data to petrolium_ports_Layer
         }).addTo(petrolium_ports_Layer);
             //Add petrolium_ports_Layer to myMaps
-        petrolium_ports_Layer.addTo(myMap);
+    petrolium_ports_Layer.addTo(myMap);
+});
         
-    //Retrieve oil_and_natural_gas data with D3
-    d3.json(oil_and_natural_gas, function(platformData) {
-        L.geoJSON(platformData, {
+//Retrieve oil_and_natural_gas data with D3
+d3.json(oil_and_natural_gas, function(platformData) {
+    L.geoJSON(platformData, {
             pointToLayer: function(feature, coordinates) {
                 return L.circleMarker(coordinates);},
                 style: platformMarkerStyle,
@@ -294,9 +296,9 @@ d3.json(oil_refineries, function(oil_ref_Data) {
         }).addTo(oil_and_natural_gas_Layer);
         //Add oil_and_natural_gas_Layer to myMap
         oil_and_natural_gas_Layer.addTo(myMap);
-    });   
+});   
     //Retrive state data with D3    
-    d3.json(states, function(statesData) {
+d3.json(states, function(statesData) {
         L.geoJSON(statesData, {
             pointToLayer: function(feature, coordinates) {
                 return L.circleMarker(coordinates);},
@@ -306,12 +308,12 @@ d3.json(oil_refineries, function(oil_ref_Data) {
                         layer.bindPopup("<h4> State: " + feature.properties.NAME);
                     }
         //Add oilData to oil_and_natural_gas_Layer    
-        }).addTo(stateLayer);
+    }).addTo(stateLayer);
         //Add stateLayer to myMap
-        stateLayer.addTo(myMap);
-    }); 
+    stateLayer.addTo(myMap);
+}); 
     //Retrieve crude_pipeline with D3
-    d3.json(crude_pipeline, function(pipelineData) {
+d3.json(crude_pipeline, function(pipelineData) {
         L.geoJSON(pipelineData, {
             color: "#DC143C",
             weight: 2
@@ -319,16 +321,17 @@ d3.json(oil_refineries, function(oil_ref_Data) {
         }).addTo(crude_pipeline_Layer);
         //Add tectoniLayer to myMap
         crude_pipeline_Layer.addTo(myMap);
-    });
+});
     //Retrive oil_gas_fields data with D3    
-    d3.json(oil_gas_fields, function(oilGasFieldsData) {
+d3.json(oil_gas_fields, function(oilGasFieldsData) {
         L.geoJSON(oilGasFieldsData, {
                 color: "BEA493"
         //Add oilGasFieldsData to its Layer    
         }).addTo(oil_gas_fields_Layer);
         //Add oil_gas_fields_Layer to myMap
         oil_gas_fields_Layer.addTo(myMap);
-    }); 
+}); 
+
     // //Retrive consumption data with D3    
     // d3.json(consumption, function(consumptionData) {
     //     L.geoJSON(consumptionData, {
@@ -347,7 +350,7 @@ d3.json(oil_refineries, function(oil_ref_Data) {
     //     //Add stateLayer to myMap
     //     stateLayer.addTo(myMap);
     // }); 
-                
+
     // d3.json(consumption, function(data) {
     //     L.geoJson(data).addTo(stateLayer);
     //     // Create a new choropleth layer
@@ -400,4 +403,3 @@ d3.json(oil_refineries, function(oil_ref_Data) {
 
     // });
 
-})});

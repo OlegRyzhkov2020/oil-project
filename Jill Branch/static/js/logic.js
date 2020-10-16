@@ -8,7 +8,7 @@ oil_gas_fields = "static/data/Oil_and_Natural_Gas_Fields.geojson"
 consumption = "static/data/db_json.geojson"
 petrolium_ports_json = "static/data/petrolium_ports.json"
 
-// Initialize & Create Two Separate LayerGroups: earthquakeLayer & tectonicLayer
+// Initialize & Create Separate LayerGroups
 var stateLayer = new L.LayerGroup();
 var petrolium_ports_Layer = new L.LayerGroup();
 var oil_refineries_Layer = new L.LayerGroup();
@@ -54,7 +54,7 @@ var overlayMaps = {
 var myMap = L.map("map", {
     center: [37.09, -95.71],
     zoom: 4,
-    layers: [outdoors,petrolium_ports_Layer]
+    layers: [outdoors,oil_refineries_Layer]
 });
 
 
@@ -86,7 +86,7 @@ function markerSize(ranking) {
     
 }
 //Define a marker color function based on status of oil refineries (inservice or closed)
-//FYI: magnitude can tell depth of the earthquake
+
 function markerColor(US_RANK){
         switch (true) {
             case US_RANK > 140:
@@ -221,7 +221,7 @@ d3.json(oil_refineries, function(oil_ref_Data) {
             // Add ports_Data to petrolium_ports_Layer
         }).addTo(petrolium_ports_Layer);
             //Add petrolium_ports_Layer to myMaps
-        petrolium_ports_Layer.addTo(myMap);
+        // petrolium_ports_Layer.addTo(myMap);
         
     //Retrieve oil_and_natural_gas data with D3
     d3.json(oil_and_natural_gas, function(platformData) {
@@ -239,7 +239,7 @@ d3.json(oil_refineries, function(oil_ref_Data) {
         //Add oilData to oil_and_natural_gas_Layer    
         }).addTo(oil_and_natural_gas_Layer);
         //Add oil_and_natural_gas_Layer to myMap
-        oil_and_natural_gas_Layer.addTo(myMap);
+        // oil_and_natural_gas_Layer.addTo(myMap);
     });   
     //Retrive state data with D3    
     d3.json(states, function(statesData) {
@@ -265,7 +265,7 @@ d3.json(oil_refineries, function(oil_ref_Data) {
         //Add tectonicData to tectonicLayer    
         }).addTo(crude_pipeline_Layer);
         //Add tectoniLayer to myMap
-        crude_pipeline_Layer.addTo(myMap);
+        // crude_pipeline_Layer.addTo(myMap);
     });
     //Retrive oil_gas_fields data with D3    
     d3.json(oil_gas_fields, function(oilGasFieldsData) {
@@ -274,7 +274,7 @@ d3.json(oil_refineries, function(oil_ref_Data) {
         //Add oilGasFieldsData to its Layer    
         }).addTo(oil_gas_fields_Layer);
         //Add oil_gas_fields_Layer to myMap
-        oil_gas_fields_Layer.addTo(myMap);
+        // oil_gas_fields_Layer.addTo(myMap);
     });             
     
 

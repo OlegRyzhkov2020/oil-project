@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>USA Infrastructure</title>
+
+  <script src ="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="http://d3js.org/topojson.v0.min.js"></script>
+
+</head>
+<body>
+  {% extends "menu.html" %}
+  {% block content %}
+  <div class="container-fluid padding first-container">
+    <span class="anchor" id="Dashboard_1"></span>
+      <div class="row">
+        <div class="col-md-4 text-center" >
+          <h5>PostrgreSQL Database</h5>
+          <div class="card">
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/oil_erd.png')}}">
+          </div>
+        </div>
+        <div class="col-md-8 text-center" >
+          <h5>Data Collection</h5>
+          <div id="" class ="chart">
+          </div>
+        </div>
+        </div>
+      </div>
+  
+  {% endblock %}
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Oleg Ryzhkov Website</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <script src= "https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+  <script src="https://code.highcharts.com/stock/highstock.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/data.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+  <script type=text/javascript src="{{url_for('static', filename='js/config.js') }}"></script>
+
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/static.css') }}">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"><img src="{{url_for('static', filename='images/oil_logo.png')}}">
+        Oil Data Analytics
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse"
+      data-target="#navbarResponsive">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="btn btn-primary" href="{{ url_for('home') }}">Home</a>
+        </li>
+        <li class="nav-item">
+          <div class="dropdown">
+            <span class="btn btn-primary dropdown-toggle" role="button" id="#dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              About
+            </span>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" href="{{ url_for('about_1') }}">Project Background</a>
+              <a class="dropdown-item" href="{{ url_for('about_2') }}">Data Structure</a>
+            </div>
+          </div>
+        <li class="nav-item">
+          <div class="dropdown">
+            <span class="btn btn-primary dropdown-toggle" role="button" id="#dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Dashboard
+            </span>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" href="{{ url_for('dash_1') }}">US Oil Infrastructure</a>
+              <a class="dropdown-item" href="{{ url_for('dash_2') }}">World Oil Statistics</a>
+              <a class="dropdown-item" href="{{ url_for('dash_3') }}">Non-Market Forces</a>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <div class="dropdown">
+            <span class="btn btn-primary dropdown-toggle" role="button" id="#dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Forecasting
+            </span>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" href="{{ url_for('an_1') }}">Time Series Analysis</a>
+              <a class="dropdown-item" href="{{ url_for('an_2') }}">Testing Hypothesis</a>
+            </div>
+          </div>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-primary" href="{{ url_for('findings') }}">Future Research</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  {% block content %}
+  {% endblock %}
+</body>
+</html>

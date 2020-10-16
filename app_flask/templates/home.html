@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Home Page</title>
+  <script>
+  function scroll_to(target_id) {
+    var container = document.getElementById('target-container');
+    var scrollTo = document.getElementById(" " + target_id);
+    container.scrollTop = scrollTo.offsetTop;
+  }
+  </script>
+  <script src ="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="http://d3js.org/topojson.v0.min.js"></script>
+  <script src="https://d3js.org/colorbrewer.v1.min.js"></script>
+</head>
+<body>
+  {% extends "menu.html" %}
+  {% block content %}
+  <div class="container-fluid padding first-container">
+    <span class="anchor" id="Home"></span>
+    <div class="col-md-12">
+      <div class="d-flex justify-content-between align-items-center breaking-news bg-white">
+        <div class="d-flex flex-row flex-grow-1 flex-fill justify-content-center bg-news py-2 text-white px-1 news"><span class="d-flex align-items-center">&nbsp;Latest Prices</span></div>
+
+        <marquee class="news-scroll" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();"> <a >{{prices[1]['Oil']}} {{prices[1]['Price']}}</a> <span class="dot"></span>
+          <a > {{prices[2]['Oil']}} {{prices[2]['Price']}}</a> <span class="dot"></span><a > {{prices[6]['Oil']}} {{prices[6]['Price']}}</a> <span class="dot"></span>
+          <a > {{prices[7]['Oil']}} {{prices[7]['Price']}}</a><span class="dot"></span> <a > {{prices[8]['Oil']}} {{prices[8]['Price']}}</a><span class="dot"></span>
+        <a > {{prices[9]['Oil']}} {{prices[9]['Price']}}</a><span class="dot"></span><a > {{prices[10]['Oil']}} {{prices[10]['Price']}}</a></marquee>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="row">
+        <div id="chart" class="col-md-5 text-center" >
+          <h6>Energy Consumption by Energy Sources in 2019 (Trillion Btu) </h6>
+          <form>
+          <label><input type="radio" name="dataset" id="dataset1" value="option1"> USA</label>
+          <label><input type="radio" name="dataset" id="dataset2" value="option2"> WORLD</label>
+          </form>
+
+
+        </div>
+      <div class="col-md-3">
+        <div class="table-responsive" style="height:460px">
+          <table class="table table-sm" style="margin-bottom: 0">
+            <thead>
+              <tr class="table-dark">
+                <th style="width: 30%">Date</th>
+                <th style="width: 70%">News</th>
+              </tr>
+              {% for news in data %}
+              <tr style='cursor: pointer; cursor: hand;' onclick="scroll_to('{{news['ID']}}');" class= "small">
+                <td style="width: 30%">{{news['Date']}}</td>
+                <td style="width: 70%">{{news['News_Title']}}</td>
+              </tr >
+              {% endfor %}
+            </thead>
+          </table>
+        </div>
+      </div>
+      <div class="col-md-4 anyClass" id="target-container">
+        {% for news in data %}
+        <span class="picture" id=" {{news['ID']}}"></span>
+        <div class="card">
+          <img class="card-img-top" src={{news['Image_URL']}}>
+          <div class="card-body">
+            <h6 class="card-title">Written by:{{news['Author']}}</h6>
+            <p class="card-text">{{news['News_Paragraph']}}
+            </p>
+          </div>
+          <hr class="light">
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+<script>
+var svg = d3.select("#chart")
+	.append("svg")
+	.append("g")
+
+svg.append("g")
+	.attr("class", "slices");
+svg.append("g")
+	.attr("class", "labelName");
+svg.append("g")
+	.attr("class", "labelValue");
+svg.append("g")
+	.attr("class", "lines");
+
+var width = 450,
+    height = 450,
+    margin = 30,
+	radius = Math.min(width, height) / 2 - margin;
+
+var pie = d3.pie()
+	.sort(null)
+	.value(function(d) {
+		return d.value;
+	});
+
+var arc = d3.arc()
+	.outerRadius(radius * 0.8)
+	.innerRadius(radius * 0.4);
+
+var outerArc = d3.arc()
+	.innerRadius(radius * 0.6)
+	.outerRadius(radius * 0.9);
+
+var legendRectSize = (radius * 0.05);
+var legendSpacing = radius * 0.02;
+
+
+var div = d3.select("body").append("div").attr("class", "toolTip");
+
+svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+var colorRange = d3.scaleOrdinal(d3.schemeCategory20);
+var color = d3.scaleOrdinal()
+	.range(colorRange.range());
+
+
+data_Perrache = [31.18, 19.70, 17.19, 14.15, 5.06, 2.56, 2.56, 2.45, 1.31, 1.31, 0.82, 0.49, 0.49, 0.27, 0.22, 0.22, 0.05];
+
+var valeur_Wind = data_Perrache.slice(8);
+console.log(valeur_Wind);
+var Wind = valeur_Wind.reduce((a, b) => a + b, 0);
+var Wind2 = (Math.floor(Wind * 100) / 100).toFixed(2);
+
+data_Perrache_light = [31.18, 19.70, 17.19, 14.15, 5.06, 2.56, 2.56, 2.45, Wind2]
+data_PartDieu = [40.97, 10.99, 5.18, 18.69, 7.65, 3.92, 1.94, 3.51, 1.17, 1.17, 1.71, 0.68, 0.68, 0.45, 0.23, 0.54, 0.54];
+dataPartDieu_sort = [40.97, 18.69, 10.99, 7.65, 5.18, 3.92, 3.51, 1.94, 1.71, 1.17, 1.17, 0.68, 0.68, 0.54, 0.54, 0.45, 0.23]
+
+var valeur_Wind2 = dataPartDieu_sort.slice(6);
+var Wind_partdieu = valeur_Wind2.reduce((a, b) => a + b, 0);
+var Wind_partdieu2 = (Math.floor(Wind_partdieu * 100) / 100).toFixed(2);
+
+dataPartDieu_sort_light = [40.97, 18.69, 10.99, 7.65, 5.18, 3.92, 3.51, Wind_partdieu2];
+
+type_objets_Perrache = ["Petroleum", "Gas","Geothermal", "Coal", "Nuclear", "Hydro", "Solar"]
+
+type_objets_PartDieu = ["Petroleum", "Coal", "Gas", "Nuclear", "Geothermal", "Hydro", "Solar"]
+
+
+type_objets_light = ["Petroleum", "Gas","Geothermal", "Coal", "Nuclear", "Hydro", "Livres", "Solar", "Wind"]
+
+type_objets_PartDieu_light = ["Petroleum", "Coal", "Gas", "Nuclear", "Geothermal", "Hydro", "Solar", "Wind"]
+
+
+datasetOption1 = [
+				{label:type_objets_light[0], value:data_Perrache_light[0]},
+        {label:type_objets_light[1], value:data_Perrache_light[1]},
+        {label:type_objets_light[2], value:data_Perrache_light[2]},
+        {label:type_objets_light[3], value:data_Perrache_light[3]},
+        {label:type_objets_light[4], value:data_Perrache_light[4]},
+        {label:type_objets_light[5], value:data_Perrache_light[5]},
+
+  			{label:type_objets_light[7], value:data_Perrache_light[7]},
+  			{label:type_objets_light[8], value:data_Perrache_light[8]},
+
+        ];
+
+datasetOption2 = [
+	      {label:type_objets_PartDieu_light[0], value:dataPartDieu_sort_light[0]},
+        {label:type_objets_PartDieu_light[1], value:dataPartDieu_sort_light[1]},
+        {label:type_objets_PartDieu_light[2], value:dataPartDieu_sort_light[2]},
+        {label:type_objets_PartDieu_light[3], value:dataPartDieu_sort_light[3]},
+        {label:type_objets_PartDieu_light[4], value:dataPartDieu_sort_light[4]},
+        {label:type_objets_PartDieu_light[5], value:dataPartDieu_sort_light[5]},
+  			{label:type_objets_PartDieu_light[6], value:dataPartDieu_sort_light[6]},
+  			{label:type_objets_PartDieu_light[7], value:dataPartDieu_sort_light[7]},
+
+        ];
+
+d3.selectAll("input")
+	.on("change", selectDataset);
+
+function selectDataset()
+{
+  change(datasetOption1);
+	var value = this.value;
+
+
+	if (value == "option1")
+	{
+		change(datasetOption1);
+	}
+	else if (value == "option2")
+	{
+		change(datasetOption2);
+	}
+}
+
+function change(data) {
+
+	/* ------- PIE SLICES -------*/
+	var slice = svg.select(".slices").selectAll("path.slice")
+        .data(pie(data), function(d){ return d.data.label });
+
+    slice.enter()
+        .insert("path")
+        .style("fill", function(d) { return color(d.data.label); })
+        .attr("class", "slice");
+
+    slice
+        .transition().duration(1000)
+        .attrTween("d", function(d) {
+            this._current = this._current || d;
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function(t) {
+                return arc(interpolate(t));
+            };
+        })
+    slice
+        .on("mousemove", function(d){
+            div.style("left", d3.event.pageX+10+"px");
+            div.style("top", d3.event.pageY-25+"px");
+            div.style("display", "inline-block");
+            div.html((d.data.label)+"<br>"+(d.data.value)+"%");
+        });
+    slice
+        .on("mouseout", function(d){
+            div.style("display", "none");
+        });
+
+    slice.exit()
+        .remove();
+
+
+    /* ------- TEXT LABELS -------*/
+
+    var text = svg.select(".labelName").selectAll("text")
+        .data(pie(data), function(d){ return d.data.label });
+
+    text.enter()
+        .append("text")
+        .attr("dy", ".35em")
+        .text(function(d) {
+            return (d.data.label+": "+d.value+"%");
+        });
+
+    function midAngle(d){
+        return d.startAngle + (d.endAngle - d.startAngle)/2;
+    }
+
+    text
+        .transition().duration(1000)
+        .attrTween("transform", function(d) {
+            this._current = this._current || d;
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function(t) {
+                var d2 = interpolate(t);
+                var pos = outerArc.centroid(d2);
+                pos[0] = radius * 0.6 * (midAngle(d2) < Math.PI ? 1 : -1);
+                return "translate("+ pos +")";
+            };
+        })
+        .styleTween("text-anchor", function(d){
+            this._current = this._current || d;
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function(t) {
+                var d2 = interpolate(t);
+                return midAngle(d2) < Math.PI ? "start":"end";
+            };
+        })
+        .text(function(d) {
+            return (d.data.label+": "+d.value+"%");
+        });
+
+
+    text.exit()
+        .remove();
+
+    /* ------- SLICE TO TEXT POLYLINES -------*/
+
+    var polyline = svg.select(".lines").selectAll("polyline")
+        .data(pie(data), function(d){ return d.data.label });
+
+    polyline.enter()
+        .append("polyline");
+
+    polyline.transition().duration(1000)
+        .attrTween("points", function(d){
+            this._current = this._current || d;
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function(t) {
+                var d2 = interpolate(t);
+                var pos = outerArc.centroid(d2);
+                pos[0] = radius * 0.75 * (midAngle(d2) < Math.PI ? 1 : -1);
+                return [arc.centroid(d2), outerArc.centroid(d2), pos];
+            };
+        });
+
+    polyline.exit()
+        .remove();
+};
+</script>
+
+{% endblock %}
+</body>
+</html>
