@@ -208,7 +208,7 @@ d3.json(petrolium_ports_json, function (portsData) {
 
         // Set the data location property to a variable
         var location = portsData.features[i].geometry;
-        console.log(location);
+        // console.log(location);
         // Check for location property
         if (location) {
 
