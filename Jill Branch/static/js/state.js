@@ -71,7 +71,7 @@ function zoomToFeature(e) {
 function stateColor(d) {
     return d > 100000 ? '#800026' :
            d > 80000  ? '#BD0026' :
-           d > 50000  ? '#E31A1C' :
+           d > 60000  ? '#E31A1C' :
            d > 40000  ? '#FC4E2A' :
            d > 20000  ? '#FD8D3C' :
            d > 15000   ? '#FEB24C' :
@@ -133,5 +133,23 @@ d3.json(consumption, function(consumptionData) {
     //Add stateLayer to myMap
     // consumption_Layer.addTo(myMap);
 }); 
+var legend = L.control({position: 'bottomright'});
 
+legend.onAdd = function (map) {
+
+    var div = L.DomUtil.create('div', 'info legend'),
+        grades = [0,10000, 15000, 20000, 40000, 60000, 80000, 100000],
+        labels = ["<strong>State Census Area</strong>"];
+
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+    }
+
+    return div;
+};
+
+legend.addTo(myMap);
 
