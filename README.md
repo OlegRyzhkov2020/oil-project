@@ -1,6 +1,7 @@
 # Oil Data Analytics
 
 
+
 ![GitHub last commit](https://img.shields.io/github/last-commit/OlegRyzhkov2020/oil-project)
 ![GitHub top language](https://img.shields.io/github/languages/top/OlegRyzhkov2020/oil-project)
 [![made-with-Markdown](https://img.shields.io/badge/Made%20with-Markdown-1f425f.svg)](http://commonmark.org)
@@ -9,24 +10,14 @@
 ![GitHub followers](https://img.shields.io/github/followers/OlegRyzhkov2020?label=Follow&style=social)
 [![](https://data.jsdelivr.com/v1/package/npm/chart.js/badge)](https://www.jsdelivr.com/package/npm/chart.js)
 
-## Project Proposal
 
 ![dashboard_slide](images/project-proposal.png)
 
-## Main Dashboard
+## Home Page
 
 ![dashboard_slide](images/oil_dashboard.png)
 
-## Installation
-* Install HTTP server (The easiest is to install http-server globally using node's package manager):
-
-npm install -g http-server
-
-* Then simply run http-server in any of your project directories:
-
-Eg. d:\my_project> http-server
-
-## Data Collection, Cleaning, Normalization
+## Data Structure
 
 ```python
 # US Energy Information Administration API Query Browser, Open Data Source
@@ -45,9 +36,8 @@ class EIA_Client():
         response = requests.get(url).json()
         return response
 ```
-## DataBase Design and ERD
 
-## PostgreSQL Data Import
+* PostgreSQL Data Import
 
 
 ```sql
