@@ -12,6 +12,8 @@
    <!-- Marker Cluster CSS -->
    <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.0.3/dist/MarkerCluster.css">
    <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.0.3/dist/MarkerCluster.Default.css">
+
+
    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/MarkerCluster.css') }}">
    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/MarkerCluster.Default.css') }}">
 
@@ -26,13 +28,15 @@
  <script type=text/javascript src="{{url_for('static', filename='js/config.js') }}"></script>
  <!-- Marker Cluster JS -->
  <script type="text/javascript" src="https://unpkg.com/leaflet.markercluster@1.0.3/dist/leaflet.markercluster.js"></script>
- 
+
+
 </head>
 <body>
   {% extends "menu.html" %}
   {% block content %}
   <div id="map" class="container-fluid padding first-container">
   </div>
+  
   <script>
   //Define geojson data
   states = "static/data/US_State_Borders.json"
@@ -43,8 +47,6 @@
   oil_gas_fields = "static/data/Oil_and_Natural_Gas_Fields.geojson"
   consumption = "static/data/db_json.geojson"
   petrolium_ports_json = "static/data/petrolium_ports.json"
-
-
   // Initialize & Create Two Separate LayerGroups: earthquakeLayer & tectonicLayer
   var stateLayer = new L.LayerGroup();
   var petrolium_ports_Layer = new L.LayerGroup();
@@ -96,7 +98,7 @@
 
 
   // Create a control for our layers, add our overlay layers to the map with default tile
-  L.control.layers(baseMaps, overlayMaps, {position: "bottomleft"}).addTo(myMap);
+  L.control.layers(baseMaps, overlayMaps, { position: "bottomleft" }).addTo(myMap);
 
 
 
@@ -158,18 +160,6 @@
           weight: 0.5
         };
   }
-  //Set up marker style based on state consumption/production
-  function stateMarkerStyle(feature){
-      return {
-          opacity: 1,
-          fillOpacity: 1,
-          fillColor:"ADF22F",
-          color: "ADF22F",
-          radius: 5,
-          stroke: true,
-          weight: 0.5
-        };
-  }
   function portMarkerStyle(feature){
       return {
           opacity: 1,
@@ -199,6 +189,44 @@
       popupAnchor: [0, -14]
     })
 
+  // function getColor(d) {
+  //     return d > 1000000 ? '#800026' :
+  //            d > 50000  ? '#BD0026' :
+  //            d > 20000  ? '#E31A1C' :
+  //            d > 10000  ? '#FC4E2A' :
+  //            d > 5000   ? '#FD8D3C' :
+  //            d > 2000   ? '#FEB24C' :
+  //            d > 1000   ? '#FED976' :
+  //                         '#FFEDA0';
+  // }
+  // function style(feature) {
+  //     return {
+  //         fillColor: getColor(feature.properties.consumption),
+  //         weight: 2,
+  //         opacity: 1,
+  //         color: 'white',
+  //         dashArray: '3',
+  //         fillOpacity: 0.7
+  //     };
+  // }
+  // function highlightFeature(e) {
+  //     var layer = e.target;
+
+  //     layer.setStyle({
+  //         weight: 5,
+  //         color: '#666',
+  //         dashArray: '',
+  //         fillOpacity: 0.7
+  //     });
+
+  //     if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+  //         layer.bringToFront();
+  //     }
+  // }
+  // function resetHighlight(e) {
+  //     geojson.resetStyle(e.target);
+  // }
+  // L.geoJson(consumption, {style: style}).addTo(stateLayer);
 
   // Retrieve data needed to create layers  with D3
   d3.json(oil_refineries, function(oil_ref_Data) {
@@ -241,10 +269,40 @@
       // Add Legend to the Map
       legend.addTo(myMap);
 
+      // // Create a new marker cluster group
+      // var markers = L.markerClusterGroup();
 
-      //Retrieve petrolium_ports with D3
-      d3.json(petrolium_ports_json, function(portsData) {
-          L.geoJSON(portsData, {
+      // var geoJsonLayer = L.geoJson(petrolium_ports_json, {
+      //     onEachFeature: function (feature, layer) {
+      //         layer.bindPopup(feature.properties.NAME);
+      //     }
+      // });
+      // markers.addLayer(geoJsonLayer);
+
+      // map.addLayer(markers);
+      // map.fitBounds(markers.getBounds());
+
+
+      //     // Create a new marker cluster group
+      //     var markers = L.markerClusterGroup();
+
+      //     // Loop through data
+      //     for (var i = 0; i < markers.length; i++) {
+      //             var popup = markers[i].name +
+      //                         '<br/>' + markers[i].NAME;
+
+      //             var m = L.marker( [markers[i].LATITUDE, markers[i].LONGITUDE], {icon: myIcon} )
+      //                             .bindPopup( popup );
+
+      //             markers.addLayer( m );
+      //     }
+
+      //     myMap.addLayer( markers );
+      // });
+  });
+  //Retrieve petrolium_ports with D3
+  d3.json(petrolium_ports_json, function(portsData) {
+      L.geoJSON(portsData, {
               pointToLayer: function(feature, coordinates) {
               return L.marker(coordinates);},
               style: portMarkerStyle,
@@ -258,12 +316,12 @@
               // Add ports_Data to petrolium_ports_Layer
           }).addTo(petrolium_ports_Layer);
               //Add petrolium_ports_Layer to myMaps
-          petrolium_ports_Layer.addTo(myMap);
+      petrolium_ports_Layer.addTo(myMap);
+  });
 
-
-      //Retrieve oil_and_natural_gas data with D3
-      d3.json(oil_and_natural_gas, function(platformData) {
-          L.geoJSON(platformData, {
+  //Retrieve oil_and_natural_gas data with D3
+  d3.json(oil_and_natural_gas, function(platformData) {
+      L.geoJSON(platformData, {
               pointToLayer: function(feature, coordinates) {
                   return L.circleMarker(coordinates);},
                   style: platformMarkerStyle,
@@ -278,25 +336,24 @@
           }).addTo(oil_and_natural_gas_Layer);
           //Add oil_and_natural_gas_Layer to myMap
           oil_and_natural_gas_Layer.addTo(myMap);
-      });
+  });
       //Retrive state data with D3
-      d3.json(states, function(statesData) {
+  d3.json(states, function(statesData) {
           L.geoJSON(statesData, {
               pointToLayer: function(feature, coordinates) {
                   return L.circleMarker(coordinates);},
                   // Function to Run Once For Each feature in the features Array
                   // Give Each feature a Popup Describing the Place & Time of the Earthquake
                   onEachFeature: function(feature, layer) {
-                      layer.bindPopup("<h4> State: " + feature.properties.NAME);
-                  }
+                          layer.bindPopup("<h4> State: " + feature.properties.NAME);
+                      }
           //Add oilData to oil_and_natural_gas_Layer
-          }).addTo(stateLayer);
+      }).addTo(stateLayer);
           //Add stateLayer to myMap
-          stateLayer.addTo(myMap);
-      });
-
+      stateLayer.addTo(myMap);
+  });
       //Retrieve crude_pipeline with D3
-      d3.json(crude_pipeline, function(pipelineData) {
+  d3.json(crude_pipeline, function(pipelineData) {
           L.geoJSON(pipelineData, {
               color: "#DC143C",
               weight: 2
@@ -304,22 +361,91 @@
           }).addTo(crude_pipeline_Layer);
           //Add tectoniLayer to myMap
           crude_pipeline_Layer.addTo(myMap);
-      });
+  });
       //Retrive oil_gas_fields data with D3
-      d3.json(oil_gas_fields, function(oilGasFieldsData) {
+  d3.json(oil_gas_fields, function(oilGasFieldsData) {
           L.geoJSON(oilGasFieldsData, {
                   color: "BEA493"
           //Add oilGasFieldsData to its Layer
           }).addTo(oil_gas_fields_Layer);
           //Add oil_gas_fields_Layer to myMap
           oil_gas_fields_Layer.addTo(myMap);
-      });
+  });
 
+      // //Retrive consumption data with D3
+      // d3.json(consumption, function(consumptionData) {
+      //     L.geoJSON(consumptionData, {
+      //         pointToLayer: function(feature, coordinates) {
+      //             return L.circleMarker(coordinates);},
+      //             style: stateMarkerStyle,
+      //             // Function to Run Once For Each feature in the features Array
+      //             // Give Each feature a Popup Describing the Place & Time of the Earthquake
+      //             onEachFeature: function(feature, layer) {
+      //                     layer.bindPopup("<h4> State: " + feature.properties.state+
+      //                                     "</p><hr><p>Oil Consumption: " + feature.properties.consumption + "</p>"  +
+      //                                     "</p><hr><p>Oil Production: " + feature.properties.production + "</p>");
+      //                 }
+      //     //Add oilData to oil_and_natural_gas_Layer
+      //     }).addTo(stateLayer);
+      //     //Add stateLayer to myMap
+      //     stateLayer.addTo(myMap);
+      // });
 
-  })});
+      // d3.json(consumption, function(data) {
+      //     L.geoJson(data).addTo(stateLayer);
+      //     // Create a new choropleth layer
+      //     geojson = L.choropleth(data, {
+
+      //         // Define what  property in the features to use
+      //         valueProperty: "production",
+
+      //         // Set color scale
+      //         scale: ["#ffffb2", "#b10026"],
+
+      //         // Number of breaks in step range
+      //         steps: 10,
+
+      //         // q for quartile, e for equidistant, k for k-means
+      //         mode: "q",
+      //         style: {
+      //             // Border color
+      //             color: "#fff",
+      //             weight: 1,
+      //             fillOpacity: 0.8
+      //         },
+
+      //         // // Binding a pop-up to each layer
+      //         // onEachFeature: function(feature, layer) {
+      //         //     layer.bindPopup("Year: " + feature.properties.Year + "<br>Oil Consumption:<br>" +
+      //         //          + feature.properties.consumption);
+      //         // }
+      // }).addTo(stateLayer);
+
+      // // Set up the legend
+      // var legend = L.control({ position: "bottomright" });
+      // legend.onAdd = function() {
+      //     var div = L.DomUtil.create("div", "info legend");
+      //     grades = [0, 1000, 2000, 5000, 10000, 200000, 500000, 1000000],
+      //     labels = [];
+
+      //     // loop through our density intervals and generate a label with a colored square for each interval
+      //     for (var i = 0; i < grades.length; i++) {
+      //     div.innerHTML +=
+      //         '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+      //         grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+      //     }
+
+      //     return div;
+      // };
+
+      // // Adding legend to the map
+      // legend.addTo(stateLayer);
+
+      // });
 
   </script>
 
   {% endblock %}
+
 </body>
 </html>
