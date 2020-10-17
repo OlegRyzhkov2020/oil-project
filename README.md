@@ -66,7 +66,9 @@ ORDER BY p1.year DESC
 
 ![dashboard_slide](images/analysis_2.png)
 
+## Key Findings and Future Research Questions
 
+![dashboard_slide](images/findings.png)
 
 
 ## Contacts
