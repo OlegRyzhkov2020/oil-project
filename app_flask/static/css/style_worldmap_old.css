@@ -1,12 +1,7 @@
-#worldMapSvg {
-    width: 100%;
-    height: auto;
-}
-
 #worldmap {
-    width: 100%;
+    width: 900px;
     height: 500px;
-    margin-left:50px; margin-right:auto; display:block;
+    border: 1px solid silver;
 }
 
 .sphere {
@@ -46,11 +41,12 @@
 
 /* styling for hover over the country */
 .country:hover {
+    /* fill: orange; */
     opacity: 0.5;
 }
 
 /*  tooltip for info about the country */
-.worldMapTooltip {
+.tooltip {
     font-weight: bold;
     padding: 0.5rem;
     border: 1px solid silver;
@@ -59,14 +55,10 @@
     border-radius: 5px;
     box-shadow: 0px 0px 5px 0px #a6a6a6;
     opacity: 0.9;
-    position: fixed; 
-}    
+    position: absolute;
+}
 .hidden {
     display: none;
-}
-
-output {
-    font-size: xx-large;
 }
 /* styling for the slider */
 input[type=range] {
@@ -93,6 +85,4 @@ input[type=range]::-webkit-slider-thumb {
     cursor: pointer;
     -webkit-appearance: none;
 }
-#worldMapNote {
-    font-size: 12px;
-}
+ 

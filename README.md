@@ -11,11 +11,20 @@
 [![](https://data.jsdelivr.com/v1/package/npm/chart.js/badge)](https://www.jsdelivr.com/package/npm/chart.js)
 
 
-![dashboard_slide](images/project-proposal.png)
+![dashboard_slide](images/project_proposal.png)
 
 ## Home Page
 
-![dashboard_slide](images/oil_dashboard.png)
+
+![dashboard_slide](images/home_page.png)
+
+## USA Oil Infrastructure Map
+
+![dashboard_slide](images/map_1.png)
+
+## World Oil Statistics
+
+![dashboard_slide](images/map_2.png)
 
 ## Data Structure
 
@@ -51,14 +60,12 @@ WHERE p1.country = 'United States of America' AND p2.country = 'Russia'
 GROUP BY p1.year
 ORDER BY p1.year DESC
 ```
+## Statistical Analysis
 
-## World Market
+![dashboard_slide](images/analysis_1.png)
 
-![presentation_slide](images/oil_prod_2019.png)
+![dashboard_slide](images/analysis_2.png)
 
-
-
-## US Market
 
 
 

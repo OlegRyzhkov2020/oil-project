@@ -8,81 +8,96 @@
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
   <script src="http://d3js.org/topojson.v0.min.js"></script>
 
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/donut_style.css') }}">
+
 </head>
 <body>
   {% extends "menu.html" %}
   {% block content %}
   <div class="container-fluid padding first-container">
-    <span class="anchor" id="Dashboard_1"></span>
-
-      <div class="row">
-        <div class="col-md-6" >
-          <div class="text-center" >
-            <h5>Key Findings and Observations</h5>
-          </div>
-          <div class="type-js-0 headline">
-              <h6 > MARKET FUNDUMENTAL FACTORS</h6>
-              <p class="text-js" > 1) Oil's use in fuels continues to be
-                the primary factor in making it a high-demand commodity around the globe </p>
-          </div>
-          <div class="type-js-0-1 headline">
-              <p class="text-js"> 2) Rising Oil Rig Count and Increase in Oil Production Puts
-                 Prices Under Pressure </p>
-          </div>
-              <h6 > NON MARKET FORCES</h6>
-          <div class="type-js-0-2 headline">
-              <p class="text-js"> 1) Plate tectonics is also responsible for creating
-                the "pressure cooker" that slowly matures the organics into oil and gas.
-                2) The world experiences perpetuating patterns of military conflict,
-                followed by oil supply crises and changes in the oil countries market positions </p>
-          </div>
-              <h6 > FORECAST AND PREDICTION MODEL</h6>
-          <div class="type-js-0-3 headline">
-              <p class="text-js"> 1) The ARIMA model does a relatively good job
-                 of predicting the actual BRENT and WTI test data from 2016 to 2020
-                2) There is a statistically significant linear relatiionship of
-                Oil Production, Oil Rig Count and Fuel Consumption with Oil  Prices </p>
-          </div>
+    <span class="anchor" id="Dashboard_1">
+    </span>
+    <div class="row">
+      <div class="col-md-6" >
+        <div class="text-center" >
+          <h5>Key Findings and Observations
+          </h5>
         </div>
-
-        <div class="col-md-6" >
-          <div class="text-center" >
-            <h5>Future Research</h5>
-          </div>
-          <h6>MARKET FUNDUMENTAL FACTORS</h6>
-          <div class="type-js-1 headline">
-              <p class="text-js ">
-                1) The recent decline in oil prices has several drivers but one stands out:
-                gasoline demand has underwhelmed and stocks of the fuel are too high.
-                2) OPEC is the single biggest influencer of oil prices
-                3) Hedge Funds positioning - Inputs on the speculative side are certainly more
-                 bearish than bullish and crude fundamentals could certainly be used to make a case that there is some more downside to prices yet to be flushed out.
-               </p>
-          </div>
-            <h6>NON MARKET FORCES</h6>
-          <div class="type-js-2 headline">
-              <p class="text-js ">
-                1) Pandemic struck 2) Weather conditions 2) Technologies
-              </p>
-          </div>
-          <h6>FORECAST AND PREDICTION MODEL</h6>
-          <div class="type-js-3 headline">
-              <p class="text-js ">
-              1) Multiple Regression Analysis 2) Machine Learning Models</p>
-          </div>
-            </div>
+        <div class="type-js-0 headline">
+          <h6 > MARKET FUNDUMENTAL FACTORS
+          </h6>
+          <p class="text-js" > 1) Oil use as fuel continues to be
+            the primary factor in making it a high-demand commodity around the globe
+          </p>
+        </div>
+        <div class="type-js-0-1 headline">
+          <p class="text-js"> 2) Rising Oil Rig Count and Increase in Oil Production Puts
+            Prices Under Pressure
+          </p>
+        </div>
+        <h6 > NON MARKET FORCES
+        </h6>
+        <div class="type-js-0-2 headline">
+          <p class="text-js"> 1) Plate tectonics appears to affect the process of creating
+            the "pressure cooker" that makes the organics mature into oil and gas.
+            2) The perpetuating patterns of military conflict in the world lead to
+            oil supply crises and change the positions of countries in the oil market
+          </p>
+        </div>
+        <h6 > FORECAST AND PREDICTION MODEL
+        </h6>
+        <div class="type-js-0-3 headline">
+          <p class="text-js"> 1) The ARIMA model does a relatively good job
+            of predicting the actual BRENT and WTI test data from 2016 to 2020
+            2) There is a statistically significant linear relatiionship between
+            Oil Production, Oil Rig Count and Fuel Consumption and Oil  Prices
+          </p>
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-md-12 text-center" >
+      <div class="col-md-6" >
+        <div class="text-center" >
+          <h5>Future Research
+          </h5>
+        </div>
+        <h6>MARKET FUNDUMENTAL FACTORS
+        </h6>
+        <div class="type-js-1 headline">
+          <p class="text-js ">
+            1) The recent reduction in oil prices has several drivers but one stands out:
+            gasoline demand has underwhelmed nudging fuel stocks to rise.
+            2) OPEC is the single biggest influencer on oil prices
+            3) Hedge Funds positioning - the speculative aspect in oil trading should be
+            accounted for further
+          </p>
+        </div>
+        <h6>NON MARKET FORCES
+        </h6>
+        <div class="type-js-2 headline">
+          <p class="text-js ">
+            1) Pandemic aspect 2) Weather conditions 2) Technologies
+          </p>
+        </div>
+        <h6>FORECAST AND PREDICTION MODEL
+        </h6>
+        <div class="type-js-3 headline">
+          <p class="text-js ">
+            1) Multiple Regression Analysis 2) Machine Learning Models
+          </p>
+        </div>
+      </div>
+    </div>
 
-          <div id= "delay" class="card" class="btn" role="button" aria-pressed="false" tabindex="0">
-            <div id="letters">
-            </div>
+
+    <div class="row">
+      <div class="col-md-12 text-center" >
+
+        <div id= "delay" class="card" class="btn" role="button" aria-pressed="false" tabindex="0">
+          <div id="letters">
           </div>
         </div>
       </div>
+    </div>
 
   </div>
 
@@ -115,7 +130,7 @@
     .attr('width', WIDTH)
     .attr('height', HEIGHT)
     .append('g')
-      .attr('transform', 'translate(20,' + (HEIGHT/2) + ')');
+      .attr('transform', 'translate(300,' + (HEIGHT/2) + ')');
 
   function update (data) {
         const text = svg.selectAll('text').data(data, d => d.index);
@@ -149,11 +164,6 @@
   }, 5000);
 }
 loop();
-
-
-  </script>
-
-  <script>
 
   function autoType(elementClass, typingSpeed){
   var thhis = $(elementClass);
