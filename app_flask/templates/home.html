@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <title>Home Page</title>
+
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/donut_style.css') }}">
+
   <script>
   function scroll_to(target_id) {
     var container = document.getElementById('target-container');
@@ -23,21 +26,24 @@
     <div class="col-md-12">
       <div class="d-flex justify-content-between align-items-center breaking-news bg-white">
         <div class="d-flex flex-row flex-grow-1 flex-fill justify-content-center bg-news py-2 text-white px-1 news"><span class="d-flex align-items-center">&nbsp;Latest Prices</span></div>
-        <marquee class="news-scroll" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();"> <a >{{prices[0]['Oil']}} {{prices[0]['Price']}}</a> <span class="dot"></span>
-          <a > {{prices[1]['Oil']}} {{prices[1]['Price']}}</a> <span class="dot"></span><a > {{prices[6]['Oil']}} {{prices[6]['Price']}}</a> <span class="dot"></span>
+
+        <marquee class="news-scroll" behavior="scroll" direction="left" onmouseover="this.stop();" onmouseout="this.start();"> <a >{{prices[1]['Oil']}} {{prices[1]['Price']}}</a> <span class="dot"></span>
+          <a > {{prices[2]['Oil']}} {{prices[2]['Price']}}</a> <span class="dot"></span><a > {{prices[6]['Oil']}} {{prices[6]['Price']}}</a> <span class="dot"></span>
           <a > {{prices[7]['Oil']}} {{prices[7]['Price']}}</a><span class="dot"></span> <a > {{prices[8]['Oil']}} {{prices[8]['Price']}}</a><span class="dot"></span>
         <a > {{prices[9]['Oil']}} {{prices[9]['Price']}}</a><span class="dot"></span><a > {{prices[10]['Oil']}} {{prices[10]['Price']}}</a></marquee>
+
       </div>
     </div>
     <div class="row">
       <div class="row">
-        <div class="col-md-5 text-center" >
-          <h6>Energy Consumption by Energy Sources in 2019 (World/USA)</h6>
+        <div id="chart" class="col-md-5 text-center" >
+          <h6>Energy Consumption by Energy Sources in 2019 (Trillion Btu) </h6>
+          <form>
+          <label><input type="radio" name="dataset" id="dataset1" value="option1"> USA</label>
+          <label><input type="radio" name="dataset" id="dataset2" value="option2"> WORLD</label>
+          </form>
 
-          <svg id="chart" preserveAspectRatio="xMinYMin meet" viewBox="-30 0 260 200"></svg>
-          <div class="text-right" >
-          <button onclick="draw()">World</button>
-          </div>
+
         </div>
       <div class="col-md-3">
         <div class="table-responsive" style="height:460px">
@@ -45,7 +51,7 @@
             <thead>
               <tr class="table-dark">
                 <th style="width: 30%">Date</th>
-                <th style="width: 70%">News Title</th>
+                <th style="width: 70%">News</th>
               </tr>
               {% for news in data %}
               <tr style='cursor: pointer; cursor: hand;' onclick="scroll_to('{{news['ID']}}');" class= "small">
@@ -73,194 +79,226 @@
       </div>
     </div>
   </div>
-  <figure>
-    <div class="fixed-wrap">
-      <div id="fixed">
-      </div>
-    </div>
-  </figure>
 
 <script>
+var svg = d3.select("#chart")
+	.append("svg")
+	.append("g")
 
-let world_data = [48, 21, 65, 30, 16, 2];
-let usa_data = [100, 10, 40, 70, 6, 20];
-let world_colors = colorbrewer.Dark2[world_data.length];
-let usa_colors = colorbrewer.Dark2[usa_data.length];
-var data, colors;
-var data_button = true;
+svg.append("g")
+	.attr("class", "slices");
+svg.append("g")
+	.attr("class", "labelName");
+svg.append("g")
+	.attr("class", "labelValue");
+svg.append("g")
+	.attr("class", "lines");
 
-let sizes = {
-  innerRadius: 50,
-  outerRadius: 100
-};
-
-let durations = {
-  entryAnimation: 2000
-};
-
-draw();
-
-function draw() {
-
-  if (data_button == true) {
-    data = world_data;
-    colors = world_colors;
-    data_button = false;
-  }
-  else {
-    data = usa_data;
-    colors = usa_colors;
-    data_button = true;
-  }
-
-  d3.select("#chart").html("");
-
-  let generator = d3.pie()
-    .sort(null);
-
-  var pie = d3.pie()
-    .value(function(d) {return d.value; });
-
-  var data_ready = pie(d3.entries(data));
-  console.log(data_ready);
-
-  let chart = generator(data);
-
-  let arcs = d3.select("#chart")
-    .append("g")
-    .attr("transform", "translate(100, 100)")
-    .selectAll("path")
-    .data(chart)
-    .enter()
-    .append("path")
-    .style("fill", (d, i) => colors[i]);
-
-  let angleInterpolation = d3.interpolate(generator.startAngle()(), generator.endAngle()());
-
-  let innerRadiusInterpolation = d3.interpolate(0, sizes.innerRadius);
-  let outerRadiusInterpolation = d3.interpolate(0, sizes.outerRadius);
-
-  let arc = d3.arc();
-
-  // The radius of the pieplot is half the width or half the height (smallest one). I subtract a bit of margin.
-  var width = 460,
+var width = 450,
     height = 450,
-	radius = Math.min(width, height) / 2;
+    margin = 30,
+	radius = Math.min(width, height) / 2 - margin;
 
-  // The arc generator
-  var innerArc = d3.arc()
-    .innerRadius(radius * 0.4)         // This is the size of the donut hole
-    .outerRadius(radius * 0.8)
+var pie = d3.pie()
+	.sort(null)
+	.value(function(d) {
+		return d.value;
+	});
 
-  // Another arc that won't be drawn. Just for labels positioning
-  var outerArc = d3.arc()
-    .innerRadius(radius * 0.9)
-    .outerRadius(radius * 0.9)
+var arc = d3.arc()
+	.outerRadius(radius * 0.8)
+	.innerRadius(radius * 0.4);
 
-  var key = function(d){ return d.data.key; };
+var outerArc = d3.arc()
+	.innerRadius(radius * 0.6)
+	.outerRadius(radius * 0.9);
 
-  arcs.transition()
-    .duration(durations.entryAnimation)
-    .attrTween("d", d => {
-      let originalEnd = d.endAngle;
-      return t => {
-        let currentAngle = angleInterpolation(t);
-        if (currentAngle < d.startAngle) {
-          return "";
-        }
+var legendRectSize = (radius * 0.05);
+var legendSpacing = radius * 0.02;
 
-        d.endAngle = Math.min(currentAngle, originalEnd);
 
-        return arc(d);
-      };
-    });
+var div = d3.select("body").append("div").attr("class", "toolTip");
 
-  var svg = d3.select("#chart")
-    .transition()
-    .duration(durations.entryAnimation)
-    .tween("arcRadii", () => {
-      return t => arc
-        .innerRadius(innerRadiusInterpolation(t))
-        .outerRadius(outerRadiusInterpolation(t));
-    });
+svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
-  /* ------- TEXT LABELS -------*/
-    var data_ready = pie(d3.entries(data));
-    console.log(data_ready);
+var colorRange = d3.scaleOrdinal(d3.schemeCategory20);
+var color = d3.scaleOrdinal()
+	.range(colorRange.range());
 
-  	var text = d3.select("#chart")
-      .selectAll('allLabels')
-      .data(data_ready, key);
 
-  	text.enter()
-  		.append("text")
-  		.attr("dy", ".35em")
-  		.text(function(d) {
-  			return d.data.key;
-  		});
+data_usa_sort = [37.0, 32.0, 11.0, 8.5, 11.5];
 
-    console.log("Text: ", text);
+var values_usa = data_usa_sort.slice(1);
+var total_usa = values_usa.reduce((a, b) => a + b, 0);
+var total_usa2 = (Math.floor(total_usa * 100) / 100).toFixed(2);
 
-  	function midAngle(d){
-  		return d.startAngle + (d.endAngle - d.startAngle)/2;
-  	}
+data_usa = [37.0, 32.0, 11.0, 8.5, "11.5"]
+console.log(data_usa);
 
-  	text.transition()
-      .duration(durations.entryAnimation)
-  		.attrTween("transform", function(d) {
-  			this._current = this._current || d;
-  			var interpolate = d3.interpolate(this._current, d);
-  			this._current = interpolate(0);
-        console.log(this._current, interpolate);
-  			return function(t) {
-  				var d2 = interpolate(t);
-  				var pos = outerArc.centroid(d2);
-  				pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
-  				return "translate("+ pos +")";
-  			};
-  		})
-  		.styleTween("text-anchor", function(d){
-  			this._current = this._current || d;
-  			var interpolate = d3.interpolate(this._current, d);
-  			this._current = interpolate(0);
-  			return function(t) {
-  				var d2 = interpolate(t);
-  				return midAngle(d2) < Math.PI ? "start":"end";
-  			};
-  		});
+// data_PartDieu = [40.97, 10.99, 5.18, 18.69, 7.65, 3.92, 1.94, 3.51, 1.17, 1.17, 1.71, 0.68, 0.68, 0.45, 0.23, 0.54, 0.54];
+data_world_sort = [36.84, 32.09, 11.31, 8.40, 4.90, 2.73, 2.49, 1.04, 0.2]
 
-    console.log("Text: ", text);
+var values_world_others = data_world_sort.slice(4);
+var total_world_others = values_world_others.reduce((a, b) => a + b, 0);
+var total_world_others2 = (Math.floor(total_world_others * 100) / 100).toFixed(2);
 
-  	text.exit()
-  		.remove();
+data_world = [36.84, 32.09, 11.31, 8.40, total_world_others2, 4.90, 2.73, 2.49, 1.04];
+console.log(values_world_others, total_world_others, data_world);
 
-      /* ------- SLICE TO TEXT POLYLINES -------*/
+// type_objets_Perrache = ["Petroleum", "Gas","Geothermal", "Coal", "Nuclear", "Hydro", "Solar"]
+//
+// type_objets_PartDieu = ["Petroleum", "Coal", "Gas", "Nuclear", "Geothermal", "Hydro", "Solar"]
 
-    	var polyline = d3.select("#chart").selectAll("polyline")
-    		.data(data_ready);
 
-    	polyline.enter()
-    		.append("polyline");
+label_usa = ["Oil Products", "Gas", "Coal", "Nuclear", "Green", "Bio",  "Wind", "Hydro", "Solar","Geothermal"]
 
-    	polyline.transition()
-        .duration(durations.entryAnimation)
-    		.attrTween("points", function(d){
-    			this._current = this._current || d;
-    			var interpolate = d3.interpolate(this._current, d);
-    			this._current = interpolate(0);
-    			return function(t) {
-    				var d2 = interpolate(t);
-    				var pos = outerArc.centroid(d2);
-    				pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
-    				return [arc.centroid(d2), outerArc.centroid(d2), pos];
-    			};
-    		});
+label_world = ["Oil Products", "Gas", "Coal", "Nuclear", "Green", "Bio",  "Wind", "Hydro", "Solar","Geothermal"]
 
-    	polyline.exit()
-    		.remove();
 
+datasetOption1 = [
+				{label:label_usa[0], value:data_usa[0]},
+        {label:label_usa[1], value:data_usa[1]},
+        {label:label_usa[2], value:data_usa[2]},
+        {label:label_usa[3], value:data_usa[3]},
+        {label:label_usa[4], value:data_usa[4]},
+
+        ];
+
+datasetOption2 = [
+	      {label:label_world[0], value:data_world[0]},
+        {label:label_world[1], value:data_world[1]},
+        {label:label_world[2], value:data_world[2]},
+        {label:label_world[3], value:data_world[3]},
+        {label:label_world[4], value:data_world[4]},
+
+        ];
+
+d3.selectAll("input")
+	.on("change", selectDataset);
+
+function selectDataset()
+{
+  change(datasetOption1);
+	var value = this.value;
+
+
+	if (value == "option1")
+	{
+		change(datasetOption1);
+	}
+	else if (value == "option2")
+	{
+		change(datasetOption2);
+	}
 }
 
+function change(data) {
+
+	/* ------- PIE SLICES -------*/
+	var slice = svg.select(".slices").selectAll("path.slice")
+        .data(pie(data), function(d){ return d.data.label });
+
+    slice.enter()
+        .insert("path")
+        .style("fill", function(d) { return color(d.data.label); })
+        .attr("class", "slice");
+
+    slice
+        .transition().duration(1000)
+        .attrTween("d", function(d) {
+            this._current = this._current || d;
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function(t) {
+                return arc(interpolate(t));
+            };
+        })
+    slice
+        .on("mousemove", function(d){
+            div.style("left", d3.event.pageX+10+"px");
+            div.style("top", d3.event.pageY-25+"px");
+            div.style("display", "inline-block");
+            div.html((d.data.label)+"<br>"+(d.data.value)+"%");
+        });
+    slice
+        .on("mouseout", function(d){
+            div.style("display", "none");
+        });
+
+    slice.exit()
+        .remove();
+
+
+    /* ------- TEXT LABELS -------*/
+
+    var text = svg.select(".labelName").selectAll("text")
+        .data(pie(data), function(d){ return d.data.label });
+
+    text.enter()
+        .append("text")
+        .attr("dy", ".35em")
+        .text(function(d) {
+            return (d.data.label+": "+d.value+"%");
+        });
+
+    function midAngle(d){
+        return d.startAngle + (d.endAngle - d.startAngle)/2;
+    }
+
+    text
+        .transition().duration(1000)
+        .attrTween("transform", function(d) {
+            this._current = this._current || d;
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function(t) {
+                var d2 = interpolate(t);
+                var pos = outerArc.centroid(d2);
+                pos[0] = radius * 0.75 * (midAngle(d2) < Math.PI ? 1 : -1);
+                return "translate("+ pos +")";
+            };
+        })
+        .styleTween("text-anchor", function(d){
+            this._current = this._current || d;
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function(t) {
+                var d2 = interpolate(t);
+                return midAngle(d2) < Math.PI ? "start":"end";
+            };
+        })
+        .text(function(d) {
+            return (d.data.label+": "+d.value+"%");
+        });
+
+
+    text.exit()
+        .remove();
+
+    /* ------- SLICE TO TEXT POLYLINES -------*/
+
+    var polyline = svg.select(".lines").selectAll("polyline")
+        .data(pie(data), function(d){ return d.data.label });
+
+    polyline.enter()
+        .append("polyline");
+
+    polyline.transition().duration(1000)
+        .attrTween("points", function(d){
+            this._current = this._current || d;
+            var interpolate = d3.interpolate(this._current, d);
+            this._current = interpolate(0);
+            return function(t) {
+                var d2 = interpolate(t);
+                var pos = outerArc.centroid(d2);
+                pos[0] = radius * 0.8 * (midAngle(d2) < Math.PI ? 1 : -1);
+                return [arc.centroid(d2), outerArc.centroid(d2), pos];
+            };
+        });
+
+    polyline.exit()
+        .remove();
+};
 </script>
 
 {% endblock %}

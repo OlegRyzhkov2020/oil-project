@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>USA Infrastructure</title>
-  
+
   <script src ="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
   <script src="http://d3js.org/topojson.v0.min.js"></script>
@@ -15,26 +15,25 @@
   <div class="container-fluid padding first-container">
     <span class="anchor" id="Dashboard_1"></span>
       <div class="row">
-        <div class="col-md-4 text-center" >
-          <h5>Top Producers of Oil, NPLG and other liquids, 2019</h5>
+        <div class="col-md-6 text-center" >
+          <h5>PostrgreSQL Database</h5>
           <div class="card">
-            <div id="bar_container">
-            </div>
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/oil_erd.png')}}">
           </div>
         </div>
-        <div class="col-md-8 text-center" >
-          <h5>World Oil Statistics</h5>
+        <div class="col-md-6 text-center" >
+          <h5>Data Collection</h5>
           <div id="" class ="chart">
-          </div>
+              <table border="1" class="table table-sm">
+                <thead>
+
+                   <tr class="table-dark" style="text-align: center;">      <th>Storage Method</th>      <th>Description</th>      <th>Source</th>      <th>Used For</th>    </tr>  </thead>  <tbody>    <tr>      <td>Postgres SQL</td>      <td>Countries</td>      <td>Public Domain</td>      <td>World Oil Statistics</td>
+                   </tr>    <tr>      <td>Postgres SQL</td>      <td>Oil Production by Country</td>      <td>US Energy Information Administration</td>      <td>World Oil Statistics</td>    </tr>    <tr>      <td>Postgres SQL</td>      <td>Petrol Production by Country</td>      <td>US Energy Information Administration</td>      <td>World Oil Statistics</td>    </tr>    <tr>      <td>Postgres SQL</td>      <td>Crude Production by Country</td>      <td>US Energy Information Administration</td>      <td>World Oil Statistics</td>    </tr>    <tr>      <td>Postgres SQL</td>      <td>Oil Consumption by Country</td>      <td>British Petroleum (BP)</td>      <td>World Oil Statistics</td>    </tr>    <tr>      <td>Postgres SQL</td>      <td>Oil Production by Country</td>      <td>British Petroleum (BP)</td>      <td>World Oil Statistics</td>    </tr>    <tr>      <td>Postgres SQL</td>      <td>Global Energy Consumption</td>      <td>British Petroleum (BP)</td>      <td>Global Energy Consumption</td>    </tr>    <tr>      <td>Postgres SQL</td>      <td>International Conflicts</td>      <td>Upssala University Conflict Data Program</td>      <td>Non Market Forces</td>    </tr>    <tr>      <td>Postgres SQL</td>      <td>US States</td>      <td>Public Domain</td>      <td>USA Infrastructure</td>    </tr>    <tr>      <td>Postgres SQL</td>      <td>US Oil Refineries</td>      <td>US Energy Information Administration</td>      <td>USA Infrastructure</td>    </tr>    <tr>      <td>Postgres SQL</td>      <td>US Ports</td>      <td>US Energy Information Administration</td>      <td>USA Infrastructure</td>    </tr>    <tr>      <td>Postgres SQL</td>      <td>Oil Production and Consumption by State</td>      <td>US Energy Information Administration</td>      <td>USA Infrastructure</td>    </tr>    <tr>      <td>MongoDB Collection</td>      <td>Oil News</td>      <td>oilprice.com</td>      <td>Oil News Scroll</td>    </tr>    <tr>      <td>MongoDB Collection</td>      <td>Oil Prices</td>      <td>oilprice.com</td>      <td>Oil News Scroll</td>    </tr>    <tr>      <td>CSV</td>      <td>Crude Oil Prices West Texas Intermediate</td>      <td>quandl</td>      <td>Time Series Analysis</td>    </tr>    <tr>      <td>CSV</td>      <td>Crude Oil Prices Brent (Europe)</td>      <td>quandl</td>      <td>Time Series Analysis</td>    </tr>    <tr>      <td>CSV</td>      <td>Crude Oil Prices Saudi Arabian Light</td>      <td>quandl</td>      <td>Time Series Analysis</td>    </tr>  </tbody>
+              </table>
         </div>
         </div>
       </div>
-  <figure>
-    <div class="fixed-wrap">
-      <div id="fixed">
-      </div>
-    </div>
-  </figure>
+
   {% endblock %}
 </body>
 </html>

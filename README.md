@@ -1,6 +1,7 @@
 # Oil Data Analytics
 
 
+
 ![GitHub last commit](https://img.shields.io/github/last-commit/OlegRyzhkov2020/oil-project)
 ![GitHub top language](https://img.shields.io/github/languages/top/OlegRyzhkov2020/oil-project)
 [![made-with-Markdown](https://img.shields.io/badge/Made%20with-Markdown-1f425f.svg)](http://commonmark.org)
@@ -9,24 +10,23 @@
 ![GitHub followers](https://img.shields.io/github/followers/OlegRyzhkov2020?label=Follow&style=social)
 [![](https://data.jsdelivr.com/v1/package/npm/chart.js/badge)](https://www.jsdelivr.com/package/npm/chart.js)
 
-## Project Proposal
 
-![dashboard_slide](images/project-proposal.png)
+![dashboard_slide](images/project_proposal.png)
 
-## Main Dashboard
+## Home Page
 
-![dashboard_slide](images/oil_dashboard.png)
 
-## Installation
-* Install HTTP server (The easiest is to install http-server globally using node's package manager):
+![dashboard_slide](images/home_page.png)
 
-npm install -g http-server
+## USA Oil Infrastructure Map
 
-* Then simply run http-server in any of your project directories:
+![dashboard_slide](images/map_1.png)
 
-Eg. d:\my_project> http-server
+## World Oil Statistics
 
-## Data Collection, Cleaning, Normalization
+![dashboard_slide](images/map_2.png)
+
+## Data Structure
 
 ```python
 # US Energy Information Administration API Query Browser, Open Data Source
@@ -45,9 +45,8 @@ class EIA_Client():
         response = requests.get(url).json()
         return response
 ```
-## DataBase Design and ERD
 
-## PostgreSQL Data Import
+* PostgreSQL Data Import
 
 
 ```sql
@@ -61,15 +60,15 @@ WHERE p1.country = 'United States of America' AND p2.country = 'Russia'
 GROUP BY p1.year
 ORDER BY p1.year DESC
 ```
+## Statistical Analysis
 
-## World Market
+![dashboard_slide](images/analysis_1.png)
 
-![presentation_slide](images/oil_prod_2019.png)
+![dashboard_slide](images/analysis_2.png)
 
+## Key Findings and Future Research Questions
 
-
-## US Market
-
+![dashboard_slide](images/findings.png)
 
 
 ## Contacts

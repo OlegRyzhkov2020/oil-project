@@ -8,7 +8,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
 
   <script type=text/javascript src="{{url_for('static', filename='js/regression.js') }}"></script>
-  <script type=text/javascript src="{{url_for('static', filename='js/table.js') }}"></script>
 
 </head>
 <body>
@@ -19,13 +18,52 @@
 
       <div class="row">
         <div class="col-md-8 text-center" >
-          <h5>Regression Analysis</h5>
+          <h5>Simple Linear Regression Analysis</h5>
             <div id="chart" class ="chart">
             </div>
         </div>
-        <div class="col-md-4 text-center" >
-          <h5>Test Results</h5>
-          <div>
+        <div class="col-md-4" >
+          <div class="text-center" >
+            <h5>Testing Hypothesis</h5>
+          </div>
+          <div class="type-js headline">
+              <h6 class="text-js"> NULL HYPOTHESIS #1: </h6>
+          </div>
+          <div class="type-js-2 headline">
+              <p class="text-js">There will be no statistically significant association of fuel consumption with oil prices</p>
+          </div>
+          <div class="type-js-3 headline">
+              <h6 class="text-js"> ALTERNATIVE HYPOTHESIS #1: </h6>
+          </div>
+          <div class="type-js-4 headline">
+              <p class="text-js">There will be a statistically significant  association of fuel consumption with oil prices</p>
+          </div>
+          <div class="type-js-5 headline">
+              <h6 class="text-js"> NULL HYPOTHESIS #2: </h6>
+          </div>
+          <div class="type-js-6 headline">
+              <p class="text-js">There will be no statistically significant association of active rigs count consumption with oil prices</p>
+          </div>
+          <div class="type-js-7 headline">
+              <h6 class="text-js"> ALTERNATIVE HYPOTHESIS #2: </h6>
+          </div>
+          <div class="type-js-8 headline">
+              <p class="text-js">There will be a statistically significant  association of active rigs count with oil prices</p>
+          </div>
+          <div class="type-js-9 headline">
+              <h6 class="text-js"> NULL HYPOTHESIS #3: </h6>
+          </div>
+          <div class="type-js-11 headline">
+              <p class="text-js">There will be no statistically significant association of oil production with oil prices</p>
+          </div>
+          <div class="type-js-12 headline">
+              <h6 class="text-js"> ALTERNATIVE HYPOTHESIS #3: </h6>
+          </div>
+          <div class="type-js-13 headline">
+              <p class="text-js">There will be a statistically significant  association of oil production with oil prices</p>
+          </div>
+
+
           </div>
         </div>
         </div>
@@ -86,18 +124,19 @@
           var chosenYAxis = "poverty";
 
           // Retrieve data from the CSV file and execute everything below
-          d3.csv("static/data/data.csv").then(function(censusData, err) {
+          d3.csv("static/data/model_data.csv").then(function(censusData, err) {
             if (err) throw err;
 
             // parse data
             censusData.forEach(function(data) {
-              data.poverty = +data.poverty;
-              data.smokes = +data.smokes;
-              data.health = +data.healthcare;
-              data.income = +data.income;
-              data.age = +data.age;
-              data.obesity = +data.obesity;
-              data.state = data.state;
+
+              data.poverty = +data.USA_OIL;
+              data.smokes = +data.FUEL_CONS;
+              data.health = +data.RIGS;
+              data.income = +data.WTI;
+              data.age = +data.BRENT;
+              data.obesity = +data.ARAB_LIGHT;
+
             });
 
             // regression data
@@ -110,8 +149,8 @@
               .y(function(d) { return yLinearScale(regression(d[chosenXAxis])); });
 
             // Initial table data
-            var StatesData = censusData.map(function(d) { return d.state; });
-            buildTable(StatesData, XaxisData, YaxisData, chosenXAxis, chosenYAxis);
+            // var StatesData = censusData.map(function(d) { return d.state; });
+            // buildTable(StatesData, XaxisData, YaxisData, chosenXAxis, chosenYAxis);
 
             // xLinearScale function above csv import
             var xLinearScale = xScale(censusData, chosenXAxis);
@@ -142,7 +181,7 @@
               .append("circle")
               .attr("cx", d => xLinearScale(d[chosenXAxis]))
               .attr("cy", d => yLinearScale(d[chosenYAxis]))
-              .attr("r", 10)
+              .attr("r", 5)
               .attr("fill", "cadetblue")
               .attr("opacity", ".8");
 
@@ -195,7 +234,7 @@
             var povertyLabel = YlabelsGroup.append("text")
               .attr("transform", "rotate(-90)")
               .attr("y", 0)
-              .attr("x", 0)
+              .attr("x", 20)
               .attr("dy", "1em")
               .attr("value", "poverty") // value to grab for event listener
               .classed("active", true)
@@ -204,16 +243,16 @@
             var smokesLabel = YlabelsGroup.append("text")
               .attr("transform", "rotate(-90)")
               .attr("y", 0)
-              .attr("x", -120)
+              .attr("x", -130)
               .attr("dy", "1em")
               .attr("value", "smokes") // value to grab for event listener
               .classed("inactive", true)
-              .text("Oil Stocks");
+              .text("Fuel Consumption");
 
             var healthLabel = YlabelsGroup.append("text")
               .attr("transform", "rotate(-90)")
               .attr("y", 0)
-              .attr("x", 120)
+              .attr("x", 150)
               .attr("dy", "1em")
               .attr("value", "health") // value to grab for event listener
               .classed("inactive", true)
@@ -244,7 +283,7 @@
 
                   // updates fitting line with new x values
                   lineGroup = renderLine(lineGroup, censusData, xLinearScale, yLinearScale,
-                    chosenXAxis, chosenYAxis, StatesData, formulaGroup);
+                    chosenXAxis, chosenYAxis, formulaGroup);
 
                   // updates tooltips with new info
                   circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
@@ -308,7 +347,7 @@
 
                     // updates fitting line with new y values
                     lineGroup = renderLine(lineGroup, censusData, xLinearScale, yLinearScale,
-                              chosenXAxis, chosenYAxis, StatesData, formulaGroup);
+                              chosenXAxis, chosenYAxis, formulaGroup);
 
                     // updates tooltips with new info
                     circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
@@ -406,7 +445,7 @@
           }
 
           function renderLine (lineGroup, censusData, xLinearScale, yLinearScale,
-            chosenXAxis, chosenYAxis, StatesData, formulaGroup) {
+            chosenXAxis, chosenYAxis, formulaGroup) {
             // regression data
             var newXaxisData = censusData.map(function(d) { return d[chosenXAxis]; });
             var newYaxisData = censusData.map(function(d) { return d[chosenYAxis]; });
@@ -430,9 +469,9 @@
               .text(formula);
 
             // Update table data
-            buildTable(StatesData, newXaxisData, newYaxisData, chosenXAxis, chosenYAxis);
+            // buildTable(StatesData, newXaxisData, newYaxisData, chosenXAxis, chosenYAxis);
 
-            return lineGroup;
+          return lineGroup;
 
           }
 
@@ -451,23 +490,23 @@
 
             var xLabel, yLabel;
             if (chosenYAxis === "poverty") {
-              yLabel = "Poverty Rate:";
+              yLabel = "Oil Production:";
             }
             else if (chosenYAxis === "smokes") {
-              yLabel = "Smoker Rate:";
+              yLabel = "Fuel Consumption:";
             }
             else {
-              yLabel = "Health Rate:";
+              yLabel = "Rig count:";
             };
 
             if (chosenXAxis === "income") {
-              xLabel = "Income:";
+              xLabel = "WTI:";
             }
             else if (chosenXAxis === "age") {
-              xLabel = "Age:";
+              xLabel = "Brent:";
             }
             else {
-              xLabel = "Obesity:";
+              xLabel = "Arab Light:";
             };
 
             var toolTip = d3.tip()
@@ -498,6 +537,58 @@
   d3.select(window).on("resize", makeResponsive);
 
   </script>
+
+
+  <script>
+
+  function autoType(elementClass, typingSpeed){
+  var thhis = $(elementClass);
+  thhis.css({
+    "position": "relative",
+    "display": "inline-block"
+  });
+  thhis.prepend('<div class="cursor" style="right: initial; left:0;"></div>');
+  thhis = thhis.find(".text-js");
+  var text = thhis.text().trim().split('');
+  var amntOfChars = text.length;
+  var newString = "";
+  thhis.text("|");
+  setTimeout(function(){
+    thhis.css("opacity",1);
+    thhis.prev().removeAttr("style");
+    thhis.text("");
+    for(var i = 0; i < amntOfChars; i++){
+      (function(i,char){
+        setTimeout(function() {
+          newString += char;
+          thhis.text(newString);
+        },i*typingSpeed);
+      })(i+1,text[i]);
+    }
+  },1500);
+}
+
+  $(document).ready(function(){
+    // Now to start autoTyping just call the autoType function with the
+    // class of outer div
+    // The second paramter is the speed between each letter is typed.
+    autoType(".type-js",100);
+    autoType(".type-js-2",100);
+    autoType(".type-js-3",100);
+    autoType(".type-js-4",100);
+    autoType(".type-js-5",100);
+    autoType(".type-js-6",100);
+    autoType(".type-js-7",100);
+    autoType(".type-js-8",100);
+    autoType(".type-js-9",100);
+    autoType(".type-js-10",100);
+    autoType(".type-js-11",100);
+    autoType(".type-js-12",100);
+    autoType(".type-js-13",100);
+  });
+
+  </script>
+
   {% endblock %}
 </body>
 </html>

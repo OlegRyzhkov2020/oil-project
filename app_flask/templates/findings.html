@@ -8,40 +8,133 @@
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
   <script src="http://d3js.org/topojson.v0.min.js"></script>
 
+  <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/donut_style.css') }}">
+
 </head>
 <body>
   {% extends "menu.html" %}
   {% block content %}
   <div class="container-fluid padding first-container">
-    <span class="anchor" id="Dashboard_1"></span>
-      <div class="row">
-        <div class="col-md-12 text-center" >
-          <div class="card">
-            <div id="letters">
-            </div>
-          </div>
+    <span class="anchor" id="Dashboard_1">
+    </span>
+    <div class="row">
+      <div class="col-md-6" >
+        <div class="text-center" >
+          <h5>Key Findings and Observations
+          </h5>
+        </div>
+        <div class="type-js-0 headline">
+          <h6 > MARKET FUNDUMENTAL FACTORS
+          </h6>
+          <p class="text-js" > 1) Oil use as fuel continues to be
+            the primary factor in making it a high-demand commodity around the globe
+          </p>
+        </div>
+        <div class="type-js-0-1 headline">
+          <p class="text-js"> 2) Rising Oil Rig Count and Increase in Oil Production Puts
+            Prices Under Pressure
+          </p>
+        </div>
+        <h6 > NON MARKET FORCES
+        </h6>
+        <div class="type-js-0-2 headline">
+          <p class="text-js"> 1) Plate tectonics appears to affect the process of creating
+            the "pressure cooker" that makes the organics mature into oil and gas.
+            2) The perpetuating patterns of military conflict in the world lead to
+            oil supply crises and change the positions of countries in the oil market
+          </p>
+        </div>
+        <h6 > FORECAST AND PREDICTION MODEL
+        </h6>
+        <div class="type-js-0-3 headline">
+          <p class="text-js"> 1) The ARIMA model does a relatively good job
+            of predicting the actual BRENT and WTI test data from 2016 to 2020
+            2) There is a statistically significant linear relatiionship between
+            Oil Production, Oil Rig Count and Fuel Consumption and Oil  Prices
+          </p>
         </div>
       </div>
 
+      <div class="col-md-6" >
+        <div class="text-center" >
+          <h5>Future Research
+          </h5>
+        </div>
+        <h6>MARKET FUNDUMENTAL FACTORS
+        </h6>
+        <div class="type-js-1 headline">
+          <p class="text-js ">
+            1) The recent reduction in oil prices has several drivers but one stands out:
+            gasoline demand has underwhelmed nudging fuel stocks to rise.
+            2) OPEC is the single biggest influencer on oil prices
+            3) Hedge Funds positioning - the speculative aspect in oil trading should be
+            accounted for further
+          </p>
+        </div>
+        <h6>NON MARKET FORCES
+        </h6>
+        <div class="type-js-2 headline">
+          <p class="text-js ">
+            1) Pandemic aspect 2) Weather conditions 2) Technologies
+          </p>
+        </div>
+        <h6>FORECAST AND PREDICTION MODEL
+        </h6>
+        <div class="type-js-3 headline">
+          <p class="text-js ">
+            1) Multiple Regression Analysis 2) Machine Learning Models
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row">
+      <div class="col-md-12 text-center" >
+
+        <div id= "delay" class="card" class="btn" role="button" aria-pressed="false" tabindex="0">
+          <div id="letters">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
 
   <script>
+  document.getElementById("delay").addEventListener('click',function ()
+      {
 
-  let data = 'Is DATA becoming the new oil?'.split('').map( (d, i) => ({
+          data = ' Is DATA becoming the new oil?'.split('').map( (d, i) => ({
+            letter  : d,
+            index   : i,
+            pos     : i
+          }));
+          WIDTH        = LETTER_WIDTH * data.length;
+          update(data);
+
+
+       //validation code to see State field is mandatory.
+      }  );
+
+  let data = ''.split('').map( (d, i) => ({
     letter  : d,
     index   : i,
     pos     : i
   }));
   const LETTER_WIDTH = 22;
-  const WIDTH        = LETTER_WIDTH * data.length;
-  const HEIGHT       = 60;
+  var WIDTH        = LETTER_WIDTH * data.length;
+  const HEIGHT       =60;
   const svg = d3.select('#letters').append('svg')
     .attr('width', WIDTH)
     .attr('height', HEIGHT)
     .append('g')
-      .attr('transform', 'translate(0,' + (HEIGHT/2) + ')');
+      .attr('transform', 'translate(300,' + (HEIGHT/2) + ')');
 
   function update (data) {
         const text = svg.selectAll('text').data(data, d => d.index);
+        text.enter().remove()
         text.enter().append('text')
           .attr('fill', d => d.letter === '?' ? 'tomato' : '#000')
           .attr('x', (d, i) => LETTER_WIDTH*d.pos)
@@ -72,8 +165,49 @@
 }
 loop();
 
+  function autoType(elementClass, typingSpeed){
+  var thhis = $(elementClass);
+  thhis.css({
+    "position": "relative",
+    "display": "inline-block"
+  });
+  thhis.prepend('<div class="cursor" style="right: initial; left:0;"></div>');
+  thhis = thhis.find(".text-js");
+  var text = thhis.text().trim().split('');
+  var amntOfChars = text.length;
+  var newString = "";
+  thhis.text("|");
+  setTimeout(function(){
+    thhis.css("opacity",1);
+    thhis.prev().removeAttr("style");
+    thhis.text("");
+    for(var i = 0; i < amntOfChars; i++){
+      (function(i,char){
+        setTimeout(function() {
+          newString += char;
+          thhis.text(newString);
+        },i*typingSpeed);
+      })(i+1,text[i]);
+    }
+  },1500);
+}
+
+  $(document).ready(function(){
+    // Now to start autoTyping just call the autoType function with the
+    // class of outer div
+    // The second paramter is the speed between each letter is typed.
+    autoType(".type-js-0",200);
+    autoType(".type-js-0-1",200);
+    autoType(".type-js-0-2",200);
+    autoType(".type-js-0-3",200);
+    autoType(".type-js-1",150);
+    autoType(".type-js-2",200);
+    autoType(".type-js-3",200);
+
+  });
 
   </script>
+
   {% endblock %}
 </body>
 </html>
