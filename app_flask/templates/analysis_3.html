@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <title>Time Series Analysis</title>
-  <link rel="stylesheet" media="screen" href="static/bootstrap.min.css">
-  <link rel="stylesheet" href="static/bootstrap-theme.min.css">
+  <!-- <link rel="stylesheet" media="screen" href="static/bootstrap.min.css">
+  <link rel="stylesheet" href="static/bootstrap-theme.min.css"> -->
 
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
@@ -21,12 +21,13 @@
       <div class="col-md-8 text-center" >
         <h5>Multiple Linear Regression Analysis</h5>
         <div id="chart" class ="chart">
-          <img style="height: 400px" src="http://localhost:5000/plots/correlation_matrix">
+          <img style="height: 500px" src="http://localhost:5000/plots/regression_analysis?{{time}}">
+          <!-- <img style="height: 500px" src="http://localhost:5000/plots/regression?{{time}}"> -->
         </div>
       </div>
       <div class="col-md-4" >
         <div class="text-center" >
-          <h5>Tuning Model</h5>
+          <h5>Model Tuning</h5>
         </div>
         <form action = "http://localhost:5000/an_3" method = "POST">
 
