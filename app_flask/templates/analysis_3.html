@@ -21,7 +21,7 @@
       <div class="col-md-8 text-center" >
         <h5>Multiple Linear Regression Analysis</h5>
         <div id="chart" class ="chart">
-          <img style="height: 500px" src="http://localhost:5000/plots/regression_analysis?{{time}}">
+          <img style="height: 500px" src={{image}}>
           <!-- <img style="height: 500px" src="http://localhost:5000/plots/regression?{{time}}"> -->
         </div>
       </div>
@@ -33,25 +33,46 @@
 
           <p>Input model features and parameters:<p>
             <div class="form-group" >
-                  {% for field in form %}
-                  <table>
-                  <tr>
-                    <td>{{ field.name }}</td><td>{{ field }}</td>
-                    <td>{{ field.label }}</td>
-                  </tr>
-                  </table>
-                  {% endfor %}
-                <p><input type = "submit" value = "submit" /></p>
-                <div>
-                </form>
-                <div>
-
-                </div>
+              {% for field in form %}
+              <table>
+                <tr>
+                  <td>{{ field.name }}</td><td>{{ field }}</td>
+                  <td>{{ field.label }}</td>
+                </tr>
+              </table>
+              {% endfor %}
+              <p><input type = "submit" value = "submit" /></p>
+              <div>
+              </form>
+              <div class="text-center" >
+                <h5>Model Output</h5>
               </div>
+              <!-- {% if output|length > 0 %} -->
+              <table id="t01">
+                <tr>
+                  <th>Params</th>
+                  <th>Estimate</th>
+                  <th>StError</th>
+                  <th>t value</th>
+                  <th>p value</th>
+                </tr>
+                {% for key, value in output.items() %}
+                </tr>
+                  <td>{{ key }}</td>
+                  <td>{{ '%0.2f' % value[0] }}</td>
+                  <td>{{ '%0.4f' %value[1] }}</td>
+                  <td>{{ '%0.4f' %value[2] }}</td>
+                  <td>{{ '%0.4f' %value[3] }}</td>
+                 </tr>
+                {% endfor %}
+              </table>
+              <!-- {% endif %} -->
             </div>
           </div>
+        </div>
+      </div>
 
 
-          {% endblock %}
-        </body>
-        </html>
+      {% endblock %}
+    </body>
+    </html>

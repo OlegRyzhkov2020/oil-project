@@ -27,7 +27,7 @@ mongo = PyMongo(app, uri="mongodb://localhost:27017/oil_db")
 #######################################################
 class InputForm(Form):
     Target = SelectField('dependent (Y)',
-                    choices=['WTI price', 'Brent price' ])
+                    choices=['WTI price', 'Brent price', 'Arab Light' ])
     Start = DateField(label=' ',
         format='%m/%d/%Y', default= datetime(1990, 1, 1),
         validators=[validators.InputRequired()])
@@ -37,9 +37,9 @@ class InputForm(Form):
     Predictor_1 = SelectField('independent (X1)',
                     choices=['Oil_production', 'RIG_count' ])
     Predictor_2 = SelectField('independent (X2)',
-                    choices=['RIG_count', 'Oil_production'])
+                    choices=['None', 'RIG_count', 'Oil_production'])
     Predictor_3 = SelectField('independent (X3)',
-                    choices=['Fuel Consumpt', 'Oil_production', 'RIG_count' ])
+                    choices=['None', 'Fuel_consumpt', 'Oil_production', 'RIG_count' ])
 
 #######################################################
 # Flask Routes
@@ -68,28 +68,17 @@ def home():
     return render_template("home.html", data=latest_news, head_news = head_news, prices = latest_prices)
 
 # Route that will trigger building a correlation_matrix
-@app.route('/plots/regression_analysis', methods=['GET'])
-def regression_analysis(model_target='WTI price'):
-    print(model_target)
-
-    reg_obj = regression_model.reg_plot()
-    print('Request for correlation matrix')
-
-    return send_file(reg_obj,
-                     attachment_filename='plot_matrix.png',
-                     mimetype='image/png')
-
-# Route that will trigger the scrape function
-# @app.route('/plots/regression', methods=['GET'])
-# def regression_plot():
+# @app.route('/plots/regression_analysis', methods=['GET'])
+# def regression_analysis(model_target='WTI price', predictor_1 = "Oil_production"):
+#     print(model_target, predictor_1)
 #
-#     corr = regression_model.cancer_data()
-#     bytes_obj = regression_model.corr_plot(corr)
-#     print('Request for regression plot')
-#
-#     return send_file(bytes_obj,
-#                      attachment_filename='reg_plot.png',
-#                      mimetype='image/png')
+#     reg_obj = regression_model.reg_plot(model_target, predictor_1)
+#     print('Request for correlation matrix')
+#     return reg_obj
+
+    # return send_file(reg_obj,
+    #                  attachment_filename='plot_matrix.png',
+    #                  mimetype='image/png')
 
 # Route that will trigger the facts html page
 @app.route("/project_overview")
@@ -148,20 +137,29 @@ def an_2():
 def an_3():
     print("Server received request for plot...")
     form = InputForm(request.form)
-    print(request.form)
-    print(form.validate())
+
+    form.validate()
+    model_start = form.Start.data
+    model_end = form.End.data
+    model_target = form.Target.data
+    model_predictor_1 = form.Predictor_1.data
+    print('Building a plot')
+    print('Period:', model_start, model_end)
+    print('Target selection:', model_target)
+    image = regression_model.reg_plot(model_target, model_predictor_1)
+
+    model_output = regression_model.reg_output()
+    print(model_output)
 
     if request.method == 'POST' and form.validate():
-        model_start = form.Start.data
-        model_end = form.End.data
-        model_target = form.Target.data
-        print('Building a plot')
-        print('Period:', model_start, model_end)
-        print('Target selection:', model_target)
-        regression_analysis(model_target)
-    image_time = datetime.now()
+        results = 1
+        total = 1
+    else:
+        results = []
+        total = []
+    # image_time = datetime.now()
     # Return template and data
-    return render_template("analysis_3.html", form=form, time = image_time)
+    return render_template("analysis_3.html", form=form, image=image, output = model_output)
 
 # Route that will trigger the facts html page
 @app.route("/findings")
