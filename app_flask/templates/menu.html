@@ -9,15 +9,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
-  <script src= "https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
-  <script src="https://code.highcharts.com/stock/highstock.js"></script>
-  <script src="https://code.highcharts.com/stock/modules/data.js"></script>
-  <script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
-  <script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
+  <script src= "https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></<script src="https://code.highcharts.com/stock/modules/export-data.js"></script>
   <script type=text/javascript src="{{url_for('static', filename='js/config.js') }}"></script>
 
   <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/style.css') }}">
   <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='css/static.css') }}">
+
 </head>
 <body>
 
@@ -66,6 +63,7 @@
             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <a class="dropdown-item" href="{{ url_for('an_1') }}">Time Series Analysis</a>
               <a class="dropdown-item" href="{{ url_for('an_2') }}">Testing Hypothesis</a>
+              <a class="dropdown-item" href="{{ url_for('an_3') }}">Regression Analysis</a>
             </div>
           </div>
         </li>
