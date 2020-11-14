@@ -47,12 +47,12 @@
               <div class="text-center" >
                 <h5>Model Output</h5>
               </div>
-              <!-- {% if output|length > 0 %} -->
+              {% if output|length > 0 %}
               <table id="t01">
                 <tr>
-                  <th>Params</th>
+                  <th>Coeff</th>
                   <th>Estimate</th>
-                  <th>StError</th>
+                  <th>St Error</th>
                   <th>t value</th>
                   <th>p value</th>
                 </tr>
@@ -65,8 +65,12 @@
                   <td>{{ '%0.4f' %value[3] }}</td>
                  </tr>
                 {% endfor %}
+                <tr>
+                  <th>Dataset</th>
+                  <th>Prediction Score</th>
+                </tr>
               </table>
-              <!-- {% endif %} -->
+              {% endif %}
             </div>
           </div>
         </div>

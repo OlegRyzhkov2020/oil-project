@@ -28,10 +28,10 @@ mongo = PyMongo(app, uri="mongodb://localhost:27017/oil_db")
 class InputForm(Form):
     Target = SelectField('dependent (Y)',
                     choices=['WTI price', 'Brent price', 'Arab Light' ])
-    Start = DateField(label=' ',
+    Train_start = DateField(label=' ',
         format='%m/%d/%Y', default= datetime(1990, 1, 1),
         validators=[validators.InputRequired()])
-    End = DateField(label=' ',
+    Train_end = DateField(label=' ',
         format='%m/%d/%Y', default= datetime(2020, 8, 1),
         validators=[validators.InputRequired()])
     Predictor_1 = SelectField('independent (X1)',
@@ -138,25 +138,23 @@ def an_3():
     print("Server received request for plot...")
     form = InputForm(request.form)
 
-    form.validate()
-    model_start = form.Start.data
-    model_end = form.End.data
+    model_start = form.Train_start.data
+    model_end = form.Train_end.data
     model_target = form.Target.data
     model_predictor_1 = form.Predictor_1.data
+    model_predictor_2 = form.Predictor_2.data
+    model_predictor_3 = form.Predictor_3.data
     print('Building a plot')
     print('Period:', model_start, model_end)
     print('Target selection:', model_target)
-    image = regression_model.reg_plot(model_target, model_predictor_1)
-
-    model_output = regression_model.reg_output()
-    print(model_output)
+    print('Predictor 1:', model_predictor_1)
 
     if request.method == 'POST' and form.validate():
-        results = 1
-        total = 1
+        image = regression_model.reg_plot(model_target, model_predictor_1, model_predictor_2, model_predictor_3, model_start, model_end)
+        model_output = regression_model.reg_output(model_target, model_predictor_1, model_predictor_2, model_predictor_3)
     else:
-        results = []
-        total = []
+        image = regression_model.reg_plot()
+        model_output = []
     # image_time = datetime.now()
     # Return template and data
     return render_template("analysis_3.html", form=form, image=image, output = model_output)

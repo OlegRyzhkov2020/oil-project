@@ -18,20 +18,29 @@ import base64
 # Load clean data for analysis
 oil_data = pd.read_csv('data/model_data.csv')
 
-def quandl_data():
-    stocks = ['ORCL', 'TSLA', 'IBM','YELP', 'MSFT']
-    start = datetime(2014,1,1)
-    end = datetime(2014,3,28)
-    f = web.DataReader(stocks, 'yahoo',start,end)
-    WTI = quandl.get("FRED/DCOILWTICO", start_date="1990-01-01", end_date="2020-06-01",
-      authtoken="TYxF4cUU1kEsRwg8QEdu", collapse="monthly", order="asc")
+def hue_regplot(data, x, y, hue, palette=None, **kwargs):
+    from matplotlib.cm import get_cmap
 
-    return WTI
+    regplots = []
 
-def meta_data():
-    oil_data = pd.read_csv('data/model_data.csv')
-    corr = oil_data.corr(method='pearson')
-    return corr
+    levels = data[hue].unique()
+
+    if palette is None:
+        default_colors = get_cmap('Dark2')
+        palette = {k: default_colors(i) for i, k in enumerate(levels)}
+
+    for key in levels:
+        regplots.append(
+            sns.regplot(
+                x=x,
+                y=y,
+                data=data[data[hue] == key],
+                color=palette[key],
+                **kwargs
+            ).set(title='LINEAR REGRESSION')
+        )
+
+    return regplots
 
 def cancer_data():
     # Loading
@@ -44,7 +53,9 @@ def cancer_data():
     corr = breast_cancer_df[list(feature_names)].corr(method='pearson')
     return corr
 
-def reg_plot(model_target='WTI price', predictor_1 = "RIG_count"):
+def reg_plot(model_target='WTI price', predictor_1 = "RIG_count", predictor_2 = "None", predictor_3 = "None",
+            startdate = datetime.strptime('01011990', "%d%m%Y").date(),
+            enddate = datetime.strptime('01012019', "%d%m%Y").date()):
     oil_dates = pd.date_range('1990-01-01','2020-06-01',
               freq='MS').strftime("%Y-%b").tolist()
 
@@ -52,13 +63,25 @@ def reg_plot(model_target='WTI price', predictor_1 = "RIG_count"):
     oil_data['Unnamed: 0'] = oil_dates
     oil_data.rename(columns={'Unnamed: 0':'Date'}, inplace=True)
     oil_data = oil_data.set_index('Date')
-
+    oil_data.index = pd.to_datetime(oil_data.index).date
+    conditions = [
+    (oil_data.index<=enddate),
+    (oil_data.index>enddate)
+    ]
+    values = ['train', 'test']
+    oil_data['SPLIT'] = np.select(conditions, values)
 
     model_set = {
                 "WTI price": "WTI", "Brent price": "BRENT", "Arab Light": "ARAB_LIGHT",
                 "Oil_production": "USA_OIL", "RIG_count": "RIGS", "Fuel_consumpt": "FUEL_CONS"
                 }
+
     corr_data = oil_data[[model_set[model_target], model_set[predictor_1]]]
+    if predictor_2 != 'None':
+        corr_data = oil_data[[model_set[model_target], model_set[predictor_1], model_set[predictor_2]]]
+    if predictor_3 != 'None':
+        corr_data = oil_data[[model_set[model_target], model_set[predictor_1], model_set[predictor_2], model_set[predictor_3]]]
+
     X1 = oil_data[model_set[predictor_1]]
     X2 = oil_data['FUEL_CONS']
     X3 = oil_data['USA_OIL']
@@ -66,7 +89,8 @@ def reg_plot(model_target='WTI price', predictor_1 = "RIG_count"):
     f, axes = plt.subplots(2,2, figsize=(25, 10))
     sns.set_style("whitegrid")
 
-    sns.regplot(x=X1, y=y1, data=oil_data, scatter_kws={"color": "darkcyan"}, line_kws={"color": "red"}, ax=axes[0][0]).set(title='LINEAR REGRESSION')
+    hue_regplot(data=oil_data, x=X1, y=y1, hue='SPLIT', ax=axes[0][0])
+    # sns.regplot(x=X1, y=y1, data=oil_data, scatter_kws={"color": "darkcyan"}, line_kws={"color": "red"}, ax=axes[0][0]).set(title='LINEAR REGRESSION')
     sns.residplot(x=X1, y=y1, data=oil_data, scatter_kws={"color": "darkcyan"}, line_kws={"color": "red"}, ax=axes[0][1]).set(title='RESIDUALS')
     sns.lineplot(data=y1, ax=axes[1][0]).set(title='Time Series,'+ model_set[model_target])
     sns.heatmap(corr_data.corr(), annot=True, cmap="summer", ax=axes[1][1]).set(title='CORRELATION MATRIX')
@@ -84,7 +108,7 @@ def reg_plot(model_target='WTI price', predictor_1 = "RIG_count"):
     # bytes_image.seek(0)
     return pngImageB64String
 
-def reg_output():
+def reg_output(model_target='WTI price', predictor_1 = "RIG_count", predictor_2 = "None", predictor_3 = "None"):
     oil_dates = pd.date_range('1990-01-01','2020-06-01',
               freq='MS').strftime("%Y-%b").tolist()
 
@@ -92,14 +116,20 @@ def reg_output():
     oil_data['Unnamed: 0'] = oil_dates
     oil_data.rename(columns={'Unnamed: 0':'Date'}, inplace=True)
     oil_data = oil_data.set_index('Date')
-
+    oil_data.index = pd.to_datetime(oil_data.index).date
 
     model_set = {
                 "WTI price": "WTI", "Brent price": "BRENT", "Arab Light": "ARAB_LIGHT",
                 "Oil_production": "USA_OIL", "RIG_count": "RIGS", "Fuel_consumpt": "FUEL_CONS"
                 }
-    X = oil_data[["RIGS","FUEL_CONS","USA_OIL"]]
-    y = oil_data["ARAB_LIGHT"]
+    pred_list = [model_set[predictor_1]]
+    if predictor_2 != 'None':
+        pred_list.append(model_set[predictor_2])
+    if predictor_3 != 'None':
+        pred_list.append(model_set[predictor_3])
+
+    X = oil_data[pred_list]
+    y = oil_data[model_set[model_target]]
     b0 = sm.add_constant(X) ## adding intercept to model
     model = sm.OLS(y, b0).fit()
     params = model.params.to_dict()
