@@ -22,4 +22,4 @@ d3.json("./data/land-110m.json",function(error,world) {
         .attr("d", path);
 
 
-})
+});
