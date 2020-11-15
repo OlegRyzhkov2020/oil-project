@@ -32,14 +32,14 @@ class InputForm(Form):
         format='%m/%d/%Y', default= datetime(1990, 1, 1),
         validators=[validators.InputRequired()])
     Train_end = DateField(label=' ',
-        format='%m/%d/%Y', default= datetime(2020, 8, 1),
+        format='%m/%d/%Y', default= datetime(2019, 1, 1),
         validators=[validators.InputRequired()])
     Predictor_1 = SelectField('independent (X1)',
-                    choices=['Oil_production', 'RIG_count' ])
+                    choices=['RIG_count', 'Oil_production', 'RIG_count', 'Fuel_consump' ])
     Predictor_2 = SelectField('independent (X2)',
-                    choices=['None', 'RIG_count', 'Oil_production'])
+                    choices=['None', 'RIG_count', 'Oil_production', 'Fuel_consump'])
     Predictor_3 = SelectField('independent (X3)',
-                    choices=['None', 'Fuel_consumpt', 'Oil_production', 'RIG_count' ])
+                    choices=['None', 'Fuel_consump', 'Oil_production', 'RIG_count' ])
 
 #######################################################
 # Flask Routes
@@ -150,14 +150,17 @@ def an_3():
     print('Predictor 1:', model_predictor_1)
 
     if request.method == 'POST' and form.validate():
+        print('Predictor 1:', model_predictor_1)
         image = regression_model.reg_plot(model_target, model_predictor_1, model_predictor_2, model_predictor_3, model_start, model_end)
         model_output = regression_model.reg_output(model_target, model_predictor_1, model_predictor_2, model_predictor_3)
+        prediction = regression_model.reg_prediction(model_target, model_predictor_1, model_predictor_2, model_predictor_3, model_start, model_end)
     else:
         image = regression_model.reg_plot()
-        model_output = []
+        model_output = {}
+        prediction = {}
     # image_time = datetime.now()
     # Return template and data
-    return render_template("analysis_3.html", form=form, image=image, output = model_output)
+    return render_template("analysis_3.html", form=form, image=image, output = model_output, result= prediction)
 
 # Route that will trigger the facts html page
 @app.route("/findings")

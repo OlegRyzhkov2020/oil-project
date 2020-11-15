@@ -1,7 +1,5 @@
 import io
-import quandl
 import pandas as pd
-import pandas_datareader.data as web
 from datetime import datetime
 import matplotlib
 matplotlib.use('Agg')
@@ -10,10 +8,14 @@ import seaborn as sns
 import numpy as np
 from scipy import stats
 import statsmodels.api as sm
-from sklearn.datasets import load_breast_cancer
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 import base64
+
+from sklearn.linear_model import LinearRegression
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import mean_squared_error
+
 
 # Load clean data for analysis
 oil_data = pd.read_csv('data/model_data.csv')
@@ -42,17 +44,6 @@ def hue_regplot(data, x, y, hue, palette=None, **kwargs):
 
     return regplots
 
-def cancer_data():
-    # Loading
-    data = load_breast_cancer()
-    breast_cancer_df = pd.DataFrame(data['data'])
-    breast_cancer_df.columns = data['feature_names']
-    breast_cancer_df['target'] = data['target']
-    breast_cancer_df['diagnosis'] = [data['target_names'][x] for x in data['target']]
-    feature_names= data['feature_names']
-    corr = breast_cancer_df[list(feature_names)].corr(method='pearson')
-    return corr
-
 def reg_plot(model_target='WTI price', predictor_1 = "RIG_count", predictor_2 = "None", predictor_3 = "None",
             startdate = datetime.strptime('01011990', "%d%m%Y").date(),
             enddate = datetime.strptime('01012019', "%d%m%Y").date()):
@@ -65,15 +56,15 @@ def reg_plot(model_target='WTI price', predictor_1 = "RIG_count", predictor_2 = 
     oil_data = oil_data.set_index('Date')
     oil_data.index = pd.to_datetime(oil_data.index).date
     conditions = [
-    (oil_data.index<=enddate),
-    (oil_data.index>enddate)
+                (oil_data.index<=enddate),
+                (oil_data.index>enddate)
     ]
     values = ['train', 'test']
     oil_data['SPLIT'] = np.select(conditions, values)
 
     model_set = {
                 "WTI price": "WTI", "Brent price": "BRENT", "Arab Light": "ARAB_LIGHT",
-                "Oil_production": "USA_OIL", "RIG_count": "RIGS", "Fuel_consumpt": "FUEL_CONS"
+                "Oil_production": "USA_OIL", "RIG_count": "RIGS", "Fuel_consump": "FUEL_CONS"
                 }
 
     corr_data = oil_data[[model_set[model_target], model_set[predictor_1]]]
@@ -120,7 +111,7 @@ def reg_output(model_target='WTI price', predictor_1 = "RIG_count", predictor_2 
 
     model_set = {
                 "WTI price": "WTI", "Brent price": "BRENT", "Arab Light": "ARAB_LIGHT",
-                "Oil_production": "USA_OIL", "RIG_count": "RIGS", "Fuel_consumpt": "FUEL_CONS"
+                "Oil_production": "USA_OIL", "RIG_count": "RIGS", "Fuel_consump": "FUEL_CONS"
                 }
     pred_list = [model_set[predictor_1]]
     if predictor_2 != 'None':
@@ -142,19 +133,69 @@ def reg_output(model_target='WTI price', predictor_1 = "RIG_count", predictor_2 
         i=i+1
     return params
 
-# correlation matrix plot
-def corr_plot(corr):
+def reg_prediction(model_target='WTI price', predictor_1 = "RIG_count", predictor_2 = "None", predictor_3 = "None",
+            startdate = datetime.strptime('01011990', "%d%m%Y").date(),
+            enddate = datetime.strptime('01012019', "%d%m%Y").date()):
+    model_set = {
+                "WTI price": "WTI", "Brent price": "BRENT", "Arab Light": "ARAB_LIGHT",
+                "Oil_production": "USA_OIL", "RIG_count": "RIGS", "Fuel_consump": "FUEL_CONS"
+                }
+    oil_dates = pd.date_range('1990-01-01','2020-06-01',
+              freq='MS').strftime("%Y-%b").tolist()
 
-    f, ax = plt.subplots(figsize=(11, 9))
-    cmap = sns.diverging_palette(220, 10, as_cmap=True)
-    mask = np.zeros_like(corr, dtype=np.bool)
-    mask[np.triu_indices_from(mask)] = True
+    oil_data = pd.read_csv('data/model_data.csv')
+    oil_data['Unnamed: 0'] = oil_dates
+    oil_data.rename(columns={'Unnamed: 0':'Date'}, inplace=True)
+    oil_data = oil_data.set_index('Date')
+    oil_data.index = pd.to_datetime(oil_data.index).date
 
-    sns.heatmap(corr, mask=mask, cmap=cmap, vmax=.3, center=0,
-                square=True, linewidths=.5, cbar_kws={"shrink": .5})
+    conditions = [
+    (oil_data.index<=enddate),
+    (oil_data.index>enddate)
+    ]
+    values = ['train', 'test']
+    oil_data['SPLIT'] = np.select(conditions, values)
+    oil_train = oil_data[oil_data['SPLIT'] == 'train']
+    oil_test = oil_data[oil_data['SPLIT'] == 'test']
+    y_train = oil_train[model_set[model_target]].values.reshape(-1, 1)
+    y_test = oil_test[model_set[model_target]].values.reshape(-1, 1)
 
-    # save your figure into a bytes object to expose it via flask
-    bytes_image = io.BytesIO()
-    plt.savefig(bytes_image, format='png')
-    bytes_image.seek(0)
-    return bytes_image
+    X_train = oil_train[[model_set[predictor_1]]]
+    X_test = oil_test[[model_set[predictor_1]]]
+
+    if predictor_2 != 'None':
+        X_train = oil_train[[model_set[predictor_1], model_set[predictor_2]]]
+        X_test = oil_test[[model_set[predictor_1], model_set[predictor_2]]]
+    if predictor_3 != 'None':
+        X_train = oil_train[[model_set[predictor_1], model_set[predictor_2], model_set[predictor_3]]]
+        X_test = oil_test[[model_set[predictor_1], model_set[predictor_2], model_set[predictor_3]]]
+
+    # Create a StandardScaler model and fit it to the training data
+
+
+    X_scaler = StandardScaler().fit(X_train)
+    y_scaler = StandardScaler().fit(y_train)
+
+    # Transform the training and testing data using the X_scaler and y_scaler models
+    X_train_scaled = X_scaler.transform(X_train)
+    X_test_scaled = X_scaler.transform(X_test)
+    y_train_scaled = y_scaler.transform(y_train)
+    y_test_scaled = y_scaler.transform(y_test)
+
+    # Fit the model to the training data and calculate the scores for the training and testing data
+
+    model = LinearRegression()
+
+    model.fit(X_train_scaled, y_train_scaled)
+    predictions = model.predict(X_test_scaled)
+
+
+    training_score = model.score(X_train_scaled, y_train_scaled)
+    testing_score = model.score(X_test_scaled, y_test_scaled)
+    MSE = mean_squared_error(y_test_scaled, predictions)
+
+    output_dict = {
+        "Training score":training_score, "Test score": testing_score, "Mean Square Error": MSE
+    }
+
+    return output_dict

@@ -69,6 +69,12 @@
                   <th>Dataset</th>
                   <th>Prediction Score</th>
                 </tr>
+                {% for key, value in result.items() %}
+                </tr>
+                  <td>{{ key }}</td>
+                  <td>{{ '%0.2f' % value }}</td>
+                </tr>
+               {% endfor %}
               </table>
               {% endif %}
             </div>
