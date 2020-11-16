@@ -8,7 +8,7 @@ from datetime import datetime
 from wtforms import Form, DateField, SelectField, validators
 from flask_pymongo import PyMongo
 
-import regression_model
+import regression_model, ml_model
 
 #######################################################
 # Flask Setup
@@ -41,6 +41,19 @@ class InputForm(Form):
     Predictor_3 = SelectField('independent (X3)',
                     choices=['None', 'Fuel_consump', 'Oil_production', 'RIG_count' ])
 
+class InputFormML(Form):
+    Target = SelectField('dependent (Y)',
+                    choices=["Baker Hughes", "Chevron", "Conoco Philis",
+                    "Exxon Mobile", "EOG resources", "Valero energy" ])
+    Train_start = DateField(label=' ',
+        format='%m/%d/%Y', default= datetime(1990, 1, 1),
+        validators=[validators.InputRequired()])
+    Train_end = DateField(label=' ',
+        format='%m/%d/%Y', default= datetime(2019, 1, 1),
+        validators=[validators.InputRequired()])
+    Test_end = DateField(label=' ',
+        format='%m/%d/%Y', default= datetime(2019, 1, 1),
+        validators=[validators.InputRequired()])
 #######################################################
 # Flask Routes
 #######################################################
@@ -161,6 +174,30 @@ def an_3():
     # image_time = datetime.now()
     # Return template and data
     return render_template("analysis_3.html", form=form, image=image, output = model_output, result= prediction)
+
+@app.route("/an_4", methods=['GET','POST'])
+def an_4():
+
+    formML = InputFormML(request.form)
+
+    model_target = formML.Target.data
+    model_start = formML.Train_start.data
+    model_end = formML.Train_end.data
+    model_test = formML.Test_end.data
+
+
+
+    if request.method == 'POST' and formML.validate():
+
+        image = ml_model.cluster_plot(model_target, model_start, model_end)
+        # prediction = regression_model.reg_prediction(model_target, model_predictor_1, model_predictor_2, model_predictor_3, model_start, model_end)
+    else:
+        image = ml_model.cluster_plot()
+        model_output = {}
+        prediction = {}
+    # Return template and data
+    return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction)
+
 
 # Route that will trigger the facts html page
 @app.route("/findings")

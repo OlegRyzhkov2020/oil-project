@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Machine Learning Analysis</title>
+  <!-- <link rel="stylesheet" media="screen" href="static/bootstrap.min.css">
+  <link rel="stylesheet" href="static/bootstrap-theme.min.css"> -->
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+  <script type=text/javascript src="{{url_for('static', filename='js/regression.js') }}"></script>
+
+</head>
+<body>
+  {% extends "menu.html" %}
+  {% block content %}
+  <div class="container-fluid padding first-container">
+    <span class="anchor" id="Analysis_1"></span>
+
+    <div class="row">
+      <div class="col-md-3 text-center" >
+        <h5>Energy Company Intro</h5>
+        <!-- <img style="height: 500px" src="http://localhost:5000/plots/regression?{{time}}"> -->
+      </div>
+      <div class="col-md-5 text-center">
+        <h5>Classification Analysis</h5>
+        <img style="height: 500px" src={{image}}>
+      </div>
+      <div class="col-md-4" >
+        <div class="text-center" >
+          <h5>Model Tuning</h5>
+        </div>
+        <form action = "http://localhost:5000/an_3" method = "POST">
+
+          <p>Input model features and parameters:<p>
+            <div class="form-group" >
+              {% for field in form %}
+              <table>
+                <tr>
+                  <td>{{ field.name }}</td><td>{{ field }}</td>
+                  <td>{{ field.label }}</td>
+                </tr>
+              </table>
+              {% endfor %}
+              <p><input type = "submit" value = "submit" /></p>
+              <div>
+              </form>
+              <div class="text-center" >
+                <h5>Model Output</h5>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      {% endblock %}
+    </body>
+    </html>
