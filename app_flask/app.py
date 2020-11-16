@@ -42,13 +42,13 @@ class InputForm(Form):
                     choices=['None', 'Fuel_consump', 'Oil_production', 'RIG_count' ])
 
 class InputFormML(Form):
-    Target = SelectField('dependent (Y)',
+    Target_class = SelectField('dependent (Y)',
                     choices=["Baker Hughes", "Chevron", "Conoco Philis",
                     "Exxon Mobile", "EOG resources", "Valero energy" ])
-    Train_start = DateField(label=' ',
+    Training_start = DateField(label=' ',
         format='%m/%d/%Y', default= datetime(1990, 1, 1),
         validators=[validators.InputRequired()])
-    Train_end = DateField(label=' ',
+    Training_end = DateField(label=' ',
         format='%m/%d/%Y', default= datetime(2019, 1, 1),
         validators=[validators.InputRequired()])
     Test_end = DateField(label=' ',
@@ -148,7 +148,7 @@ def an_2():
 
 @app.route("/an_3", methods=['GET','POST'])
 def an_3():
-    print("Server received request for plot...")
+    print("Server received request for regression model")
     form = InputForm(request.form)
 
     model_start = form.Train_start.data
@@ -157,20 +157,65 @@ def an_3():
     model_predictor_1 = form.Predictor_1.data
     model_predictor_2 = form.Predictor_2.data
     model_predictor_3 = form.Predictor_3.data
-    print('Building a plot')
-    print('Period:', model_start, model_end)
-    print('Target selection:', model_target)
-    print('Predictor 1:', model_predictor_1)
+
+    if "submit-randomforest" in request.form:
+        formML = InputFormML(request.form)
+
+        ml_target = formML.Target_class.data
+        ml_start = formML.Training_start.data
+        ml_end = formML.Training_end.data
+        ml_test = formML.Test_end.data
+
+        print("submit-randomforest")
+        if request.method == 'POST' and formML.validate():
+            print('POST TRUE: processing for classification plot request with form data')
+            image = ml_model.cluster_plot(ml_target, ml_start, ml_end)
+            model_output = {}
+            prediction = {}
+        else:
+            print('POST FALSE: processing for classification plot request with default data')
+            image = ml_model.cluster_plot()
+            model_output = {}
+            prediction = {}
+        return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction)
+
+
+    elif "submit-classification" in request.form:
+        formML = InputFormML(request.form)
+
+        ml_target = formML.Target_class.data
+        ml_start = formML.Training_start.data
+        ml_end = formML.Training_end.data
+        ml_test = formML.Test_end.data
+
+        print("submit-classification")
+        if request.method == 'POST' and formML.validate():
+            print('POST TRUE: processing for classification plot request with form data')
+            image = ml_model.cluster_plot(ml_target, ml_start, ml_end)
+            model_output = {}
+            prediction = {}
+        else:
+            print('POST FALSE: processing for classification plot request with default data')
+            image = ml_model.cluster_plot()
+            model_output = {}
+            prediction = {}
+        return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction)
+
+    print('Reg Target selection:', model_target)
+    print('Reg Period:', model_start, model_end)
+    print('Reg Request method:', request.method)
 
     if request.method == 'POST' and form.validate():
-        print('Predictor 1:', model_predictor_1)
+        print('POST TRUE: processing for regreesion plot request with form data')
         image = regression_model.reg_plot(model_target, model_predictor_1, model_predictor_2, model_predictor_3, model_start, model_end)
         model_output = regression_model.reg_output(model_target, model_predictor_1, model_predictor_2, model_predictor_3)
         prediction = regression_model.reg_prediction(model_target, model_predictor_1, model_predictor_2, model_predictor_3, model_start, model_end)
     else:
+        print('POST FALSE: processing for regreesion plot request with daefault data')
         image = regression_model.reg_plot()
         model_output = {}
         prediction = {}
+
     # image_time = datetime.now()
     # Return template and data
     return render_template("analysis_3.html", form=form, image=image, output = model_output, result= prediction)
@@ -178,20 +223,29 @@ def an_3():
 @app.route("/an_4", methods=['GET','POST'])
 def an_4():
 
+    print("Server received request for classification model")
     formML = InputFormML(request.form)
 
-    model_target = formML.Target.data
-    model_start = formML.Train_start.data
-    model_end = formML.Train_end.data
-    model_test = formML.Test_end.data
+    ml_target = formML.Target_class.data
+    ml_start = formML.Training_start.data
+    ml_end = formML.Training_end.data
+    ml_test = formML.Test_end.data
 
+    if "submit-regression" in request.form:
+        print("submit-regression")
 
+    elif "submit-classification" in request.form:
+        print("submit-classification")
+
+    print('ML Target selection:', ml_target)
+    print('ML Request method:', request.method)
 
     if request.method == 'POST' and formML.validate():
-
-        image = ml_model.cluster_plot(model_target, model_start, model_end)
+        print('POST TRUE: processing for classification plot request with form data')
+        image = ml_model.cluster_plot(ml_target, ml_start, ml_end)
         # prediction = regression_model.reg_prediction(model_target, model_predictor_1, model_predictor_2, model_predictor_3, model_start, model_end)
     else:
+        print('POST FALSE: processing for classification plot request with default data')
         image = ml_model.cluster_plot()
         model_output = {}
         prediction = {}

@@ -23,7 +23,7 @@
         <!-- <img style="height: 500px" src="http://localhost:5000/plots/regression?{{time}}"> -->
       </div>
       <div class="col-md-5 text-center">
-        <h5>Classification Analysis</h5>
+        <h5>Classification Modelling</h5>
         <img style="height: 500px" src={{image}}>
       </div>
       <div class="col-md-4" >
@@ -42,13 +42,27 @@
                 </tr>
               </table>
               {% endfor %}
-              <p><input type = "submit" value = "submit" /></p>
+              <p><input type = "submit" name="submit-classification" value = "Clustering" />
+                 <input type = "submit" name="submit-randomforest" value = "Predicting" /></p>
               <div>
               </form>
               <div class="text-center" >
                 <h5>Model Output</h5>
               </div>
-
+              {% if output|length > 0 %}
+              <table id="t01">
+                <tr>
+                  <th>Features</th>
+                  <th>Score</th>
+                </tr>
+                {% for key, value in result.items() %}
+                </tr>
+                  <td>{{ key }}</td>
+                  <td>{{ '%0.2f' % value }}</td>
+                </tr>
+               {% endfor %}
+              </table>
+              {% endif %}
             </div>
           </div>
         </div>
