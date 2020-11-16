@@ -19,6 +19,7 @@ from sklearn.metrics import mean_squared_error
 
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import MinMaxScaler
+from sklearn.ensemble import RandomForestRegressor
 
 def hue_regplot(data, x, y, hue, palette=None, **kwargs):
     from matplotlib.cm import get_cmap
@@ -91,7 +92,8 @@ def cluster_plot(model_target='Baker Hughes', startdate = datetime.strptime('010
     target_scaled = model_target+'_scaled'
     data = stocks_data(startdate, enddate)
     y1 = data[['WTI',model_set[model_target]]]
-    f, axes = plt.subplots(1,1, figsize=(11, 8))
+    fig, (ax1, ax2) = plt.subplots(2,1, figsize=(18, 12))
+
     # sns.set_style("whitegrid")
     # sns.lineplot(data=y1).set(title='Time Series, Daily Prices', ylabel='Price')
     scaler=MinMaxScaler()
@@ -102,10 +104,13 @@ def cluster_plot(model_target='Baker Hughes', startdate = datetime.strptime('010
     colors = ["baby blue", "amber", "scarlet", "grey","milk chocolate", "windows blue"]
     palette=sns.xkcd_palette(colors)
     # image = sns.lmplot(x="WTI", y=target_scaled,ci=None,palette=palette, hue="cluster",fit_reg=0 ,data=data).set(title='CLUSTER ANALYSIS on '+model_target)
-    hue_regplot(data=data, x="WTI", y=target_scaled, hue="cluster",  fit_reg=0)
+    # hue_regplot(data=data, x="WTI", y=target_scaled, hue="cluster",  fit_reg=0)
+    hue_regplot(data=data, x="WTI", y=target_scaled, hue="cluster",  fit_reg=0, ax=ax1)
+    sns.lineplot(data=y1).set(title='Time Series, Daily Prices', ylabel='Price')
+
     # save your figure into a bytes object to expose it via flask
     bytes_image = io.BytesIO()
-    FigureCanvas(f).print_png(bytes_image)
+    FigureCanvas(fig).print_png(bytes_image)
 
     # Encode PNG image to base64 string
     pngImageB64String = "data:image/png;base64,"
@@ -113,71 +118,75 @@ def cluster_plot(model_target='Baker Hughes', startdate = datetime.strptime('010
 
     return pngImageB64String
 
-# def randomForest_plot(model_target='EOG resources', startdate = datetime.strptime('01011990', "%d%m%Y").date(),
-#                 middate = datetime.strptime('01112019', "%d%m%Y").date(), enddate = datetime.strptime('11112020', "%d%m%Y").date()):
-#     model_set = {
-#                 "Baker Hughes": "baker_close", "Chevron": "chevron_close", "Conoco Philis": "conoco_close",
-#                 "Exxon Mobile": "exxon_close", "EOG resources": "eog_close", "Valero energy": "valero_close"
-#                 }
-#     model_x = list(model_set.values())
-#     model_x.remove(model_set[model_target])
-#     model_x.append('WTI')
-#
-#     target_scaled = model_target+'_scaled'
-#     oil_data = stocks_data(startdate, enddate)
-#     oil_data.index = pd.to_datetime(oil_data.index).date
-#
-#     conditions = [
-#     (oil_data.index <= middate),
-#     (oil_data.index > middate)
-#     ]
-#     values = ['train', 'test']
-#     oil_data['SPLIT'] = np.select(conditions, values)
-#     oil_train = oil_data[oil_data['SPLIT'] == 'train']
-#     oil_test = oil_data[oil_data['SPLIT'] == 'test']
-#     y_train = oil_train[model_set[model_target]].values.reshape(-1, 1)
-#     y_test = oil_test[model_set[model_target]].values.reshape(-1, 1)
-#
-#     X_train = oil_train[model_x]
-#     X_test = oil_test[model_x]
-#
-#     # print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
-#
-#     regressor = RandomForestRegressor(n_estimators=200, max_depth=5 )
-#
-#     # Train data
-#     clf=regressor.fit(X_train, y_train)
-#
-#     # Predict
-#     y_pred=regressor.predict(X_test)
-#     y_pred=pd.DataFrame(y_pred)
-#
-#     plt_train=plt.scatter(X_train["WTI"],y_train,   color='grey')
-#     plt_pred=plt.scatter(oil_data["WTI"], regressor.predict(oil_data[model_x]),  color='black')
-#     plt_test=plt.scatter(X_test["WTI"],y_test,   color='green')
-#
-#
-#     plt.xlabel("WTI")
-#     plt.ylabel(model_target + ' share price')
-#     plt.legend((plt_train, plt_test,plt_pred),("train data", "test data","prediction"))
-#
-#
-#     MSE = np.mean((regressor.predict(X_train) - y_train) ** 2)
-#
-#     model_dict = { "Mean Square Error": MSE }
-#
-#     importances=regressor.feature_importances_
-#     indices=list(X_train)
-#
-#     for f in range(X_train.shape[1]):
-#         model_dict.update({indices[f] : importances[f]})
-#
-#     # save your figure into a bytes object to expose it via flask
-#     bytes_image = io.BytesIO()
-#     FigureCanvas(plt).print_png(bytes_image)
-#
-#     # Encode PNG image to base64 string
-#     pngImageB64String = "data:image/png;base64,"
-#     pngImageB64String += base64.b64encode(bytes_image.getvalue()).decode('utf8')
-#
-#     return sorted(model_dict.items(), key=lambda x: x[1], reverse=True), pngImageB64String
+def randomForest_plot(model_target='EOG resources', startdate = datetime.strptime('01011990', "%d%m%Y").date(),
+                middate = datetime.strptime('01112019', "%d%m%Y").date(), enddate = datetime.strptime('11112020', "%d%m%Y").date()):
+    model_set = {
+                "Baker Hughes": "baker_close", "Chevron": "chevron_close", "Conoco Philis": "conoco_close",
+                "Exxon Mobile": "exxon_close", "EOG resources": "eog_close", "Valero energy": "valero_close"
+                }
+    model_x = list(model_set.values())
+    model_x.remove(model_set[model_target])
+    model_x.append('WTI')
+
+    target_scaled = model_target+'_scaled'
+    oil_data = stocks_data(startdate, enddate)
+    oil_data.index = pd.to_datetime(oil_data.index).date
+
+    conditions = [
+    (oil_data.index <= middate),
+    (oil_data.index > middate)
+    ]
+    values = ['train', 'test']
+    oil_data['SPLIT'] = np.select(conditions, values)
+    oil_train = oil_data[oil_data['SPLIT'] == 'train']
+    oil_test = oil_data[oil_data['SPLIT'] == 'test']
+    y_train = oil_train[model_set[model_target]].values.reshape(-1, 1)
+    y_test = oil_test[model_set[model_target]].values.reshape(-1, 1)
+
+    X_train = oil_train[model_x]
+    X_test = oil_test[model_x]
+
+
+    print(model_target, middate)
+
+    print(X_train.shape, X_test.shape, y_train.shape, y_test.shape)
+
+    regressor = RandomForestRegressor(n_estimators=200, max_depth=5 )
+
+    # Train data
+    clf=regressor.fit(X_train, y_train)
+
+    # Predict
+    y_pred=regressor.predict(X_test)
+    y_pred=pd.DataFrame(y_pred)
+
+    fig, ax = plt.subplots( nrows=1, ncols=1, figsize=(11, 8))  # create figure & 1 axis
+
+    plt_train = ax.scatter(X_train["WTI"],y_train,   color='grey')
+    plt_pred = ax.scatter(oil_data["WTI"], regressor.predict(oil_data[model_x]),  color='black')
+    plt_test = ax.scatter(X_test["WTI"],y_test,   color='green')
+
+    ax.set_xlabel("WTI")
+    ax.set_ylabel(model_target + ' share price')
+    ax.legend((plt_train, plt_test,plt_pred),("train data", "test data","prediction"))
+
+
+    MSE = np.mean((regressor.predict(X_train) - y_train) ** 2)
+
+    model_dict = { "Mean Square Error": MSE }
+
+    importances=regressor.feature_importances_
+    indices=list(X_train)
+
+    for f in range(X_train.shape[1]):
+        model_dict.update({indices[f] : importances[f]})
+
+    # save your figure into a bytes object to expose it via flask
+    bytes_image = io.BytesIO()
+    FigureCanvas(fig).print_png(bytes_image)
+
+    # Encode PNG image to base64 string
+    pngImageB64String = "data:image/png;base64,"
+    pngImageB64String += base64.b64encode(bytes_image.getvalue()).decode('utf8')
+
+    return sorted(model_dict.items(), key=lambda x: x[1], reverse=True), pngImageB64String

@@ -49,16 +49,16 @@
               <div class="text-center" >
                 <h5>Model Output</h5>
               </div>
-              {% if output|length > 0 %}
+              {% if result|length > 0 %}
               <table id="t01">
                 <tr>
                   <th>Features</th>
                   <th>Score</th>
                 </tr>
-                {% for key, value in result.items() %}
+                {% for value in result %}
                 </tr>
-                  <td>{{ key }}</td>
-                  <td>{{ '%0.2f' % value }}</td>
+                  <td>{{ value[0] }}</td>
+                  <td>{{ '%0.2f' % value[1] }}</td>
                 </tr>
                {% endfor %}
               </table>

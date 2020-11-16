@@ -169,15 +169,18 @@ def an_3():
         print("submit-randomforest")
         if request.method == 'POST' and formML.validate():
             print('POST TRUE: processing for classification plot request with form data')
-            image = ml_model.cluster_plot(ml_target, ml_start, ml_end)
-            model_output = {}
-            prediction = {}
+            print('Target:', ml_target)
+            print('Period:', ml_start, ml_end, ml_test)
+            print('Requesting the function random forest plot')
+            prediction, image = ml_model.randomForest_plot(ml_target, ml_start, ml_end, ml_test)
+            print(prediction)
+            return render_template("analysis_4.html", form=formML, image=image, result= prediction)
         else:
             print('POST FALSE: processing for classification plot request with default data')
             image = ml_model.cluster_plot()
             model_output = {}
             prediction = {}
-        return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction)
+            return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction)
 
 
     elif "submit-classification" in request.form:
