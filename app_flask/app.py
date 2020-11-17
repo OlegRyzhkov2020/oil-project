@@ -164,13 +164,14 @@ def an_3():
                     }
 
         target_collection = target_set[ml_target]
+
         target_intro = []
         id = 1
         for s in target_collection.find():
             target_intro.append({'ID':id, 'News_Title' : s['News_Title'],
                                 'News_Paragraph': s['News_Paragraph'],
                                 'Image_URL':s['Image_URL']})
-        print(target_intro)
+        # print(target_intro)
 
     if "submit-randomforest" in request.form:
 

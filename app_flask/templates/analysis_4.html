@@ -3,12 +3,21 @@
 <head>
   <meta charset="utf-8">
   <title>Machine Learning Analysis</title>
-  <!-- <link rel="stylesheet" media="screen" href="static/bootstrap.min.css">
-  <link rel="stylesheet" href="static/bootstrap-theme.min.css"> -->
 
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
-  <script type=text/javascript src="{{url_for('static', filename='js/regression.js') }}"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="./static/js/plot.js"></script>
+
+  <script>
+      var modelData = {{ result | tojson }};
+      console.log(modelData);
+      if (modelData && modelData.length) {
+        window.addEventListener('load', function () {
+          buildMLPlot(modelData);
+        })
+      }
+  </script>
 
 </head>
 <body>
@@ -44,7 +53,7 @@
         </div>
         <form action = "http://localhost:5000/an_3" method = "POST">
 
-          <p>Input model parameters:<p>
+          <p>Data Source: Python Quandl and Yahoo Finance APIs<p>
             <div class="form-group" >
               {% for field in form %}
               <table>
@@ -56,13 +65,13 @@
               {% endfor %}
               <br>
               <p><input type = "submit" name="submit-classification" value = "Clustering" />
-                 <input type = "submit" name="submit-randomforest" value = "RF Regressor" /></p>
+                 <input type = "submit" name="submit-randomforest"  value = "RF Regressor" /></p>
               <div>
               </form>
               <div class="text-center" >
                 <h5>Model Output</h5>
               </div>
-              {% if result|length > 0 %}
+              <!-- {% if result|length > 0 %}
               <table id="t01">
                 <tr>
                   <th>Features</th>
@@ -75,7 +84,10 @@
                 </tr>
                {% endfor %}
               </table>
-              {% endif %}
+              {% endif %} -->
+
+              <div id="bar"></div>
+
             </div>
           </div>
         </div>
@@ -83,5 +95,6 @@
 
 
       {% endblock %}
-    </body>
-    </html>
+
+  </body>
+  </html>
