@@ -18,12 +18,24 @@
     <span class="anchor" id="Analysis_1"></span>
 
     <div class="row">
-      <div class="col-md-3 text-center" >
+      <div class="col-md-3 text-center anyClass" >
         <h5>Energy Company Intro</h5>
-        <!-- <img style="height: 500px" src="http://localhost:5000/plots/regression?{{time}}"> -->
+        <p></p>
+        {% for news in data %}
+        <span class="picture" id=" {{news['ID']}}"></span>
+        <div class="card">
+          <img class="card-img-top" src={{news['Image_URL']}}>
+          <div class="card-body">
+            <h6 class="card-title">{{news['News_Title']}}</h6>
+            <p class="card-text">{{news['News_Paragraph']}}
+            </p>
+          </div>
+          <hr class="light">
+        </div>
+        {% endfor %}
       </div>
       <div class="col-md-5 text-center">
-        <h5>Classification Modelling</h5>
+        <h5>Exploratory Data Analysis</h5>
         <img style="height: 500px" src={{image}}>
       </div>
       <div class="col-md-4" >

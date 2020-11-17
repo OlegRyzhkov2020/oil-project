@@ -52,7 +52,7 @@ class InputFormML(Form):
         format='%m/%d/%Y', default= datetime(2019, 1, 1),
         validators=[validators.InputRequired()])
     Test_end = DateField(label=' ',
-        format='%m/%d/%Y', default= datetime(2019, 1, 1),
+        format='%m/%d/%Y', default= datetime(2020, 11, 1),
         validators=[validators.InputRequired()])
 #######################################################
 # Flask Routes
@@ -72,6 +72,7 @@ def home():
                             'Image_URL':s['Image_URL']})
         if id == 1: head_news = [s['News_Title'], s['News_Paragraph']]
         id +=1
+    latest_news = latest_news[21:]
     prices_data = mongo.db.oil_prices
     latest_prices = []
     for p in prices_data.find():
@@ -148,15 +149,6 @@ def an_2():
 
 @app.route("/an_3", methods=['GET','POST'])
 def an_3():
-    print("Server received request for regression model")
-    form = InputForm(request.form)
-
-    model_start = form.Train_start.data
-    model_end = form.Train_end.data
-    model_target = form.Target.data
-    model_predictor_1 = form.Predictor_1.data
-    model_predictor_2 = form.Predictor_2.data
-    model_predictor_3 = form.Predictor_3.data
 
     if "submit-randomforest" in request.form:
         formML = InputFormML(request.form)
@@ -204,6 +196,16 @@ def an_3():
             prediction = {}
         return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction)
 
+    print("Server received request for regression model")
+    form = InputForm(request.form)
+
+    model_start = form.Train_start.data
+    model_end = form.Train_end.data
+    model_target = form.Target.data
+    model_predictor_1 = form.Predictor_1.data
+    model_predictor_2 = form.Predictor_2.data
+    model_predictor_3 = form.Predictor_3.data
+
     print('Reg Target selection:', model_target)
     print('Reg Period:', model_start, model_end)
     print('Reg Request method:', request.method)
@@ -227,6 +229,17 @@ def an_3():
 def an_4():
 
     print("Server received request for classification model")
+    # Find records of data from the mongo database
+    baker_data = mongo.db.baker_news
+    baker_news = []
+    id = 1
+    for s in baker_data.find():
+        baker_news.append({'ID':id, 'News_Title' : s['News_Title'],
+                            'News_Paragraph': s['News_Paragraph'],
+                            'Image_URL':s['Image_URL']})
+
+    baker_news = baker_news[5:]
+    print(baker_news)
     formML = InputFormML(request.form)
 
     ml_target = formML.Target_class.data
@@ -253,7 +266,7 @@ def an_4():
         model_output = {}
         prediction = {}
     # Return template and data
-    return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction)
+    return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=baker_news)
 
 
 # Route that will trigger the facts html page
