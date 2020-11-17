@@ -110,6 +110,12 @@ def about_2():
     # Return template and data
     return render_template("about_2.html")
 
+@app.route("/data_journey")
+def about_3():
+
+    # Return template and data
+    return render_template("about_3.html")
+
 # Route that will trigger the facts html page
 @app.route("/dashboard_1")
 def dash_1():
