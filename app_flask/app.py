@@ -149,14 +149,30 @@ def an_2():
 
 @app.route("/an_3", methods=['GET','POST'])
 def an_3():
+    formML = InputFormML(request.form)
 
-    if "submit-randomforest" in request.form:
-        formML = InputFormML(request.form)
-
+    if request.method == 'POST' and formML.validate():
         ml_target = formML.Target_class.data
         ml_start = formML.Training_start.data
         ml_end = formML.Training_end.data
         ml_test = formML.Test_end.data
+
+        target_set = {
+                    "Baker Hughes": mongo.db.baker_intro, "Chevron": mongo.db.chevron_intro,
+                    "Conoco Philis": mongo.db.conoco_intro, "Exxon Mobile": mongo.db.exxon_intro,
+                    "EOG resources": mongo.db.eog_intro, "Valero energy": mongo.db.valero_intro
+                    }
+
+        target_collection = target_set[ml_target]
+        target_intro = []
+        id = 1
+        for s in target_collection.find():
+            target_intro.append({'ID':id, 'News_Title' : s['News_Title'],
+                                'News_Paragraph': s['News_Paragraph'],
+                                'Image_URL':s['Image_URL']})
+        print(target_intro)
+
+    if "submit-randomforest" in request.form:
 
         print("submit-randomforest")
         if request.method == 'POST' and formML.validate():
@@ -166,22 +182,17 @@ def an_3():
             print('Requesting the function random forest plot')
             prediction, image = ml_model.randomForest_plot(ml_target, ml_start, ml_end, ml_test)
             print(prediction)
-            return render_template("analysis_4.html", form=formML, image=image, result= prediction)
+            return render_template("analysis_4.html", form=formML, image=image, result= prediction, data=target_intro)
         else:
             print('POST FALSE: processing for classification plot request with default data')
             image = ml_model.cluster_plot()
             model_output = {}
             prediction = {}
-            return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction)
+            return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=target_intro)
 
 
     elif "submit-classification" in request.form:
-        formML = InputFormML(request.form)
 
-        ml_target = formML.Target_class.data
-        ml_start = formML.Training_start.data
-        ml_end = formML.Training_end.data
-        ml_test = formML.Test_end.data
 
         print("submit-classification")
         if request.method == 'POST' and formML.validate():
@@ -194,7 +205,7 @@ def an_3():
             image = ml_model.cluster_plot()
             model_output = {}
             prediction = {}
-        return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction)
+        return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=target_intro)
 
     print("Server received request for regression model")
     form = InputForm(request.form)

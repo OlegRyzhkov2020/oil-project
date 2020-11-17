@@ -20,7 +20,7 @@
     <div class="row">
       <div class="col-md-3 text-center anyClass" >
         <h5>Energy Company Intro</h5>
-        <p></p>
+        <br>
         {% for news in data %}
         <span class="picture" id=" {{news['ID']}}"></span>
         <div class="card">
@@ -44,7 +44,7 @@
         </div>
         <form action = "http://localhost:5000/an_3" method = "POST">
 
-          <p>Input model features and parameters:<p>
+          <p>Input model parameters:<p>
             <div class="form-group" >
               {% for field in form %}
               <table>
@@ -54,8 +54,9 @@
                 </tr>
               </table>
               {% endfor %}
+              <br>
               <p><input type = "submit" name="submit-classification" value = "Clustering" />
-                 <input type = "submit" name="submit-randomforest" value = "Predicting" /></p>
+                 <input type = "submit" name="submit-randomforest" value = "RF Regressor" /></p>
               <div>
               </form>
               <div class="text-center" >

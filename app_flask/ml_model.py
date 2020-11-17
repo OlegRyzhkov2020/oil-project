@@ -84,7 +84,7 @@ def stocks_data(startdate = datetime.strptime('01011990', "%d%m%Y").date(),
     return daily_data
 
 def cluster_plot(model_target='Baker Hughes', startdate = datetime.strptime('01011990', "%d%m%Y").date(),
-                enddate = datetime.strptime('11112020', "%d%m%Y").date()):
+                enddate = datetime.strptime('01012019', "%d%m%Y").date()):
     model_set = {
                 "Baker Hughes": "baker_close", "Chevron": "chevron_close", "Conoco Philis": "conoco_close",
                 "Exxon Mobile": "exxon_close", "EOG resources": "eog_close", "Valero energy": "valero_close"
