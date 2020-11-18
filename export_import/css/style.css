@@ -1,0 +1,18 @@
+/* remove default margin and padding from body */
+body {
+  padding: 0;
+  margin: 0;
+}
+
+/* set map, body, and html to 100% of the screen size  or can be in px*/
+#mapLeaflet,
+body,
+html {
+  height: 80%;
+}
+
+path {
+  fill: none;
+  stroke: #aaa;
+  stroke-width: 1px;
+}
