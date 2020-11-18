@@ -15,11 +15,11 @@
   {% extends "menu.html" %}
   {% block content %}
   <div class="container-fluid padding first-container">
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-md-12 text-center">
             <h5>Oil Data Analytics - A Machine Learning Journey</h5>
         </div>
-    </div>       
+    </div>        -->
     <div class="row">
         <div class="col-md-12 text-center">
             <!-- We also populate the timeline into this div at the top of the screen -->
@@ -33,7 +33,7 @@
         <!-- Placeholder for the evolving image and note / description -->
         <div class="col-md-4">
            <div id="image"></div>
-           <p id="note" style="text-align:center"></p>            
+           <p id="note" style="text-align:center"></p>
         </div>
     </div>
     <!--
@@ -132,12 +132,12 @@
                 possibilities = [];
 
                 performance.forEach(function(d) {
-                    
+
                     if (i < d.accuracy) {
                         possibilities.push({'act':0, 'duration':53});
                     }
                     else {
-                        possibilities.push({'act':1, 'duration':53}); 
+                        possibilities.push({'act':1, 'duration':53});
                     }
                 })
 
@@ -145,7 +145,7 @@
             };
         // This is the outer array, each element represents a 'probability'
         }
-        
+
         console.log(sched_objs)
 
         // Used for percentages by minute

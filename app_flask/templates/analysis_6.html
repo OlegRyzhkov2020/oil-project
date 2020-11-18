@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Time Series Analysis</title>
+
+  <script src ="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="http://d3js.org/topojson.v0.min.js"></script>
+  <script src= "https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+  <script type=text/javascript src="{{url_for('static', filename='js/config.js') }}"></script>
+
+</head>
+<body>
+  {% extends "menu.html" %}
+  {% block content %}
+  <div class="container-fluid padding first-container">
+    <span class="anchor" id="Analysis_6"></span>
+
+    <div class="row">
+        <div class="col-md-8 text-center" >
+          <h5>ARIMA MODEL, Daily Data Analysis</h5>
+
+          <!-- <canvas id="container" style="height: 400px; min-width: 310px"></canvas> -->
+
+        </div>
+
+        <div class="col-md-4 analysisClass text-center" >
+          <h5>Recurrent Neural Network Model, Daily Data Analysis</h5>
+          <div class="card">
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/R_exploration.png')}}">
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_1.png')}}">
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_2.png')}}">
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_3.png')}}">
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_4.png')}}">
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_5.png')}}">
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_6.png')}}">
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_7.png')}}">
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_8.png')}}">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  <script>
+
+  </script>
+  {% endblock %}
+</body>
+</html>

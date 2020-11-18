@@ -164,7 +164,7 @@ def an_3():
         ml_test = formML.Test_end.data
 
         target_set = {
-                    "Baker Hughes": mongo.db.baker_intro, "Chevron": mongo.db.chevron_intro,
+                    "Baker Hughes": mongo.db.baker_intro_new, "Chevron": mongo.db.chevron_intro_new,
                     "Conoco Philis": mongo.db.conoco_intro, "Exxon Mobile": mongo.db.exxon_intro,
                     "EOG resources": mongo.db.eog_intro, "Valero energy": mongo.db.valero_intro
                     }
@@ -286,6 +286,19 @@ def an_4():
     # Return template and data
     return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=baker_news)
 
+# Route that will trigger the hemisphere html page
+@app.route("/an_5")
+def an_5():
+
+    # Return template and data
+    return render_template("analysis_5.html")
+
+# Route that will trigger the hemisphere html page
+@app.route("/an_6")
+def an_6():
+
+    # Return template and data
+    return render_template("analysis_6.html")
 
 # Route that will trigger the facts html page
 @app.route("/findings")
