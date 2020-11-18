@@ -28,48 +28,27 @@
 
   <div class="container-fluid padding first-container">
     <!-- Content -->
-    <div class="row">
-        <div class="col-md-12">
-            <h3>Oil Production since 1990</h3>
-        </div>
+
+    <div class=row id="ui">
+      <output id="output">1990</output>
+      <button id="play">play</button>
+      <input id="sequence" type="range" min="1990", max="2019", value="1990", step="1" >
     </div>
-    <div class="row">
-        <div class="col-md-9">
-            <div class="row">
-                <div class="col-md-1">
-                    <button id="play" type="button" class="btn btn-success">play</button>
-                </div>
-                <div class="col-md-1">
-                    <output id="output">1990</output>
-                </div>
-                <div class="col-md-10">
-                    <input id="sequence" type="range" min="1990", max="2019", value="1990", step="1" >
-                </div>
-            </div>
-            <div class="row">
-                <div class=col-md-12 id="worldmap"><!--Map container--></div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div id="legend"><!--Legend container for the map--></div>
-            <p id='worldMapNote'>Note: Includes crude oil, shale oil, oil sands, condensates (lease condensate or gas condensates that require further refining) and NGLs (natural gas liquids - ethane, LPG and naphtha separated from the production of natural gas). Excludes liquid fuels from other sources such as biofuels and synthetic derivatives of coal and natural gas. This also excludes liquid fuel adjustment factors such as refinery processing gain. Excludes oil shales/kerogen extracted in solid form.</p>
-            <p>Source: <a href="https://www.bp.com/en/global/corporate/energy-economics/statistical-review-of-world-energy.html" target="_blank">Statistical Review of World Energy by bp</a></p>
-        </div>
+    <div id="worldmap"><!--Map container-->
     </div>
-</div>
+    <div id="legend"><!--Legend container for the map --></div>
+  </div>
   <script>
   // Define variables needed:
   // dimensions for map container
-  var width = 940,
+  var width = 900,
       height = 500;
-
   // create SVG element in the map container
   var svg = d3.select("#worldmap")
       .append("svg")
-      .attr('class','worldMapSvg')
       .attr("width", width)
       .attr("height", height)
-    
+
   var g = svg.append("g");
   // define a geographical projection and set initial zoom
   var projection =d3.geoNaturalEarth1().scale(1) // setting dummy scale than it is adjusted
@@ -85,7 +64,7 @@
   // tooltip variable
   var tooltip = d3.select("#worldmap")
       .append("div")
-      .attr("class", "worldMapTooltip hidden");
+      .attr("class", "tooltip hidden");
   // other global variables
   var dataset;
   var domain = [];
@@ -192,12 +171,11 @@
   // amazing source https://d3-legend.susielu.com/#symbol-ordinal
   // Threshold legend
   function drawLegend() {
-      var legendSvgHeight = 300;
-      var legendSvgWidth = 300;
+      var legendSvgHeight = 150;
+      var legendSvgWidth = 600;
 
       var legendSvg = d3.select('#legend')
       .append('svg')
-      .attr('class', 'svgLegend')
       .attr("height", legendSvgHeight)
       .attr("width", legendSvgWidth);
 
@@ -212,13 +190,12 @@
 
       var legend = d3.legendColor()
       .labelFormat(d3.format(",.0f"))
-      // .orient('horizontal')
-      .ascending(true)
+      .orient('horizontal')
       .shapeWidth(50)
-      .shapeHeight(20)
-      .title('Daily Oil Production (ths. barrels)')
+      .shapeHeight(25)
+      // .title('Oil production')
       .labels(d3.legendHelpers.thresholdLabels)
-      .labelWrap(150)
+      .labelWrap(30)
       .labelAlign('start') // options: 'start', 'middle', 'end'
       .useClass(true)
       .scale(thresholdScale);

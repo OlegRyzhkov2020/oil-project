@@ -1,10 +1,10 @@
 //Define geojson data
-states = "static/data/US_State_Borders.json"
-consumption = "static/data/db_json.geojson"
+states = "static/data/state2.json"
+// consumption = "static/data/db_json.geojson"
 
 // Initialize & Create Two Separate LayerGroups
 var stateLayer = new L.LayerGroup();
-var consumption_Layer = new L.LayerGroup();
+// var consumption_Layer = new L.LayerGroup();
 
 
 // Define variables for our tile layers
@@ -24,8 +24,8 @@ var baseMaps = {
 
 // Overlays that may be toggled on or off
 var overlayMaps = {
-    "States": stateLayer,
-    "Oil Consumption": consumption_Layer
+    "Oil Consumption by States": stateLayer
+//     "Oil Consumption": consumption_Layer
 };  
 
 // Create map object and set default layers
@@ -54,7 +54,7 @@ function highlightFeature(e) {
 }
 function stateStyle(feature) {
     return {
-        fillColor: stateColor(feature.properties.CENSUSAREA),
+        fillColor: stateColor(features.properties.consumption),
         weight: 2,
         opacity: 1,
         color: 'white',
@@ -68,16 +68,16 @@ function resetHighlight(e) {
 function zoomToFeature(e) {
     map.fitBounds(e.target.getBounds());
 }
-function stateColor(d) {
-    return d > 100000 ? '#800026' :
-           d > 80000  ? '#BD0026' :
-           d > 60000  ? '#E31A1C' :
-           d > 40000  ? '#FC4E2A' :
-           d > 20000  ? '#FD8D3C' :
-           d > 15000   ? '#FEB24C' :
-           d > 10000   ? '#FED976' :
-                      '#FFEDA0';
-}
+// function stateColor(d) {
+//     return d > 100000 ? '#800026' :
+//            d > 80000  ? '#BD0026' :
+//            d > 60000  ? '#E31A1C' :
+//            d > 40000  ? '#FC4E2A' :
+//            d > 20000  ? '#FD8D3C' :
+//            d > 15000   ? '#FEB24C' :
+//            d > 10000   ? '#FED976' :
+//                       '#FFEDA0';
+// }
 function onEachFeature(feature, layer) {
     layer.on({
         mouseover: highlightFeature,
@@ -108,7 +108,7 @@ function getColor(d) {
                       '#FFEDA0';
 }
 
-function style(feature) {
+function stateStyle(feature) {
     return {
         fillColor: getColor(feature.properties.consumption),
         weight: 2,
@@ -118,21 +118,21 @@ function style(feature) {
         fillOpacity: 0.7
     };
 }
-d3.json(consumption, function(consumptionData) {
-    L.geoJSON(consumptionData, {
-        pointToLayer: function(feature, coordinates) {
-            return L.circleMarker(coordinates);},
-            style: style,
-            // Function to Run Once For Each feature in the features Array
-            // Give Each feature a Popup Describing the Place & Time of the Earthquake
-            onEachFeature: function(feature, layer) {
-                layer.bindPopup("<h4> State Oil Consumption: " + feature.properties.Year);
-            }
-    //Add oilData to oil_and_natural_gas_Layer    
-    }).addTo(consumption_Layer);
-    //Add stateLayer to myMap
-    // consumption_Layer.addTo(myMap);
-}); 
+// d3.json(consumption, function(consumptionData) {
+//     L.geoJSON(consumptionData, {
+//         pointToLayer: function(feature, coordinates) {
+//             return L.circleMarker(coordinates);},
+//             style: style,
+//             // Function to Run Once For Each feature in the features Array
+//             // Give Each feature a Popup Describing the Place & Time of the Earthquake
+//             onEachFeature: function(feature, layer) {
+//                 layer.bindPopup("<h4> State Oil Consumption: " + feature.properties.Year);
+//             }
+//     //Add oilData to oil_and_natural_gas_Layer    
+//     }).addTo(consumption_Layer);
+//     //Add stateLayer to myMap
+//     // consumption_Layer.addTo(myMap);
+// }); 
 var legend = L.control({position: 'bottomright'});
 
 legend.onAdd = function (map) {
