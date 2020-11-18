@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8">
-  <title>Basic Map</title>
+  <title>Export Import</title>
 
   <!-- Leaflet CSS (Include Leaflet CSS file in the head section of your document:)!!!!! -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
@@ -21,13 +21,18 @@
     <!-- formating numbers -->
     <script src="https://d3js.org/d3-format.v2.min.js"></script>
 
-  <!-- Our CSS -->
+  
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Our CSS -->
   <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body>
   <!-- The div where we will inject our map!!!! 
     Make sure the map container has a defined height, setting in CSS in our case: -->
+  <row>
+    <button type="button" class="btn btn-light">Export</button>
+  </row>
   <row>
     <div id="mapD3"></div>
   </row>

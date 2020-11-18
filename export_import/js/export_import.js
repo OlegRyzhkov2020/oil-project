@@ -5,6 +5,8 @@
 var height = 500;
 var width = 960;
 
+var flow=["export", "import"];
+
 // curve line source:
 // https://stackoverflow.com/questions/56562231/line-on-d3-map-not-forming-a-curve
 var curve = function(context) {
@@ -41,19 +43,15 @@ var curve = function(context) {
 
   var line=d3.line()
   .x(function(d) {
-      // return projection (d.geometry.coordinates[0]);
-      return projection (d)[0];
-      // return projection ([d.lon,d.lat])[0];
+    return projection (d)[0];
   })
   .y(function(d) {
-      // return projection (d.geometry.coordinates[1]);
-      return projection (d)[1];
-      // return projection ([d.lon,d.lat])[1];
+    return projection (d)[1];
   })
   .curve(curve)
 
-var projection = d3.geoKavrayskiy7() //geoOrthographic()
-    .scale(200)
+var projection = d3.geoKavrayskiy7() // geoOrthographic()
+    // .scale(200)
     // .rotate([-205, -10])
     .translate([width/2, height/2])
     // .precision(0.1);
@@ -65,141 +63,201 @@ var svg = d3.select("#mapD3").append("svg")
     .attr("height", height);
 
 var g = svg.append("g");
+var g2 = svg.append("g");
 
-/// line animation source:
+var buttons = g2.selectAll(".flowButton")
+			.data(flow)
+			.enter()
+			.append("rect")
+			.attr("x", function(d,i) { return i * 90 + 20} )
+			.attr("y", 400)
+			.attr("rx",20).attr("ry",20).attr("width",80).attr("height",80)
+			.attr("fill","#aaa").attr("stroke","#999")
+			.attr("class","flowButton")
+            .on("click",function(d) { updateFlow(d); });
+            
+var buttonsText = g2.selectAll(".flowLabel")
+			.data(flow).enter()
+			.append("text")
+			.attr("x",function (d,i) { return i * 90 + 60} )
+			.attr("y",445)
+			.attr("text-anchor","middle")
+			.text(function(d) { return d; })
+			.attr("class","commodityLabel")
+			.on("click",function(d) { updateFlow(d); });
+
+/// v1: line animation source:
 // http://bl.ocks.org/erikhazzard/6201948
 // https://stackoverflow.com/questions/18165533/how-to-draw-a-line-link-between-two-points-on-a-d3-map-based-on-latitude-lon
 
-var lineTransition = function lineTransition(path) {
-    path.transition()
-    //NOTE: Change this number (in ms) to make lines draw faster or slower
-    .duration(5500)
-    .attrTween("stroke-dasharray", tweenDash)
-    // .each("end", function(d,i) { 
-        ////Uncomment following line to re-transition
-        // d3.select(this).call(transition); 
+// var lineTransition = function lineTransition(path) {
+//     path.transition()
+//     //NOTE: Change this number (in ms) to make lines draw faster or slower
+//     .duration(5500)
+//     .attrTween("stroke-dasharray", tweenDash)
+//     // .each("end", function(d,i) { 
+//         ////Uncomment following line to re-transition
+//         // d3.select(this).call(transition); 
                   
-        //We might want to do stuff when the line reaches the target,
-        //  like start the pulsating or add a new point or tell the
-        //  NSA to listen to this guy's phone calls
-        //doStuffWhenLineFinishes(d,i);
-        // });
-};
-var tweenDash = function tweenDash() {
-    //This function is used to animate the dash-array property, which is a
-    //  nice hack that gives us animation along some arbitrary path (in this
-    //  case, makes it look like a line is being drawn from point A to B)
-    var len = this.getTotalLength(),
-        interpolate = d3.interpolateString("0," + len, len + "," + len);
+//         //We might want to do stuff when the line reaches the target,
+//         //  like start the pulsating or add a new point or tell the
+//         //  NSA to listen to this guy's phone calls
+//         //doStuffWhenLineFinishes(d,i);
+//         // });
+// };
+// var tweenDash = function tweenDash() {
+//     //This function is used to animate the dash-array property, which is a
+//     //  nice hack that gives us animation along some arbitrary path (in this
+//     //  case, makes it look like a line is being drawn from point A to B)
+//     var len = this.getTotalLength(),
+//         interpolate = d3.interpolateString("0," + len, len + "," + len);
 
-    return function(t) { return interpolate(t); };
-};
+//     return function(t) { return interpolate(t); };
+// };
 
 function getUSA(feature) {
     return (feature.properties["Reporter ISO"] === "USA" &&
-            feature.properties["Commodity"] === "PETROLEUM PRODUCTS");  //&&
-            // feature.properties["Year"] == 2017);
+            feature.properties["Commodity"] === "PETROLEUM PRODUCTS");
 };
+
+function getColor(flow) {
+    switch (flow) {
+        case "export":
+            return "red";
+        default:
+            return "black";
+}};
+
+function updateFlow(flow) {
+    var flowLines = g.selectAll(".flow-line")
+    .transition()
+    .duration(1000)
+    .attr("stroke-dashoffset",  function() { return -this.getTotalLength(); })
+    .transition().duration(0).remove();
+
+    drawFlow(flow);  
+}
 
 d3.json("./data/countries-110m.json",function(error,world) {
 
-    // var countries = topojson.feature(world, world.objects.countries)
+    // var countries = topojson.feature(world, world.objects.countries);
 
     g.insert("path")
         .datum(topojson.feature(world, world.objects.countries))
         .attr("class", "land")
         .attr("d", path);
-
-
 });
 
-// this will be not needed, just file review
-d3.json("./data/oil_country_summary_exports.geojson", function(error, worldExport) {
-    console.log(worldExport);
-})
+function drawFlow(flow) {
+    d3.json(`./data/oil_country_flows_${flow}s.geojson`, function(error, dataset) {
+        console.log(getColor(flow))
+        console.log(dataset);
+        var features = dataset.features;
+        console.log(features);
+        
+        var usaTop10 = features.filter(getUSA)
+                            .sort((a, b) => b.properties["Qty"] - a.properties["Qty"])
+                            .slice(0,10);
+        
+        console.log(usaTop10);
 
-// Creating our initial map object
-// We set the longitude, latitude, and the starting zoom level
-// This gets inserted into the div with an id of 'map'
-var mapLeaflet = L.map("mapLeaflet", {
-    center: [0, 0],
-    zoom: 2
-  });
-  
-  // Adding a tile layer (the background map image) to our map
-  // We use the addTo method to add objects to our map
-  L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-    attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
-    tileSize: 512,
-    maxZoom: 18,
-    zoomOffset: -1,
-    id: "mapbox/streets-v11",
-    accessToken: API_KEY
-  }).addTo(mapLeaflet);
+        // inspired by: http://bl.ocks.org/Andrew-Reid/35d89fbcfbcfe9e819908ea77fc5bef6
 
-d3.json("./data/oil_country_flows_exports.geojson", function(error, expoJson) {
-    console.log(expoJson);
-    var features = expoJson.features;
-    console.log(features);
+        usaTop10.forEach( function(d,i) {
+            var flow1 = g
+                .append("path")
+                .attr("d", line(d.geometry.coordinates))
+                .attr("class", "flow-line")
+                .style("stroke", getColor(flow)) 
+                .attr("stroke-width", 1)
+
+            var totalLength = flow1.node().getTotalLength() +10;
+
+            flow1
+            .attr("stroke-dasharray", totalLength + " " + totalLength)
+            .attr("stroke-dashoffset", totalLength)
+            .transition()
+            .duration(2000)
+            // .on("start", drawPorts(d) )
+            .attr("stroke-dashoffset", 0);
+        });
+
+        // // v1 inspired by: https://stackoverflow.com/questions/56562231/line-on-d3-map-not-forming-a-curve
+        // var fauxArcPaths = svg.selectAll(null)
+        //     .data(usaTop10)
+        //     .enter()
+        //     .append("path")
+        //     .datum(function(d) {
+        //         return d.geometry.coordinates;
+        //         // return [d.source,d.destination];
+        //     })
+        //     .attr("class", "flow-line")
+        //     .attr("d",line)
+        //     .style("stroke", getColor(flow)) 
+        //     .style("stroke-width",1)
+        //     .call(lineTransition);
+    });
+};
+
+// d3.json(`./data/oil_country_flows_exports.geojson`, function(error, expoJson) {
+//     console.log(expoJson);
+//     var features = expoJson.features;
+//     console.log(features);
     
+//     var usa10Export = features.filter(getUSA)
+//                         .sort((a, b) => b.properties["Qty"] - a.properties["Qty"])
+//                         .slice(0,10);
     
+//     console.log(usa10Export);
 
-    var usa10Export = features.filter(getUSA)
-                        .sort((a, b) => b.properties["Qty"] - a.properties["Qty"])
-                        .slice(0,10);
+//     // L.geoJSON(usa10Export).addTo(mapLeaflet);
+
+//     var fauxArcPaths = svg.selectAll(null)
+//     .data(usa10Export)
+//     .enter()
+//     .append("path")
+//     .datum(function(d) {
+//         return d.geometry.coordinates;
+//         // return [d.source,d.destination];
+//     })
+//     .attr("d",line)
+//     .style("stroke","red")
+//     .style("stroke-width",1)
+//     .call(lineTransition);
+// });
+
+// d3.json("./data/oil_country_flows_imports.geojson", function(error, importJson) {
+//     console.log(importJson);
+//     var featuresImport = importJson.features;
+//     console.log(featuresImport);
     
-    console.log(usa10Export);
-
-    L.geoJSON(usa10Export).addTo(mapLeaflet);
-
-    var fauxArcPaths = svg.selectAll(null)
-    .data(usa10Export)
-    .enter()
-    .append("path")
-    .datum(function(d) {
-        return d.geometry.coordinates;
-        // return [d.source,d.destination];
-    })
-    .attr("d",line)
-    .style("stroke","red")
-    .style("stroke-width",1)
-    .call(lineTransition);
-});
-
-d3.json("./data/oil_country_flows_imports.geojson", function(error, importJson) {
-    console.log(importJson);
-    var featuresImport = importJson.features;
-    console.log(featuresImport);
+//     var usa10Import = featuresImport.filter(getUSA)
+//                         .sort((a, b) => b.properties["Qty"] - a.properties["Qty"])
+//                         .slice(0,10);
     
+//     console.log(usa10Import);
+
+//     // L.geoJSON(usa10Import).addTo(mapLeaflet);
+//     console.log(usa10Import[2].geometry)
+
+
+//     ///////////////////////////////////////////////////////
+//     //////////////////////////////////////////////////////
+//     // source: https://stackoverflow.com/questions/56562231/line-on-d3-map-not-forming-a-curve 
     
+//     var fauxArcPaths = svg.selectAll(null)
+//         .data(usa10Import)
+//         .enter()
+//         .append("path")
+//         .datum(function(d) {
+//             return d.geometry.coordinates;
+//            })
+//         .attr("d",line)
+//         .style("stroke","black")
+//         .style("stroke-width",1)
+//         .call(lineTransition);
 
-    var usa10Import = featuresImport.filter(getUSA)
-                        .sort((a, b) => b.properties["Qty"] - a.properties["Qty"])
-                        .slice(0,10);
-    
-    console.log(usa10Import);
-
-    L.geoJSON(usa10Import).addTo(mapLeaflet);
-    console.log(usa10Import[2].geometry)
-
-
-    ///////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////
-    // source: https://stackoverflow.com/questions/56562231/line-on-d3-map-not-forming-a-curve 
-    
-    var fauxArcPaths = svg.selectAll(null)
-        .data(usa10Import)
-        .enter()
-        .append("path")
-        .datum(function(d) {
-            return d.geometry.coordinates;
-           })
-        .attr("d",line)
-        .style("stroke","black")
-        .style("stroke-width",1)
-        .call(lineTransition);
-
-});
+// });
 
 
   
