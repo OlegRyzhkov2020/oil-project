@@ -50,9 +50,9 @@ var curve = function(context) {
   })
   .curve(curve)
 
-var projection = d3.geoKavrayskiy7() // geoOrthographic()
+var projection = d3.geoKavrayskiy7()
     // .scale(200)
-    // .rotate([-205, -10])
+    .rotate([-205, -5])
     .translate([width/2, height/2])
     // .precision(0.1);
 
@@ -84,7 +84,7 @@ var buttonsText = g2.selectAll(".flowLabel")
 			.attr("text-anchor","middle")
 			.text(function(d) { return d; })
 			.attr("class","commodityLabel")
-			.on("click",function(d) { updateFlow(d); });
+            .on("click",function(d) { updateFlow(d); });
 
 /// v1: line animation source:
 // http://bl.ocks.org/erikhazzard/6201948
@@ -123,21 +123,24 @@ function getUSA(feature) {
 function getColor(flow) {
     switch (flow) {
         case "export":
-            return "red";
+            return "darkred";
         default:
-            return "black";
+            return "darkblue";
 }};
 
 function updateFlow(flow) {
+
     var flowLines = g.selectAll(".flow-line")
     .transition()
     .duration(1000)
     .attr("stroke-dashoffset",  function() { return -this.getTotalLength(); })
     .transition().duration(0).remove();
 
+    drawGlobe();
     drawFlow(flow);  
 }
 
+function drawGlobe() {
 d3.json("./data/countries-110m.json",function(error,world) {
 
     // var countries = topojson.feature(world, world.objects.countries);
@@ -146,7 +149,9 @@ d3.json("./data/countries-110m.json",function(error,world) {
         .datum(topojson.feature(world, world.objects.countries))
         .attr("class", "land")
         .attr("d", path);
-});
+
+    // enableRotation()
+});}
 
 function drawFlow(flow) {
     d3.json(`./data/oil_country_flows_${flow}s.geojson`, function(error, dataset) {
@@ -162,15 +167,20 @@ function drawFlow(flow) {
         console.log(usaTop10);
 
         // inspired by: http://bl.ocks.org/Andrew-Reid/35d89fbcfbcfe9e819908ea77fc5bef6
-
+        var maxVolume = d3.max(usaTop10, function(d) {  return d.properties["Qty"]; });
+        // console.log(maxVolume);
+        
         usaTop10.forEach( function(d,i) {
             var flow1 = g
                 .append("path")
                 .attr("d", line(d.geometry.coordinates))
                 .attr("class", "flow-line")
                 .style("stroke", getColor(flow)) 
-                .attr("stroke-width", 1)
-
+                .attr("stroke-opacity", Math.sqrt(d.properties["Qty"] / maxVolume) )
+                .attr("stroke-width", 5);
+            // console.log(d.properties["Qty"])
+            // console.log(Math.sqrt(d.properties["Qty"]))
+            // console.log(Math.sqrt(d.properties["Qty"] / maxVolume));
             var totalLength = flow1.node().getTotalLength() +10;
 
             flow1
@@ -197,6 +207,7 @@ function drawFlow(flow) {
         //     .style("stroke-width",1)
         //     .call(lineTransition);
     });
+    // enableRotation();
 };
 
 // d3.json(`./data/oil_country_flows_exports.geojson`, function(error, expoJson) {
@@ -258,6 +269,8 @@ function drawFlow(flow) {
 //         .call(lineTransition);
 
 // });
+
+drawGlobe();
 
 
   
