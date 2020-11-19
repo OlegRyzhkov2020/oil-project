@@ -73,7 +73,7 @@ def home():
         if id == 1: head_news = [s['News_Title'], s['News_Paragraph']]
         id +=1
     latest_news = latest_news[21:]
-    prices_data = mongo.db.oil_prices
+    prices_data = mongo.db.oil_prices_new
     latest_prices = []
     for p in prices_data.find():
         latest_prices.append({'ID':id, 'Oil' : p['Oil_Symbol'], 'Price' : p['Oil_Price'],
