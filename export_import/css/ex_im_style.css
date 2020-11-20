@@ -24,7 +24,10 @@ path {
   stroke-width: 1px;
   
 }
-
+.default {
+  fill: steelblue;
+  fill-opacity: 0.7;
+}
 .partner {
   fill: orange
 }
