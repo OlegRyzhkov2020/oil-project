@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Machine Learning Analysis</title>
+
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="./static/js/plot.js"></script>
+
+  <script>
+      var modelData = {{ result | tojson }};
+      console.log(modelData);
+      if (modelData && modelData.length) {
+        window.addEventListener('load', function () {
+          buildMLPlot(modelData);
+        })
+      }
+  </script>
+
+</head>
+<body>
+  {% extends "menu.html" %}
+  {% block content %}
+  <div class="container-fluid padding first-container">
+    <span class="anchor" id="Analysis_1"></span>
+
+    <div class="row">
+      <div class="col-md-3 text-center anyClass" >
+        <h5>Energy Company Intro</h5>
+        <br>
+        {% for news in data %}
+        <span class="picture" id=" {{news['ID']}}"></span>
+        <div class="card">
+          <img class="card-img-top" src={{news['Image_URL']}}>
+          <div class="card-body">
+            <h6 class="card-title">{{news['News_Title']}}</h6>
+            <p class="card-text">{{news['News_Paragraph']}}
+            </p>
+          </div>
+          <hr class="light">
+        </div>
+        {% endfor %}
+      </div>
+      <div class="col-md-5 text-center">
+        <h5>Exploratory Data Analysis</h5>
+        <img style="height: 500px" src={{image}}>
+      </div>
+      <div class="col-md-4" >
+        <div class="text-center" >
+          <h5>Model Tuning</h5>
+        </div>
+        <form action = "http://localhost:5000/an_3" method = "POST">
+
+          <p>Data Source: Python Quandl and Yahoo Finance APIs<p>
+            <div class="form-group" >
+              {% for field in form %}
+              <table>
+                <tr>
+                  <td>{{ field.name }}</td><td>{{ field }}</td>
+                  <td>{{ field.label }}</td>
+                </tr>
+              </table>
+              {% endfor %}
+              <br>
+              <p><input type = "submit" name="submit-classification" value = "Clustering" />
+                 <input type = "submit" name="submit-randomforest"  value = "RF Regressor" /></p>
+              <div>
+              </form>
+              <div class="text-center" >
+                <h5>Model Output/Features Importa</h5>
+              </div>
+              <!-- {% if result|length > 0 %}
+              <table id="t01">
+                <tr>
+                  <th>Features</th>
+                  <th>Score</th>
+                </tr>
+                {% for value in result %}
+                </tr>
+                  <td>{{ value[0] }}</td>
+                  <td>{{ '%0.2f' % value[1] }}</td>
+                </tr>
+               {% endfor %}
+              </table>
+              {% endif %} -->
+
+              <div id="bar"></div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      {% endblock %}
+
+  </body>
+  </html>

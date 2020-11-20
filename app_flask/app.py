@@ -8,7 +8,7 @@ from datetime import datetime
 from wtforms import Form, DateField, SelectField, validators
 from flask_pymongo import PyMongo
 
-import regression_model
+import regression_model, ml_model
 
 #######################################################
 # Flask Setup
@@ -27,20 +27,33 @@ mongo = PyMongo(app, uri="mongodb://localhost:27017/oil_db")
 #######################################################
 class InputForm(Form):
     Target = SelectField('dependent (Y)',
-                    choices=['WTI price', 'Brent price' ])
-    Start = DateField(label=' ',
+                    choices=['WTI price', 'Brent price', 'Arab Light' ])
+    Train_start = DateField(label=' ',
         format='%m/%d/%Y', default= datetime(1990, 1, 1),
         validators=[validators.InputRequired()])
-    End = DateField(label=' ',
-        format='%m/%d/%Y', default= datetime(2020, 8, 1),
+    Train_end = DateField(label=' ',
+        format='%m/%d/%Y', default= datetime(2019, 1, 1),
         validators=[validators.InputRequired()])
     Predictor_1 = SelectField('independent (X1)',
-                    choices=['Oil_production', 'RIG_count' ])
+                    choices=['RIG_count', 'Oil_production', 'RIG_count', 'Fuel_consump' ])
     Predictor_2 = SelectField('independent (X2)',
-                    choices=['RIG_count', 'Oil_production'])
+                    choices=['None', 'RIG_count', 'Oil_production', 'Fuel_consump'])
     Predictor_3 = SelectField('independent (X3)',
-                    choices=['Fuel Consumpt', 'Oil_production', 'RIG_count' ])
+                    choices=['None', 'Fuel_consump', 'Oil_production', 'RIG_count' ])
 
+class InputFormML(Form):
+    Target_class = SelectField('dependent (Y)',
+                    choices=["Baker Hughes", "Chevron", "Conoco Philis",
+                    "Exxon Mobile", "EOG resources", "Valero energy" ])
+    Training_start = DateField(label=' ',
+        format='%m/%d/%Y', default= datetime(1990, 1, 1),
+        validators=[validators.InputRequired()])
+    Training_end = DateField(label=' ',
+        format='%m/%d/%Y', default= datetime(2019, 1, 1),
+        validators=[validators.InputRequired()])
+    Test_end = DateField(label=' ',
+        format='%m/%d/%Y', default= datetime(2020, 11, 1),
+        validators=[validators.InputRequired()])
 #######################################################
 # Flask Routes
 #######################################################
@@ -59,6 +72,7 @@ def home():
                             'Image_URL':s['Image_URL']})
         if id == 1: head_news = [s['News_Title'], s['News_Paragraph']]
         id +=1
+    latest_news = latest_news[21:]
     prices_data = mongo.db.oil_prices
     latest_prices = []
     for p in prices_data.find():
@@ -68,28 +82,17 @@ def home():
     return render_template("home.html", data=latest_news, head_news = head_news, prices = latest_prices)
 
 # Route that will trigger building a correlation_matrix
-@app.route('/plots/regression_analysis', methods=['GET'])
-def regression_analysis(model_target='WTI price'):
-    print(model_target)
-
-    reg_obj = regression_model.reg_plot()
-    print('Request for correlation matrix')
-
-    return send_file(reg_obj,
-                     attachment_filename='plot_matrix.png',
-                     mimetype='image/png')
-
-# Route that will trigger the scrape function
-# @app.route('/plots/regression', methods=['GET'])
-# def regression_plot():
+# @app.route('/plots/regression_analysis', methods=['GET'])
+# def regression_analysis(model_target='WTI price', predictor_1 = "Oil_production"):
+#     print(model_target, predictor_1)
 #
-#     corr = regression_model.cancer_data()
-#     bytes_obj = regression_model.corr_plot(corr)
-#     print('Request for regression plot')
-#
-#     return send_file(bytes_obj,
-#                      attachment_filename='reg_plot.png',
-#                      mimetype='image/png')
+#     reg_obj = regression_model.reg_plot(model_target, predictor_1)
+#     print('Request for correlation matrix')
+#     return reg_obj
+
+    # return send_file(reg_obj,
+    #                  attachment_filename='plot_matrix.png',
+    #                  mimetype='image/png')
 
 # Route that will trigger the facts html page
 @app.route("/project_overview")
@@ -106,6 +109,12 @@ def about_2():
 
     # Return template and data
     return render_template("about_2.html")
+
+@app.route("/data_journey")
+def about_3():
+
+    # Return template and data
+    return render_template("about_3.html")
 
 # Route that will trigger the facts html page
 @app.route("/dashboard_1")
@@ -146,22 +155,150 @@ def an_2():
 
 @app.route("/an_3", methods=['GET','POST'])
 def an_3():
-    print("Server received request for plot...")
+    formML = InputFormML(request.form)
+
+    if request.method == 'POST' and formML.validate():
+        ml_target = formML.Target_class.data
+        ml_start = formML.Training_start.data
+        ml_end = formML.Training_end.data
+        ml_test = formML.Test_end.data
+
+        target_set = {
+                    "Baker Hughes": mongo.db.baker_intro_new, "Chevron": mongo.db.chevron_intro_new,
+                    "Conoco Philis": mongo.db.conoco_intro, "Exxon Mobile": mongo.db.exxon_intro,
+                    "EOG resources": mongo.db.eog_intro, "Valero energy": mongo.db.valero_intro
+                    }
+
+        target_collection = target_set[ml_target]
+
+        target_intro = []
+        id = 1
+        for s in target_collection.find():
+            target_intro.append({'ID':id, 'News_Title' : s['News_Title'],
+                                'News_Paragraph': s['News_Paragraph'],
+                                'Image_URL':s['Image_URL']})
+        # print(target_intro)
+
+    if "submit-randomforest" in request.form:
+
+        print("submit-randomforest")
+        if request.method == 'POST' and formML.validate():
+            print('POST TRUE: processing for classification plot request with form data')
+            print('Target:', ml_target)
+            print('Period:', ml_start, ml_end, ml_test)
+            print('Requesting the function random forest plot')
+            prediction, image = ml_model.randomForest_plot(ml_target, ml_start, ml_end, ml_test)
+            print(prediction)
+            return render_template("analysis_4.html", form=formML, image=image, result= prediction, data=target_intro)
+        else:
+            print('POST FALSE: processing for classification plot request with default data')
+            image = ml_model.cluster_plot()
+            model_output = {}
+            prediction = {}
+            return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=target_intro)
+
+
+    elif "submit-classification" in request.form:
+
+
+        print("submit-classification")
+        if request.method == 'POST' and formML.validate():
+            print('POST TRUE: processing for classification plot request with form data')
+            image = ml_model.cluster_plot(ml_target, ml_start, ml_end)
+            model_output = {}
+            prediction = {}
+        else:
+            print('POST FALSE: processing for classification plot request with default data')
+            image = ml_model.cluster_plot()
+            model_output = {}
+            prediction = {}
+        return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=target_intro)
+
+    print("Server received request for regression model")
     form = InputForm(request.form)
-    print(request.form)
-    print(form.validate())
+
+    model_start = form.Train_start.data
+    model_end = form.Train_end.data
+    model_target = form.Target.data
+    model_predictor_1 = form.Predictor_1.data
+    model_predictor_2 = form.Predictor_2.data
+    model_predictor_3 = form.Predictor_3.data
+
+    print('Reg Target selection:', model_target)
+    print('Reg Period:', model_start, model_end)
+    print('Reg Request method:', request.method)
 
     if request.method == 'POST' and form.validate():
-        model_start = form.Start.data
-        model_end = form.End.data
-        model_target = form.Target.data
-        print('Building a plot')
-        print('Period:', model_start, model_end)
-        print('Target selection:', model_target)
-        regression_analysis(model_target)
-    image_time = datetime.now()
+        print('POST TRUE: processing for regreesion plot request with form data')
+        image = regression_model.reg_plot(model_target, model_predictor_1, model_predictor_2, model_predictor_3, model_start, model_end)
+        model_output = regression_model.reg_output(model_target, model_predictor_1, model_predictor_2, model_predictor_3)
+        prediction = regression_model.reg_prediction(model_target, model_predictor_1, model_predictor_2, model_predictor_3, model_start, model_end)
+    else:
+        print('POST FALSE: processing for regreesion plot request with daefault data')
+        image = regression_model.reg_plot()
+        model_output = {}
+        prediction = {}
+
+    # image_time = datetime.now()
     # Return template and data
-    return render_template("analysis_3.html", form=form, time = image_time)
+    return render_template("analysis_3.html", form=form, image=image, output = model_output, result= prediction)
+
+@app.route("/an_4", methods=['GET','POST'])
+def an_4():
+
+    print("Server received request for classification model")
+    # Find records of data from the mongo database
+    baker_data = mongo.db.baker_news
+    baker_news = []
+    id = 1
+    for s in baker_data.find():
+        baker_news.append({'ID':id, 'News_Title' : s['News_Title'],
+                            'News_Paragraph': s['News_Paragraph'],
+                            'Image_URL':s['Image_URL']})
+
+    baker_news = baker_news[5:]
+    print(baker_news)
+    formML = InputFormML(request.form)
+
+    ml_target = formML.Target_class.data
+    ml_start = formML.Training_start.data
+    ml_end = formML.Training_end.data
+    ml_test = formML.Test_end.data
+
+    if "submit-regression" in request.form:
+        print("submit-regression")
+
+    elif "submit-classification" in request.form:
+        print("submit-classification")
+
+    print('ML Target selection:', ml_target)
+    print('ML Request method:', request.method)
+
+    if request.method == 'POST' and formML.validate():
+        print('POST TRUE: processing for classification plot request with form data')
+        image = ml_model.cluster_plot(ml_target, ml_start, ml_end)
+        # prediction = regression_model.reg_prediction(model_target, model_predictor_1, model_predictor_2, model_predictor_3, model_start, model_end)
+    else:
+        print('POST FALSE: processing for classification plot request with default data')
+        image = ml_model.cluster_plot()
+        model_output = {}
+        prediction = {}
+    # Return template and data
+    return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=baker_news)
+
+# Route that will trigger the hemisphere html page
+@app.route("/an_5")
+def an_5():
+
+    # Return template and data
+    return render_template("analysis_5.html")
+
+# Route that will trigger the hemisphere html page
+@app.route("/an_6")
+def an_6():
+
+    # Return template and data
+    return render_template("analysis_6.html")
 
 # Route that will trigger the facts html page
 @app.route("/findings")
