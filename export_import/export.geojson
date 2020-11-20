@@ -6,7 +6,8 @@
       "properties": {
         "location": "CANADA",
         "padd": "PADD1",
-        "volume": 3560
+        "volume": 3560,
+        "code": "CAN"
       },
       "geometry": {
         "type": "LineString",
@@ -25,9 +26,98 @@
     {
       "type": "Feature",
       "properties": {
+        "location": "CANADA",
+        "padd": "PADD2",
+        "volume": 62972,
+        "code": "CAN"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -87.6297982,
+            41.8781136
+          ],
+          [
+            -106.346771,
+            56.130366
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "CANADA",
+        "padd": "PADD3",
+        "volume": 108202,
+        "code": "CAN"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -95.3698028,
+            29.7604267
+          ],
+          [
+            -106.346771,
+            56.130366
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "CANADA",
+        "padd": "PADD4",
+        "volume": 0,
+        "code": "CAN"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -104.990251,
+            39.7392358
+          ],
+          [
+            -106.346771,
+            56.130366
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "CANADA",
+        "padd": "PADD5",
+        "volume": 2,
+        "code": "CAN"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -118.2436849,
+            34.0522342
+          ],
+          [
+            -106.346771,
+            56.130366
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "location": "KOREA",
         "padd": "PADD1",
-        "volume": 0
+        "volume": 0,
+        "code": "KOR"
       },
       "geometry": {
         "type": "LineString",
@@ -46,9 +136,98 @@
     {
       "type": "Feature",
       "properties": {
+        "location": "KOREA",
+        "padd": "PADD2",
+        "volume": 0,
+        "code": "KOR"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -87.6297982,
+            41.8781136
+          ],
+          [
+            127.766922,
+            35.907757
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "KOREA",
+        "padd": "PADD3",
+        "volume": 148591,
+        "code": "KOR"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -95.3698028,
+            29.7604267
+          ],
+          [
+            127.766922,
+            35.907757
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "KOREA",
+        "padd": "PADD4",
+        "volume": 0,
+        "code": "KOR"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -104.990251,
+            39.7392358
+          ],
+          [
+            127.766922,
+            35.907757
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "KOREA",
+        "padd": "PADD5",
+        "volume": 4327,
+        "code": "KOR"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -118.2436849,
+            34.0522342
+          ],
+          [
+            127.766922,
+            35.907757
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "location": "NETHERLANDS",
         "padd": "PADD1",
-        "volume": 0
+        "volume": 0,
+        "code": "NLD"
       },
       "geometry": {
         "type": "LineString",
@@ -67,9 +246,98 @@
     {
       "type": "Feature",
       "properties": {
+        "location": "NETHERLANDS",
+        "padd": "PADD2",
+        "volume": 0,
+        "code": "NLD"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -87.6297982,
+            41.8781136
+          ],
+          [
+            5.291265999999999,
+            52.132633
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "NETHERLANDS",
+        "padd": "PADD3",
+        "volume": 101673,
+        "code": "NLD"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -95.3698028,
+            29.7604267
+          ],
+          [
+            5.291265999999999,
+            52.132633
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "NETHERLANDS",
+        "padd": "PADD4",
+        "volume": 0,
+        "code": "NLD"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -104.990251,
+            39.7392358
+          ],
+          [
+            5.291265999999999,
+            52.132633
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "NETHERLANDS",
+        "padd": "PADD5",
+        "volume": 84,
+        "code": "NLD"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -118.2436849,
+            34.0522342
+          ],
+          [
+            5.291265999999999,
+            52.132633
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "location": "INDIA",
         "padd": "PADD1",
-        "volume": 0
+        "volume": 0,
+        "code": "IND"
       },
       "geometry": {
         "type": "LineString",
@@ -88,9 +356,98 @@
     {
       "type": "Feature",
       "properties": {
+        "location": "INDIA",
+        "padd": "PADD2",
+        "volume": 0,
+        "code": "IND"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -87.6297982,
+            41.8781136
+          ],
+          [
+            78.96288,
+            20.593684
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "INDIA",
+        "padd": "PADD3",
+        "volume": 92969,
+        "code": "IND"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -95.3698028,
+            29.7604267
+          ],
+          [
+            78.96288,
+            20.593684
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "INDIA",
+        "padd": "PADD4",
+        "volume": 0,
+        "code": "IND"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -104.990251,
+            39.7392358
+          ],
+          [
+            78.96288,
+            20.593684
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "INDIA",
+        "padd": "PADD5",
+        "volume": 0,
+        "code": "IND"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -118.2436849,
+            34.0522342
+          ],
+          [
+            78.96288,
+            20.593684
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "location": "UNITED KINGDOM",
         "padd": "PADD1",
-        "volume": 0
+        "volume": 0,
+        "code": "GBR"
       },
       "geometry": {
         "type": "LineString",
@@ -109,9 +466,98 @@
     {
       "type": "Feature",
       "properties": {
+        "location": "UNITED KINGDOM",
+        "padd": "PADD2",
+        "volume": 0,
+        "code": "GBR"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -87.6297982,
+            41.8781136
+          ],
+          [
+            -3.435973,
+            55.378051
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "UNITED KINGDOM",
+        "padd": "PADD3",
+        "volume": 89042,
+        "code": "GBR"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -95.3698028,
+            29.7604267
+          ],
+          [
+            -3.435973,
+            55.378051
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "UNITED KINGDOM",
+        "padd": "PADD4",
+        "volume": 0,
+        "code": "GBR"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -104.990251,
+            39.7392358
+          ],
+          [
+            -3.435973,
+            55.378051
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "UNITED KINGDOM",
+        "padd": "PADD5",
+        "volume": 0,
+        "code": "GBR"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -118.2436849,
+            34.0522342
+          ],
+          [
+            -3.435973,
+            55.378051
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "location": "TAIWAN",
         "padd": "PADD1",
-        "volume": 0
+        "volume": 0,
+        "code": "TWN"
       },
       "geometry": {
         "type": "LineString",
@@ -130,9 +576,98 @@
     {
       "type": "Feature",
       "properties": {
+        "location": "TAIWAN",
+        "padd": "PADD2",
+        "volume": 0,
+        "code": "TWN"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -87.6297982,
+            41.8781136
+          ],
+          [
+            120.960515,
+            23.69781
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "TAIWAN",
+        "padd": "PADD3",
+        "volume": 61264,
+        "code": "TWN"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -95.3698028,
+            29.7604267
+          ],
+          [
+            120.960515,
+            23.69781
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "TAIWAN",
+        "padd": "PADD4",
+        "volume": 0,
+        "code": "TWN"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -104.990251,
+            39.7392358
+          ],
+          [
+            120.960515,
+            23.69781
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "TAIWAN",
+        "padd": "PADD5",
+        "volume": 284,
+        "code": "TWN"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -118.2436849,
+            34.0522342
+          ],
+          [
+            120.960515,
+            23.69781
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "location": "CHINA",
         "padd": "PADD1",
-        "volume": 0
+        "volume": 0,
+        "code": "CHN"
       },
       "geometry": {
         "type": "LineString",
@@ -151,9 +686,98 @@
     {
       "type": "Feature",
       "properties": {
+        "location": "CHINA",
+        "padd": "PADD2",
+        "volume": 0,
+        "code": "CHN"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -87.6297982,
+            41.8781136
+          ],
+          [
+            104.195397,
+            35.86166
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "CHINA",
+        "padd": "PADD3",
+        "volume": 47948,
+        "code": "CHN"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -95.3698028,
+            29.7604267
+          ],
+          [
+            104.195397,
+            35.86166
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "CHINA",
+        "padd": "PADD4",
+        "volume": 0,
+        "code": "CHN"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -104.990251,
+            39.7392358
+          ],
+          [
+            104.195397,
+            35.86166
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "CHINA",
+        "padd": "PADD5",
+        "volume": 2049,
+        "code": "CHN"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -118.2436849,
+            34.0522342
+          ],
+          [
+            104.195397,
+            35.86166
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "location": "ITALY",
         "padd": "PADD1",
-        "volume": 0
+        "volume": 0,
+        "code": "ITA"
       },
       "geometry": {
         "type": "LineString",
@@ -172,9 +796,98 @@
     {
       "type": "Feature",
       "properties": {
+        "location": "ITALY",
+        "padd": "PADD2",
+        "volume": 0,
+        "code": "ITA"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -87.6297982,
+            41.8781136
+          ],
+          [
+            12.56738,
+            41.87194
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "ITALY",
+        "padd": "PADD3",
+        "volume": 46823,
+        "code": "ITA"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -95.3698028,
+            29.7604267
+          ],
+          [
+            12.56738,
+            41.87194
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "ITALY",
+        "padd": "PADD4",
+        "volume": 0,
+        "code": "ITA"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -104.990251,
+            39.7392358
+          ],
+          [
+            12.56738,
+            41.87194
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "ITALY",
+        "padd": "PADD5",
+        "volume": 0,
+        "code": "ITA"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -118.2436849,
+            34.0522342
+          ],
+          [
+            12.56738,
+            41.87194
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "location": "THAILAND",
         "padd": "PADD1",
-        "volume": 0
+        "volume": 0,
+        "code": "THA"
       },
       "geometry": {
         "type": "LineString",
@@ -193,9 +906,98 @@
     {
       "type": "Feature",
       "properties": {
+        "location": "THAILAND",
+        "padd": "PADD2",
+        "volume": 0,
+        "code": "THA"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -87.6297982,
+            41.8781136
+          ],
+          [
+            100.992541,
+            15.870032
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "THAILAND",
+        "padd": "PADD3",
+        "volume": 39930,
+        "code": "THA"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -95.3698028,
+            29.7604267
+          ],
+          [
+            100.992541,
+            15.870032
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "THAILAND",
+        "padd": "PADD4",
+        "volume": 0,
+        "code": "THA"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -104.990251,
+            39.7392358
+          ],
+          [
+            100.992541,
+            15.870032
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "location": "THAILAND",
+        "padd": "PADD5",
+        "volume": 0,
+        "code": "THA"
+      },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -118.2436849,
+            34.0522342
+          ],
+          [
+            100.992541,
+            15.870032
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "location": "FRANCE",
         "padd": "PADD1",
-        "volume": 0
+        "volume": 0,
+        "code": "FRA"
       },
       "geometry": {
         "type": "LineString",
@@ -214,198 +1016,10 @@
     {
       "type": "Feature",
       "properties": {
-        "location": "CANADA",
-        "padd": "PADD2",
-        "volume": 62972
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -87.6297982,
-            41.8781136
-          ],
-          [
-            -106.346771,
-            56.130366
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "KOREA",
-        "padd": "PADD2",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -87.6297982,
-            41.8781136
-          ],
-          [
-            127.766922,
-            35.907757
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "NETHERLANDS",
-        "padd": "PADD2",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -87.6297982,
-            41.8781136
-          ],
-          [
-            5.291265999999999,
-            52.132633
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "INDIA",
-        "padd": "PADD2",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -87.6297982,
-            41.8781136
-          ],
-          [
-            78.96288,
-            20.593684
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "UNITED KINGDOM",
-        "padd": "PADD2",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -87.6297982,
-            41.8781136
-          ],
-          [
-            -3.435973,
-            55.378051
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "TAIWAN",
-        "padd": "PADD2",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -87.6297982,
-            41.8781136
-          ],
-          [
-            120.960515,
-            23.69781
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "CHINA",
-        "padd": "PADD2",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -87.6297982,
-            41.8781136
-          ],
-          [
-            104.195397,
-            35.86166
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "ITALY",
-        "padd": "PADD2",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -87.6297982,
-            41.8781136
-          ],
-          [
-            12.56738,
-            41.87194
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "THAILAND",
-        "padd": "PADD2",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -87.6297982,
-            41.8781136
-          ],
-          [
-            100.992541,
-            15.870032
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "location": "FRANCE",
         "padd": "PADD2",
-        "volume": 0
+        "volume": 0,
+        "code": "FRA"
       },
       "geometry": {
         "type": "LineString",
@@ -424,198 +1038,10 @@
     {
       "type": "Feature",
       "properties": {
-        "location": "CANADA",
-        "padd": "PADD3",
-        "volume": 108202
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -95.3698028,
-            29.7604267
-          ],
-          [
-            -106.346771,
-            56.130366
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "KOREA",
-        "padd": "PADD3",
-        "volume": 148591
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -95.3698028,
-            29.7604267
-          ],
-          [
-            127.766922,
-            35.907757
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "NETHERLANDS",
-        "padd": "PADD3",
-        "volume": 101673
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -95.3698028,
-            29.7604267
-          ],
-          [
-            5.291265999999999,
-            52.132633
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "INDIA",
-        "padd": "PADD3",
-        "volume": 92969
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -95.3698028,
-            29.7604267
-          ],
-          [
-            78.96288,
-            20.593684
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "UNITED KINGDOM",
-        "padd": "PADD3",
-        "volume": 89042
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -95.3698028,
-            29.7604267
-          ],
-          [
-            -3.435973,
-            55.378051
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "TAIWAN",
-        "padd": "PADD3",
-        "volume": 61264
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -95.3698028,
-            29.7604267
-          ],
-          [
-            120.960515,
-            23.69781
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "CHINA",
-        "padd": "PADD3",
-        "volume": 47948
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -95.3698028,
-            29.7604267
-          ],
-          [
-            104.195397,
-            35.86166
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "ITALY",
-        "padd": "PADD3",
-        "volume": 46823
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -95.3698028,
-            29.7604267
-          ],
-          [
-            12.56738,
-            41.87194
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "THAILAND",
-        "padd": "PADD3",
-        "volume": 39930
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -95.3698028,
-            29.7604267
-          ],
-          [
-            100.992541,
-            15.870032
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "location": "FRANCE",
         "padd": "PADD3",
-        "volume": 32166
+        "volume": 32166,
+        "code": "FRA"
       },
       "geometry": {
         "type": "LineString",
@@ -634,198 +1060,10 @@
     {
       "type": "Feature",
       "properties": {
-        "location": "CANADA",
-        "padd": "PADD4",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -104.990251,
-            39.7392358
-          ],
-          [
-            -106.346771,
-            56.130366
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "KOREA",
-        "padd": "PADD4",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -104.990251,
-            39.7392358
-          ],
-          [
-            127.766922,
-            35.907757
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "NETHERLANDS",
-        "padd": "PADD4",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -104.990251,
-            39.7392358
-          ],
-          [
-            5.291265999999999,
-            52.132633
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "INDIA",
-        "padd": "PADD4",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -104.990251,
-            39.7392358
-          ],
-          [
-            78.96288,
-            20.593684
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "UNITED KINGDOM",
-        "padd": "PADD4",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -104.990251,
-            39.7392358
-          ],
-          [
-            -3.435973,
-            55.378051
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "TAIWAN",
-        "padd": "PADD4",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -104.990251,
-            39.7392358
-          ],
-          [
-            120.960515,
-            23.69781
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "CHINA",
-        "padd": "PADD4",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -104.990251,
-            39.7392358
-          ],
-          [
-            104.195397,
-            35.86166
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "ITALY",
-        "padd": "PADD4",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -104.990251,
-            39.7392358
-          ],
-          [
-            12.56738,
-            41.87194
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "THAILAND",
-        "padd": "PADD4",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -104.990251,
-            39.7392358
-          ],
-          [
-            100.992541,
-            15.870032
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "location": "FRANCE",
         "padd": "PADD4",
-        "volume": 0
+        "volume": 0,
+        "code": "FRA"
       },
       "geometry": {
         "type": "LineString",
@@ -844,198 +1082,10 @@
     {
       "type": "Feature",
       "properties": {
-        "location": "CANADA",
-        "padd": "PADD5",
-        "volume": 2
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -118.2436849,
-            34.0522342
-          ],
-          [
-            -106.346771,
-            56.130366
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "KOREA",
-        "padd": "PADD5",
-        "volume": 4327
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -118.2436849,
-            34.0522342
-          ],
-          [
-            127.766922,
-            35.907757
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "NETHERLANDS",
-        "padd": "PADD5",
-        "volume": 84
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -118.2436849,
-            34.0522342
-          ],
-          [
-            5.291265999999999,
-            52.132633
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "INDIA",
-        "padd": "PADD5",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -118.2436849,
-            34.0522342
-          ],
-          [
-            78.96288,
-            20.593684
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "UNITED KINGDOM",
-        "padd": "PADD5",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -118.2436849,
-            34.0522342
-          ],
-          [
-            -3.435973,
-            55.378051
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "TAIWAN",
-        "padd": "PADD5",
-        "volume": 284
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -118.2436849,
-            34.0522342
-          ],
-          [
-            120.960515,
-            23.69781
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "CHINA",
-        "padd": "PADD5",
-        "volume": 2049
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -118.2436849,
-            34.0522342
-          ],
-          [
-            104.195397,
-            35.86166
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "ITALY",
-        "padd": "PADD5",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -118.2436849,
-            34.0522342
-          ],
-          [
-            12.56738,
-            41.87194
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "location": "THAILAND",
-        "padd": "PADD5",
-        "volume": 0
-      },
-      "geometry": {
-        "type": "LineString",
-        "coordinates": [
-          [
-            -118.2436849,
-            34.0522342
-          ],
-          [
-            100.992541,
-            15.870032
-          ]
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "location": "FRANCE",
         "padd": "PADD5",
-        "volume": 0
+        "volume": 0,
+        "code": "FRA"
       },
       "geometry": {
         "type": "LineString",

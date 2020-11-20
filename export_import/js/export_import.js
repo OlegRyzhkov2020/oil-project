@@ -49,11 +49,9 @@ var curve = function(context) {
     
   var line=d3.line()
   .x(function(d) {
-    //   return projection ([+d.lon, +d.lat])[0];
     return projection (d)[0];
   })
   .y(function(d) {
-    // return projection ([+d.lon, +Sd.lat])[1];
     return projection (d)[1];
   })
   .curve(curve)
@@ -67,7 +65,10 @@ var svg = d3.select("#mapD3").append("svg")
     .attr("height", height);
 
 var g = svg.append("g");
+var g1 = svg.append("g")
 var g2 = svg.append("g");
+
+var data = d3.map();
 
 var buttons = g2.selectAll(".flowButton")
 			.data(flow)
@@ -90,11 +91,6 @@ var buttonsText = g2.selectAll(".flowLabel")
 			.attr("class","commodityLabel")
             .on("click",function(d) { updateFlow(d); });
 
-function getUSA(feature) {
-    return (feature.properties["Reporter ISO"] === "USA" &&
-            feature.properties["Commodity"] === "PETROLEUM PRODUCTS");
-};
-
 function getColor(flow) {
     switch (flow) {
         case "export":
@@ -105,7 +101,7 @@ function getColor(flow) {
 
 function updateFlow(flow) {
 
-    var flowLines = g.selectAll(".flow-line")
+    var flowLines = g1.selectAll(".flow-line")
     .transition()
     .duration(1000)
     .attr("stroke-dashoffset",  function() { return -this.getTotalLength(); })
@@ -115,55 +111,87 @@ function updateFlow(flow) {
     drawFlow(flow);  
 }
 
-function drawGlobe() {
-d3.json("./data/countries-110m.json",function(error,world) {
+function drawGlobe(world) {
 
-    // var countries = topojson.feature(world, world.objects.countries);
+  d3.json("./data/world-topo.json",function(error,world) {
 
-    g.insert("path")
-        .datum(topojson.feature(world, world.objects.countries))
-        .attr("class", "land")
-        .attr("d", path);
+      var countriesData = topojson.feature(world, world.objects.countries);
+      console.log(countriesData.features) 
+    
+    d3.csv("./data/oil_rent.csv", function(d) { 
+      
+      var countries = g.selectAll('path')
+        .data(countriesData.features)
+        .enter().append('path')
+            .attr('class', 'country default')
+            .attr('d', path)
+            .attr("fill", "lightblue");
+    
+    });
+  });
+};
 
-});}
 
-// ./data/oil_country_flows_${flow}s.geojson
 function drawFlow(flow) {
     d3.json(`${flow}.geojson`, function(error, dataset) {
         console.log(getColor(flow))
         // console.log(dataset);
         var features = dataset.features;
         console.log(features);
+        countryCodes=[];
+
+        for (i in dataset.features) {
+          countryCodes.push(dataset.features[i].properties.code)
+
+        };
+        console.log(countryCodes) // do we want it to be unique only?
+
     
         // inspired by: http://bl.ocks.org/Andrew-Reid/35d89fbcfbcfe9e819908ea77fc5bef6
         var maxVolume = d3.max(features, function(d) {  return d.properties["volume"]; });
         console.log(maxVolume);
         
         features.forEach( function(d,i) {
-            var flow1 = g
+            var flowLine = g1
                 .append("path")
                 .attr("d", line(d.geometry.coordinates))
                 .attr("class", "flow-line")
                 .style("stroke", getColor(flow)) 
-                .attr("stroke-opacity", Math.sqrt((+d.properties["volume"] / maxVolume)*2) )
+                .attr("stroke-opacity", Math.sqrt((+d.properties.volume / maxVolume)*2) )
                 .attr("stroke-width", 5);
             
-            var totalLength = flow1.node().getTotalLength() +10;
+            var totalLength = flowLine.node().getTotalLength() +10;
 
-            flow1
+            flowLine
             .attr("stroke-dasharray", totalLength + " " + totalLength)
             .attr("stroke-dashoffset", totalLength)
             .transition()
             .duration(2000)
-            // .on("start", drawPorts(d) )
+            // .on("start", colorCountry(d) )
             .attr("stroke-dashoffset", 0);
         });
+
+      // changing the color of countries based on if they are or not in the list of export/import countries
+      // maybe add some transition?
+       d3.selectAll('.country')
+        .attr('class', function(d) {
+            if (countryCodes.includes(getId(d))) {
+              return "country partner"
+            } else {
+              return "country default"
+            };
+        })
 
     });
     
 };
 
 drawGlobe();
+
+// helpers functions:
+function getId(f) {
+  return f.properties.id;
+};
 
 
   

@@ -12,7 +12,19 @@ html {
 }
 
 path {
+  /* fill: none; */
+  stroke: #aaa;
+  stroke-width: 1px;
+  
+}
+
+.flow-line {
   fill: none;
   stroke: #aaa;
   stroke-width: 1px;
+  
+}
+
+.partner {
+  fill: orange
 }
