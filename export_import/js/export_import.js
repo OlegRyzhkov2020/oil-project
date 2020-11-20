@@ -1,9 +1,22 @@
 // consider: rotating globe???
 // https://bl.ocks.org/atanumallick/8d18989cd538c72ae1ead1c3b18d7b54
 // https://gist.github.com/atanumallick/8d18989cd538c72ae1ead1c3b18d7b54
+var svgWidth = parseInt(d3.select(".col-md-8").style("width"));
+var svgHeight = 500;
 
-var height = 500;
-var width = 960;
+var margin = {
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0
+};
+
+// calculating height/width for the chart
+var width = svgWidth - margin.left - margin.right;
+var height = svgHeight - margin.top - margin.bottom;
+
+// var height = 500;
+// var width = 960;
 
 var flow=["export", "import"];
 
@@ -42,7 +55,7 @@ var curve = function(context) {
   }
 
   var projection = d3.geoKavrayskiy7()
-    // .scale(200)
+    .scale(1)
     .rotate([-220, -5])
     .translate([width/2, height/2])
     .precision(0.1);
@@ -76,10 +89,12 @@ var buttons = g2.selectAll(".flowButton")
 			.append("rect")
 			.attr("x", function(d,i) { return i * 90 + 20} )
 			.attr("y", 400)
-			.attr("rx",20).attr("ry",20).attr("width",80).attr("height",80)
+			.attr("rx",20).attr("ry",20).attr("width",80).attr("height",30)
 			.attr("fill","#aaa").attr("stroke","#999")
 			.attr("class","flowButton")
-            .on("click",function(d) { updateFlow(d); });
+            .on("click",function(d) { 
+              //console.log("button")
+              updateFlow(d); });
             
 var buttonsText = g2.selectAll(".flowLabel")
 			.data(flow).enter()
@@ -88,8 +103,9 @@ var buttonsText = g2.selectAll(".flowLabel")
 			.attr("y",445)
 			.attr("text-anchor","middle")
 			.text(function(d) { return d; })
-			.attr("class","commodityLabel")
-            .on("click",function(d) { updateFlow(d); });
+			.attr("class","buttonText")
+            .on("click",function(d) { // console.log("text")
+              updateFlow(d); });
 
 function getColor(flow) {
     switch (flow) {
@@ -117,6 +133,13 @@ function drawGlobe(world) {
 
       var countriesData = topojson.feature(world, world.objects.countries);
       console.log(countriesData.features) 
+
+      var scaleCenter = calculateScaleCenter(countriesData);
+
+      // // apply scale, center and translate parameters:
+      projection.scale(scaleCenter.scale)
+                // .center(scaleCenter.center)
+      // //           .translate([width/2, height/2]);
     
     d3.csv("./data/oil_rent.csv", function(d) { 
       
@@ -134,6 +157,7 @@ function drawGlobe(world) {
 
 function drawFlow(flow) {
     d3.json(`${flow}.geojson`, function(error, dataset) {
+
         console.log(getColor(flow))
         // console.log(dataset);
         var features = dataset.features;
@@ -144,9 +168,17 @@ function drawFlow(flow) {
           countryCodes.push(dataset.features[i].properties.code)
 
         };
-        console.log(countryCodes) // do we want it to be unique only?
+        // console.log(countryCodes) // do we want it to be unique only?
 
-    
+        // var line=d3.line()
+        // .x(function(d) {
+        //   return projection (d)[0];
+        // })
+        // .y(function(d) {
+        //   return projection (d)[1];
+        // })
+        // .curve(curve)
+
         // inspired by: http://bl.ocks.org/Andrew-Reid/35d89fbcfbcfe9e819908ea77fc5bef6
         var maxVolume = d3.max(features, function(d) {  return d.properties["volume"]; });
         console.log(maxVolume);
@@ -192,6 +224,44 @@ drawGlobe();
 function getId(f) {
   return f.properties.id;
 };
+
+/**
+     * source: https://data-map-d3.readthedocs.io/en/latest/index.html#
+     * Calculate the scale factor and the center coordinates of a GeoJSON
+     * FeatureCollection. For the calculation, the height and width of the
+     * map container is needed.
+     *
+     * Thanks to: http://stackoverflow.com/a/17067379/841644
+     *
+     * @param {object} features - A GeoJSON FeatureCollection object
+     *   containing a list of features.
+     *
+     * @return {object} An object containing the following attributes:
+     *   - scale: The calculated scale factor.
+     *   - center: A list of two coordinates marking the center.
+     */
+    function calculateScaleCenter(countries) {
+      // Get the bounding box of the paths (in pixels!) and calculate a
+      // scale factor based on the size of the bounding box and the map
+      // size.
+      var bbox_path = path.bounds(countries),
+          scale = 0.95 / Math.max(
+          (bbox_path[1][0] - bbox_path[0][0]) / width,
+          (bbox_path[1][1] - bbox_path[0][1]) / height
+          );
+
+      // Get the bounding box of the features (in map units!) and use it
+      // to calculate the center of the features.
+      var bbox_feature = d3.geoBounds(countries),
+          center = [
+          (bbox_feature[1][0] + bbox_feature[0][0]) / 2,
+          (bbox_feature[1][1] + bbox_feature[0][1]) / 2];
+
+      return {
+      'scale': scale,
+      'center': center
+      };
+  };
 
 
   
