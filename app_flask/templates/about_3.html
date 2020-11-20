@@ -59,8 +59,8 @@
 <script>
     var USER_SPEED = "slow";
 
-    var width = 750,
-        height = 500,
+    var width = window.innerHeight,
+        height = window.innerWidth,
         padding = 1,
         maxRadius = 3;
         // color = d3.scale.category10();
@@ -78,20 +78,40 @@
 
     // Over the course of this animation we slowly iterate through this array of objects, and use the data to display text and images on the page.
     var time_notes = [
-        { "start_minute": 1, "stop_minute": 51, "model": "ARIMA", "img": "static/images/david.jpg", "color": "yellow", "note": "David made this visualization by adopting code he found from the Information Super Highway", "chart": "static/images/oil_logo.png", "modeldetails": "Autoreggressive Integrated Moving Average Model"},
-        { "start_minute": 54, "stop_minute": 104, "model": "Recurrent Neural Network", "img": "static/images/oleg.jpg",  "color": "blue", "note": "Oleg is what we call a freeloader, he is part of the team but hasn't really done anything of value.", "chart": "static/images/timeSeries_1.png", "modeldetails": "Artificial Neural Network using connections between nodes to form a directed graph along a temporal sequence."},
-        { "start_minute": 107, "stop_minute": 157, "model": "Linear", "img": "static/images/elaine.jpg",  "color": "red", "note": "Elaine understands things like 'Math' and 'Statistics', we are pretty sure she is a witch.", "chart": "static/images/timeSeries_2.png", "modeldetails": "The most well known and understood algorithm in Machine Learning!"},
-        { "start_minute": 160, "stop_minute": 210, "model": "Logistical", "img": "static/images/zuzana.jpg",  "color": "blue", "note": "Zuzana really hopes this is a picture of her, and not some other zuzana that we found on linkedin. That would be awkward.", "chart": "static/images/timeSeries_3.png", "modeldetails": "Exploring the data as a binary dependent variable"},
-        { "start_minute": 213, "stop_minute": 263, "model": "Final Model", "img": "static/images/jildiz.jpg",  "color": "red", "note": "Jildiz is our resident machine learning data scientist. Her aritificial intelligence model is going to take over the world.", "chart": "static/images/timeSeries_4.png", "modeldetails": "This model will create self-driving jetpacks. We're skipping cars"},
+        { "start_minute": 1, "stop_minute": 39, "model": "Project Summary", "img": "static/images/david.jpg", "color": "yellow", "modeldetails": "Hello Everyone, we would like to welcome you to our Machine Learning Journey through the Oil Industry", "chart": "static/images/oil_logo.png", "note": "I'm David, and I prefer to speak with detailed notes. So I adopted this visualization to let me read the words on the screen."},
+        { "start_minute": 41, "stop_minute": 79, "model": "Project Summary", "img": "static/images/david.jpg", "color": "yellow", "modeldetails": "As we walk through our various models, the blue dots represent a more confident and accurate prediction model.", "chart": "static/images/oil_logo.png", "note": "Will taught us to teach with visuals instead of words"},
+        { "start_minute": 81, "stop_minute": 119, "model": "Project Summary", "img": "static/images/david.jpg", "color": "yellow", "modeldetails": "While the red dots represent a less confident and/or inaccurate prediction model.", "chart": "static/images/oil_logo.png", "note": "Will taught us to teach with visuals instead of words - as long as they are not pie charts. those are the worst."},
+        { "start_minute": 121, "stop_minute": 159, "model": "Linear Regression Model", "img": "static/images/oleg.jpg", "color": "blue", "modeldetails": "We used a Linear Regression model to explore the relationship between a number of US Oil Market features and the price for the WTI Oil Commodity.", "chart": "static/images/oil_logo.png", "note": "This is our fearless leader Oleg. Without him none of this would have been possible"},
+        { "start_minute": 161, "stop_minute": 199, "model": "Linear Regression Model - US Active Oil Rigs", "img": "static/images/oleg.jpg", "color": "blue", "modeldetails": "One feature we explored was the count of active US Oil Rigs. It had a fairly statistically significant relationship with the WTI (low MSE), but was not a great predictor.", "chart": "static/images/oil_logo.png", "note": "This is our fearless leader Oleg. Without him none of this would have been possible"},
+        { "start_minute": 201, "stop_minute": 239, "model": "Linear Regression Model - US Oil Production", "img": "static/images/oleg.jpg", "color": "blue", "modeldetails": "The same can be said for US Oil Production. There is similar statistical relationship but a lack of predictive power. This seems reasonable as Oil Rigs and Production are highly related features.", "chart": "static/images/oil_logo.png", "note": "We need to emphasize how crucial Oleg's leadership was to this project."},
+        { "start_minute": 241, "stop_minute": 279, "model": "Linear Regression Model - US Fuel Consumption", "img": "static/images/oleg.jpg", "color": "blue", "modeldetails": "Surprisingly enough, US Fuel Consumption appears to have little to no statistical relationship with the WTI Index. The predictive model had an MSE above 1.5, and a negative predictive power over the test data.", "chart": "static/images/oil_logo.png", "note": "Some might even say Oleg has done more for Bootcampers than any person - with the possible exception of Abraham Lincoln."},
+        { "start_minute": 281, "stop_minute": 329, "model": "Random Forest Model", "img": "static/images/zuzana.jpg", "color": "green", "modeldetails": "Our Random Forest model took the WTI along with related stock prices as the features for attempting to predict the value of individual stocks. We then focused on which features the model felt were most important for making a prediction.", "chart": "static/images/oil_logo.png", "note": "Our Visualization Maestro Zuzana was responsible for the various world maps found throughout our application."},
+        { "start_minute": 331, "stop_minute": 369, "model": "Random Forest Model", "img": "static/images/zuzana.jpg", "color": "green", "modeldetails": "The Random Forest model suggested that the WTI was a relatively low-importance feature to predicting stock market valuation of the various energy companies. Instead we were better off using related companies as predictive features.", "chart": "static/images/oil_logo.png", "note": "Please stop looking here for jokes. Instead read the more informative text at the top of the screen to learn about our project."},
+        { "start_minute": 371, "stop_minute": 409, "model": "Time-Series ARIMA Model", "img": "static/images/elaine.jpg", "color": "red", "modeldetails": "Our Time-Series ARIMA model explored both historical values of both the WTI and BRENT Oil Commodities. We then attempted to use that historical data to predict the future values for those commodities. The models performed fairly similarly accross the two datasets.", "chart": "static/images/oil_logo.png", "note": "This is Elaine. Elaine is a wizard when it comes to understanding critical concepts like 'Math' and 'Statistics'. It's a very good thing we had her on the squad."},
+        { "start_minute": 411, "stop_minute": 449, "model": "Time-Series ARIMA Model", "img": "static/images/elaine.jpg", "color": "red", "modeldetails": "We ran this model using both Daily and Monthly historical prices. The daily model struggled to come to a meaningful conclusion, predicting what was essentially a single value for the test period.", "chart": "static/images/oil_logo.png", "note": "Math can be confusing."},
+        { "start_minute": 451, "stop_minute": 489, "model": "Time-Series ARIMA Model", "img": "static/images/elaine.jpg", "color": "red", "modeldetails": "Despite a highly variant 95% confidence interval, the monthly-feature prediction model performed reasonably well in predicting a drop and recovery in early 2020 - especially with the BRENT index. The actual drop and recovery were far more stark, likely due to COVID-19.", "chart": "static/images/oil_logo.png", "note": "If you can read this, you ignored my previous request and are not paying attention to the important bit. Which is honestly quite rude."},
+        { "start_minute": 491, "stop_minute": 529, "model": "Conclusions", "img": "static/images/jildiz.jpg",  "color": "yellow", "modeldetails": "While we gave it a strong effort and learned a lot about both data science and the oil industry over the course of our project, we do not believe we can predict the future of where these commodity values will go.", "chart": "static/images/timeSeries_4.png", "note": "Jildiz is our resident machine learning data scientist. Her aritificial intelligence model is going to take over the world."},
+        { "start_minute": 531, "stop_minute": 569, "model": "Conclusions", "img": "static/images/jildiz.jpg",  "color": "yellow", "modeldetails": "It is possible that with additional non-market features such as global unrest or pandemics we could get closer.", "chart": "static/images/timeSeries_4.png", "note": "Google, Facebook and Uber are currently engaged in a bidding war over her model for self driving hovercraft. We're skipping cars."},
+        { "start_minute": 571, "stop_minute": 609, "model": "Conclusions", "img": "static/images/jildiz.jpg",  "color": "yellow", "modeldetails": "But even though we did not create a multi-billion dollar model, we had a great time along the way. Thanks for listening to our presentation!", "chart": "static/images/timeSeries_4.png", "note": "Thanks for listening!"}
         ];
 
     // Over the course of this animation we iterate through this array of models and results to create the moving dots.
     var performance = [
-        {"model": "ARIMA", "accuracy": 80, "inaccuracy": 20},
-        {"model": "Recurrent", "accuracy": 87, "inaccuracy": 13},
-        {"model": "Linear", "accuracy": 70, "inaccuracy": 30},
-        {"model": "Logistical", "accuracy": 99, "inaccuracy": 1},
-        {"model": "Final Model", "accuracy": 92, "inaccuracy": 8}
+        {"model": "Summary", "accuracy": 50, "inaccuracy": 0, "duration": 50},
+        {"model": "Summary2", "accuracy": 100, "inaccuracy": 0, "duration": 35},
+        {"model": "Summary3", "accuracy": 0, "inaccuracy": 100, "duration": 35},
+        {"model": "Linear1", "accuracy": 50, "inaccuracy": 50, "duration": 50},
+        {"model": "LinearRigs", "accuracy": 75, "inaccuracy": 25, "duration": 37},
+        {"model": "LinearProd", "accuracy": 75, "inaccuracy": 25, "duration": 36},
+        {"model": "LinearCons", "accuracy": 15, "inaccuracy": 85, "duration": 36},
+        {"model": "Forest1", "accuracy": 50, "inaccuracy": 50, "duration": 50},
+        {"model": "Forest2", "accuracy": 5, "inaccuracy": 95, "duration": 40},
+        {"model": "ARIMA", "accuracy": 50, "inaccuracy": 50, "duration": 50},
+        {"model": "ARIMADaily", "accuracy": 35, "inaccuracy": 65, "duration": 35},
+        {"model": "ARIMAMonthly", "accuracy": 75, "inaccuracy": 25, "duration": 35},
+        {"model": "Conclusion", "accuracy": 50, "inaccuracy": 50, "duration": 50},
+        {"model": "Conclusion2", "accuracy": 50, "inaccuracy": 50, "duration": 35},
+        {"model": "Conclusion3", "accuracy": 50, "inaccuracy": 50, "duration": 35}
     ];
 
     var notes_index = 0;
@@ -134,10 +154,10 @@
                 performance.forEach(function(d) {
 
                     if (i < d.accuracy) {
-                        possibilities.push({'act':0, 'duration':53});
+                        possibilities.push({'act':0, 'duration':d.duration});
                     }
                     else {
-                        possibilities.push({'act':1, 'duration':53});
+                        possibilities.push({'act':1, 'duration':d.duration});
                     }
                 })
 
@@ -263,7 +283,14 @@
             });
 
             force.resume();
-            curr_minute += 1;
+            // Resets the automation. It's a little sloppy to hardcode the 600, should really be the last value in the array. But works for now
+            if (curr_minute <= 610) {
+                curr_minute += 1
+                }
+
+            else {
+                curr_minute = 0
+                };
 
             // Update percentages
             label.selectAll("tspan.actpct")
@@ -277,7 +304,7 @@
                 d3.select("#year")
                     .style("color", "#fffced")
                     .style("text-align", "left")
-                    .style("font-size", "300%")
+                    .style("font-size", "225%")
                     .style("font-family", "adobe-caslon-pro")
                     .text(time_notes[notes_index].model)
                     .transition()
@@ -290,7 +317,7 @@
                 d3.select("#year").append('p')
                     .style("color", "#fffced")
                     .style("text-align", "left")
-                    .style("font-size", "50%")
+                    .style("font-size", "60%")
                     .style("font-family", "adobe-caslon-pro")
                     .text(time_notes[notes_index].modeldetails)
                     .transition()
@@ -302,11 +329,11 @@
             if (true_minute == time_notes[notes_index].start_minute + 10) {
                 d3.select("#image").append('img')
                     .attr('src', time_notes[notes_index].img)
-                    .attr('width', 200)
+                    .attr('width', 250)
                     .attr('height', 250)
                     .style('position', 'absolute')
                     .style('top', '50px')
-                    .style('left', '100px')
+                    .style('left', '125px')
                     .style('opacity', 0)
                     .style("display", "block")
                     .style("background", time_notes[notes_index].color)
@@ -320,13 +347,13 @@
 
             if (true_minute == time_notes[notes_index].start_minute + 10) {
                 d3.select("#note")
-                    .style("top", "500px")
+                    .style("top", "400px")
                     .style("color", "#fffced")
-                    .style("font-size", "150%")
+                    .style("font-size", "125%")
                     .style("font-style", "italic")
                     .transition()
                     .duration(500)
-                    .style("top", "370px")
+                    .style("top", "325px")
                     .style("color", "#000000")
                     .text(time_notes[notes_index].note);
             }
@@ -343,7 +370,7 @@
 
                 d3.select("#note").transition()
                     .duration(500)
-                    .style("top", "500px")
+                    .style("top", "400px")
                     .style("color", "#fffced");
 
                 d3.select("#year").transition()
