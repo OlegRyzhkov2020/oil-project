@@ -14,3 +14,7 @@
   background: #2db34a;
   border: 2px solid black;
 }
+#t01 th {
+  color: white !important;
+  background-color: darkgrey !important;
+}
