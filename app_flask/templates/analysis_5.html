@@ -7,6 +7,7 @@
   <style>
     .usa {
       fill: green;
+      fill-opacity: 0.6;
     }
     path {
       /* fill: none; */
@@ -28,6 +29,12 @@
 
     .partner {
       fill: orange;
+      fill-opacity:0.8
+    }
+
+    .oilRent {
+      fill: red;
+      /* fill-opacity: 0.3 */
     }
 
     .sphere {
@@ -211,7 +218,6 @@
           .attr("stroke-dashoffset",  function() { return -this.getTotalLength(); })
           .transition().duration(0).remove();
 
-          drawGlobe();
           drawFlow(flow);  
       }
 
@@ -235,6 +241,34 @@
                   .attr('class', 'country default')
                   .attr('d', path)
                   // .attr("fill", "lightblue");
+        
+        d3.csv("static/data/oil_rent.csv", function(error,oilRent) {
+          console.log(oilRent)
+          var codes= [];
+          for (i in oilRent) {
+                codes.push(oilRent[i].code)
+              };
+          console.log(codes)
+          var maxIndicator = d3.max(oilRent, function(d) {  return +d.value; });
+          console.log(maxIndicator)
+
+          d3.selectAll('.country')
+              .attr('class', function(d) {
+                  if (codes.includes(getId(d))) {
+                    return "country oilRent"
+                  } else {
+                    return "country default"
+                  };})
+
+          d3.selectAll(".oilRent")
+            .attr("fill-opacity", function(d) {
+              for (i in oilRent) {
+                if (oilRent[i].code === getId(d)) {
+                  return Math.round(Math.sqrt(+oilRent[i].value / maxIndicator)*10)/10
+                }
+              }
+            })
+        }) 
           
          
         });
@@ -308,6 +342,9 @@
                     return "country default"
                   };
               })
+            
+              // d3.selectAll('.partner')
+              
 
           });
           
