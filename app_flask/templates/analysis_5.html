@@ -39,7 +39,6 @@
 
     .sphere {
         fill: none;
-        /* fill-opacity: 0.2; */
         stroke:black;
         stroke-opacity: 0.5;
     }
@@ -57,8 +56,7 @@
    <!-- geo projections lib -->
    <script src="https://d3js.org/d3-geo-projection.v3.min.js"></script>
   <script src="https://d3js.org/topojson.v1.min.js"></script>
-  <!-- <script src="http://d3js.org/topojson.v0.min.js"></script> -->
-   <!-- formating numbers -->
+  <!-- formating numbers -->
    <script src="https://d3js.org/d3-format.v2.min.js"></script>
   <script src= "https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
 
@@ -78,8 +76,7 @@
           <h5>USA Export/Import Map</h5>
           <br>
           <div id="mapD3"></div>
-          <!-- <canvas id="container" style="height: 400px; min-width: 310px"></canvas> -->
-
+          
         </div>
 
         <div class="col-md-4 analysisClass text-center" >
@@ -109,13 +106,12 @@
       // remove it and replace it with a resized version of the chart/svg
       var svgArea = d3.select("body").select("svg");
 
-      // when we resize it removes svg and then recreate it - IMPORTANT!! NEW!!
+      // when we resize it removes svg and then recreate it 
       if (!svgArea.empty()) {
         svgArea.remove();
       };
 
           var svgWidth = parseInt(d3.select(".col-md-8").style("width"));
-          console.log("svgWidth=")
           var svgHeight = 500;
 
           var margin = {
@@ -250,14 +246,13 @@
             d3.json("static/data/world-topo.json",function(error,world) {
 
               var countriesData = topojson.feature(world, world.objects.countries);
-              console.log(countriesData.features)
+              // console.log(countriesData.features)
 
                 var scaleCenter = calculateScaleCenter(countriesData);
 
                 // apply scale, center and translate parameters:
                 projection.scale(scaleCenter.scale)
-                        // .center(scaleCenter.center)
-                        // .translate([width/2, height/2]);
+                        
 
                 // draw gratitude as first
                 const graticule = d3.geoGraticule()
@@ -281,19 +276,18 @@
                   .enter().append('path')
                       .attr('class', 'country default')
                       .attr('d', path)
-                      // .attr("fill", "lightblue");
+                     
 
             d3.csv("static/data/oil_rent_new.csv", function(error,oilRent) {
-              console.log(oilRent)
-              // console.log(len(oilRent))
+              // console.log(oilRent)
+              
               var codes= [];
               for (i in oilRent) {
-                    console.log(`${i} : ${oilRent[i].code} : ${oilRent[i].value}`)
                     codes.push(oilRent[i].code)
                   };
-              console.log(codes)
+              // console.log(codes)
               var maxIndicator = d3.max(oilRent, function(d) {  return +d.value; });
-              console.log(maxIndicator)
+              // console.log(maxIndicator)
 
               d3.selectAll('.country')
                   .attr('class', function(d) {
@@ -318,27 +312,27 @@
           };
 
           function drawFlow(flow) {
+            // first remove existing circles for countries
             d3.selectAll(".circleCountry").remove();
             d3.selectAll(".country-label").remove();
-            // d3.selectAll(".partner").remove();
-            
+                       
             d3.json(`static/data/${flow}.geojson`, function(error, dataset) {
-                  console.log(getColor(flow))
+                  // console.log(getColor(flow))
                   // console.log(dataset);
                   var features = dataset.features;
-                  console.log(features);
+                  // console.log(features);
                   countryCodes=[];
 
                   for (i in dataset.features) {
                     countryCodes.push(dataset.features[i].properties.code)
 
                   };
-                  console.log(countryCodes) // do we want it to be unique only?
+                  // console.log(countryCodes) 
 
 
                   // inspired by: http://bl.ocks.org/Andrew-Reid/35d89fbcfbcfe9e819908ea77fc5bef6
                   var maxVolume = d3.max(features, function(d) {  return d.properties["volume"]; });
-                  console.log(maxVolume);
+                  // console.log(maxVolume);
 
                   features.forEach( function(d,i) {
 
@@ -374,6 +368,7 @@
                       };
                   })
 
+              // add labels for import/export counterpart
               function nameCountries(d) {
                     var point = g2.append("circle")
                       .attr("cx", projection(d.geometry.coordinates[getPosition(flow)])[0])
@@ -382,7 +377,6 @@
                       .attr("class","circleCountry")
                       .attr("opacity",0.1)
                       .transition().duration(2000)
-                      // .attr("id",d.arr.replace(" ", "-")) 
                       .attr("opacity",0.5);
                       
                     var text = g2.append("text")
@@ -393,7 +387,6 @@
                       .attr("class","country-label")
                       .transition().duration(2000)
                       .attr("opacity",0.5)
-                      // .attr("id",d.arr.replace(" ", "-") + "-label");
                   }
 
               });
