@@ -43,6 +43,10 @@
         stroke:black;
         stroke-opacity: 0.5;
     }
+
+    .country-label {
+      font-size: 8px;
+    }
   </style>
 
   <!--D3 cdn-->
@@ -222,6 +226,14 @@
                       return "darkblue";
           }};
 
+          function getPosition(flow) {
+              switch (flow) {
+                  case "export":
+                      return 1;
+                  default:
+                      return 0;
+          }};
+
           function updateFlow(flow) {
 
               var flowLines = g1.selectAll(".flow-line")
@@ -304,6 +316,9 @@
           };
 
           function drawFlow(flow) {
+            d3.selectAll(".circleCountry").remove();
+            d3.selectAll(".country-label").remove();
+            
             d3.json(`static/data/${flow}.geojson`, function(error, dataset) {
                   console.log(getColor(flow))
                   // console.log(dataset);
@@ -323,12 +338,13 @@
                   console.log(maxVolume);
 
                   features.forEach( function(d,i) {
+
                       var flowLine = g1
                           .append("path")
                           .attr("d", line(d.geometry.coordinates))
                           .attr("class", "flow-line")
                           .style("stroke", getColor(flow))
-                          .attr("stroke-opacity", Math.sqrt((+d.properties.volume / maxVolume)*2) )
+                          .attr("stroke-opacity", Math.sqrt((+d.properties.volume / maxVolume)) )
                           .attr("stroke-width", 5);
 
                       var totalLength = flowLine.node().getTotalLength() +10;
@@ -338,7 +354,7 @@
                       .attr("stroke-dashoffset", totalLength)
                       .transition()
                       .duration(2000)
-                      // .on("start", colorCountry(d) )
+                      .on("start", nameCountries(d) )
                       .attr("stroke-dashoffset", 0);
                   });
 
@@ -357,10 +373,33 @@
 
                   // d3.selectAll('.partner')
 
+                  function nameCountries(d) {
+                    var point = g2.append("circle")
+                      .attr("cx", projection(d.geometry.coordinates[getPosition(flow)])[0])
+                      .attr("cy", projection(d.geometry.coordinates[getPosition(flow)])[1])
+                      .attr("r",2)
+                      .attr("class","circleCountry")
+                      .attr("opacity",0.1)
+                      .transition().duration(2000)
+                      // .attr("id",d.arr.replace(" ", "-")) 
+                      .attr("opacity",1);
+                      
+                    var text = g2.append("text")
+                      .attr("x", projection(d.geometry.coordinates[getPosition(flow)])[0] + -10)
+                      .attr("y", projection(d.geometry.coordinates[getPosition(flow)])[1] + 10)
+                      .text(d.properties.location)
+                      .attr("opacity",0.1)
+                      .attr("class","country-label")
+                      .transition().duration(2000)
+                      .attr("opacity",1)
+                      // .attr("id",d.arr.replace(" ", "-") + "-label");
+                  }
 
               });
 
           };
+
+          
 
         drawGlobe();
         
