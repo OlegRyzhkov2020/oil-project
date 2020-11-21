@@ -60,11 +60,19 @@ WHERE p1.country = 'United States of America' AND p2.country = 'Russia'
 GROUP BY p1.year
 ORDER BY p1.year DESC
 ```
-## Statistical Analysis
+## Machine Learning Models
 
 ![dashboard_slide](images/analysis_1.png)
 
 ![dashboard_slide](images/analysis_2.png)
+
+![dashboard_slide](images/mlrmodel.png)
+
+![dashboard_slide](images/export_import.png)
+
+ ![dashboard_slide](images/rnnmodel.png)
+
+ ![dashboard_slide](images/rfmodel.png)
 
 ## Key Findings and Future Research Questions
 

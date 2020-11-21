@@ -1,0 +1,119 @@
+country,code,value
+Angola,AGO,25.62
+Albania,ALB,1.95
+Arab World,ARB,21.45
+United Arab Emirates,ARE,16.59
+Argentina,ARG,1.38
+Australia,AUS,0.32
+Azerbaijan,AZE,25.28
+Benin,BEN,0.13
+Bahrain,BHR,2.31
+Belarus,BLR,0.56
+Belize,BLZ,0.75
+Bolivia,BOL,1.53
+Brazil,BRA,2.07
+Brunei Darussalam,BRN,11.69
+Canada,CAN,1.76
+Central Europe and the Baltics,CEB,0.12
+China,CHN,0.43
+Cote d'Ivoire,CIV,1.07
+Cameroon,CMR,3.14
+"Congo, Dem. Rep.",COD,0.63
+"Congo, Rep.",COG,49.96
+Colombia,COL,3.96
+Caribbean small states,CSS,1.64
+Cuba,CUB,0.27
+Denmark,DNK,0.48
+Algeria,DZA,15.77
+East Asia & Pacific (excluding high income),EAP,0.56
+Early-demographic dividend,EAR,3.54
+East Asia & Pacific,EAS,0.38
+Europe & Central Asia (excluding high income),ECA,6.67
+Europe & Central Asia,ECS,1.11
+Ecuador,ECU,7.25
+"Egypt, Arab Rep.",EGY,5.28
+Estonia,EST,0.35
+Fragile and conflict affected situations,FCS,14.93
+Gabon,GAB,20.35
+United Kingdom,GBR,0.52
+Georgia,GEO,0.2
+Ghana,GHA,4.62
+Equatorial Guinea,GNQ,25.13
+Guatemala,GTM,0.2
+High income,HIC,1.04
+Heavily indebted poor countries (HIPC),HPC,2.13
+Croatia,HRV,0.34
+Hungary,HUN,0.15
+IBRD only,IBD,2.06
+IDA & IBRD total,IBT,2.1
+IDA total,IDA,2.64
+IDA blend,IDB,4.83
+Indonesia,IDN,1.17
+IDA only,IDX,0.79
+India,IND,0.45
+Iraq,IRQ,45.39
+Kazakhstan,KAZ,15.56
+Kyrgyz Republic,KGZ,0.14
+Kuwait,KWT,42.46
+Latin America & Caribbean (excluding high income),LAC,2.05
+Libya,LBY,42.43
+Latin America & Caribbean,LCN,1.84
+Least developed countries: UN classification,LDC,3.04
+Low income,LIC,1.33
+Lower middle income,LMC,2.26
+Low & middle income,LMY,2.18
+Late-demographic dividend,LTE,2.34
+Madagascar,MDG,0.14
+Middle East & North Africa,MEA,18.92
+Mexico,MEX,2.36
+Middle income,MIC,2.19
+Myanmar,MMR,0.17
+Middle East & North Africa (excluding high income),MNA,16.63
+Mongolia,MNG,2.43
+Mozambique,MOZ,0.1
+Malaysia,MYS,2.93
+North America,NAC,0.48
+Niger,NER,1.38
+Nigeria,NGA,9.03
+Norway,NOR,5.24
+New Zealand,NZL,0.2
+OECD members,OED,0.37
+Oman,OMN,26.86
+Other small states,OSS,9.28
+Pakistan,PAK,0.48
+Peru,PER,0.31
+Papua New Guinea,PNG,3.03
+Pre-demographic dividend,PRE,13.65
+Post-demographic dividend,PST,0.31
+Qatar,QAT,16.59
+Romania,ROU,0.44
+Russian Federation,RUS,10
+South Asia,SAS,0.4
+Saudi Arabia,SAU,28.71
+Sudan,SDN,6.38
+Serbia,SRB,0.11
+Sub-Saharan Africa (excluding high income),SSA,4.98
+Sub-Saharan Africa,SSF,4.94
+Small states,SST,8.05
+Suriname,SUR,6.92
+Chad,TCD,20.15
+East Asia & Pacific (IDA & IBRD countries),TEA,0.56
+Europe & Central Asia (IDA & IBRD countries),TEC,5.25
+Thailand,THA,0.76
+Tajikistan,TJK,0.12
+Turkmenistan,TKM,7.05
+Latin America & the Caribbean (IDA & IBRD countries),TLA,1.92
+Timor-Leste,TLS,33.41
+Middle East & North Africa (IDA & IBRD countries),TMN,16.87
+South Asia (IDA & IBRD),TSA,0.4
+Sub-Saharan Africa (IDA & IBRD countries),TSS,4.94
+Trinidad and Tobago,TTO,4
+Tunisia,TUN,2.56
+Turkey,TUR,0.11
+Ukraine,UKR,0.32
+Upper middle income,UMC,2.17
+United States,USA,0.38
+Uzbekistan,UZB,1.45
+Vietnam,VNM,1.61
+World,WLD,1.45
+"Yemen, Rep.",YEM,2.65
