@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title>Time Series Analysis</title>
+
+  <style>
+    .usa {
+      fill: green;
+      fill-opacity: 0.6;
+    }
+    path {
+      fill: none;
+      stroke: #aaa;
+      stroke-width: 1px;
+
+    }
+
+    .flow-line {
+      fill: none;
+      stroke: #aaa;
+      stroke-width: 1px;
+
+    }
+    .default {
+      fill: steelblue;
+      fill-opacity: 0.5;
+    }
+
+    .partner {
+      fill: orange;
+      fill-opacity:0.8
+    }
+
+    .oilRent {
+      fill: red;
+      /* fill-opacity: 0.3 */
+    }
+
+    .sphere {
+        fill: none;
+        /* fill-opacity: 0.2; */
+        stroke:black;
+        stroke-opacity: 0.5;
+    }
+  </style>
+
+  <!--D3 cdn-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.5.0/d3.min.js"></script>
+  <script src ="https://d3js.org/d3.v4.min.js"></script>
+  <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+  <script src="https://d3js.org/d3-queue.v3.min.js"></script>
+   <!-- geo projections lib -->
+   <script src="https://d3js.org/d3-geo-projection.v3.min.js"></script>
+  <script src="https://d3js.org/topojson.v1.min.js"></script>
+  <!-- <script src="http://d3js.org/topojson.v0.min.js"></script> -->
+   <!-- formating numbers -->
+   <script src="https://d3js.org/d3-format.v2.min.js"></script>
+  <script src= "https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+
+  <script type=text/javascript src="{{url_for('static', filename='js/config.js') }}"></script>
+
+  <!-- <link rel="stylesheet" type="text/css" href="static/css/exim_style.css"> -->
+
+</head>
+<body>
+  {% extends "menu.html" %}
+  {% block content %}
+  <div class="container-fluid padding first-container">
+    <span class="anchor" id="Analysis_5"></span>
+
+    <div class="row">
+        <div class="col-md-8 text-center" >
+          <h5>USA Export/Import Map</h5>
+          <br>
+          <div id="mapD3"></div>
+          <!-- <canvas id="container" style="height: 400px; min-width: 310px"></canvas> -->
+
+        </div>
+
+        <div class="col-md-4 analysisClass text-center" >
+
+             <div class="card">
+               <h5>Exploratory Data Analysis</h5>
+               <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/import.png')}}">
+               <br>
+               <h5>Exploratory Data Analysis</h5>
+               <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/export.png')}}">
+               <br>
+               <h5>Oil Consumption Trend Prediction</h5>
+               <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/cormatrix.png')}}">
+               <br>
+               <h5>Oil Consumption Trend Prediction</h5>
+               <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/cons_1.png')}}">
+               <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/cons_2.png')}}">
+
+             </div>
+        </div>
+      </div>
+    </div>
+  <script>
+
+
+      var svgWidth = parseInt(d3.select(".col-md-8").style("width"));
+      console.log("svgWidth=")
+      var svgHeight = 500;
+
+      var margin = {
+        top: 0,
+        right: 16,
+        bottom: 0,
+        left: 16
+      };
+
+      // calculating height/width for the chart
+      var width = svgWidth - margin.left - margin.right;
+      var height = svgHeight - margin.top - margin.bottom;
+
+      // var height = 500;
+      // var width = 960;
+
+      var flow=["export", "import"];
+
+      // curve line source:
+      // https://stackoverflow.com/questions/56562231/line-on-d3-map-not-forming-a-curve
+      var curve = function(context) {
+          var custom = d3.curveLinear(context);
+          custom._context = context;
+          custom.point = function(x,y) {
+            x = +x, y = +y;
+            switch (this._point) {
+              case 0: this._point = 1;
+                this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y);
+                this.x0 = x; this.y0 = y;
+                break;
+              case 1: this._point = 2;
+              default:
+                var x1 = this.x0 * 0.5 + x * 0.5;
+                var y1 = this.y0 * 0.5 + y * 0.5;
+                var m = 1/(y1 - y)/(x1 - x);
+                var r = -100; // offset of mid point.
+                var k = r / Math.sqrt(1 + (m*m) );
+                if (m == Infinity) {
+                  y1 += r;
+                }
+                else {
+                  y1 += k;
+                  x1 += m*k;
+                }
+                this._context.quadraticCurveTo(x1,y1,x,y);
+                this.x0 = x; this.y0 = y;
+                break;
+            }
+          }
+          return custom;
+        }
+
+        var projection = d3.geoKavrayskiy7()
+          // .scale(1)
+          .rotate([-215, 0])
+          .translate([width/2, height/2])
+          .precision(0.1);
+
+        var line=d3.line()
+        .x(function(d) {
+          return projection (d)[0];
+        })
+        .y(function(d) {
+          return projection (d)[1];
+        })
+        .curve(curve)
+
+
+
+      var path = d3.geoPath().projection(projection);
+
+      var svg = d3.select("#mapD3").append("svg")
+          .attr("width", width)
+          .attr("height", height);
+
+      var g = svg.append("g");
+      var g1 = svg.append("g")
+      var g2 = svg.append("g");
+
+      var data = d3.map();
+
+      var buttons = g2.selectAll(".flowButton")
+            .data(flow)
+            .enter()
+            .append("rect")
+            .attr("x", function(d,i) { return i * 90 + 20} )
+            .attr("y", 470)
+            .attr("rx",20).attr("ry",20).attr("width",80).attr("height",30)
+            .attr("fill","#aaa").attr("stroke","#999")
+            .attr("class","flowButton")
+                  .on("click",function(d) { updateFlow(d); });
+
+      var buttonsText = g2.selectAll(".flowLabel")
+            .data(flow).enter()
+            .append("text")
+            .attr("x",function (d,i) { return i * 90 + 60} )
+            .attr("y",490)
+            .attr("text-anchor","middle")
+            .text(function(d) { return d; })
+            .attr("class","flowLabel")
+                  .on("click",function(d) { updateFlow(d); });
+
+      function getColor(flow) {
+          switch (flow) {
+              case "export":
+                  return "darkred";
+              default:
+                  return "darkblue";
+      }};
+
+      function updateFlow(flow) {
+
+          var flowLines = g1.selectAll(".flow-line")
+          .transition()
+          .duration(1000)
+          .attr("stroke-dashoffset",  function() { return -this.getTotalLength(); })
+          .transition().duration(0).remove();
+
+          drawFlow(flow);
+      }
+
+      function drawGlobe(world) {
+
+        d3.json("static/data/world-topo.json",function(error,world) {
+
+          var countriesData = topojson.feature(world, world.objects.countries);
+          console.log(countriesData.features)
+
+            // var scaleCenter = calculateScaleCenter(countriesData);
+
+            // apply scale, center and translate parameters:
+            // projection.scale(scaleCenter.scale)
+                    // .center(scaleCenter.center)
+                    // .translate([width/2, height/2]);
+
+          var countries = g.selectAll('path')
+              .data(countriesData.features)
+              .enter().append('path')
+                  .attr('class', 'country default')
+                  .attr('d', path)
+                  // .attr("fill", "lightblue");
+
+        d3.csv("static/data/oil_rent.csv", function(error,oilRent) {
+          console.log(oilRent)
+          var codes= [];
+          for (i in oilRent) {
+                codes.push(oilRent[i].code)
+              };
+          console.log(codes)
+          var maxIndicator = d3.max(oilRent, function(d) {  return +d.value; });
+          console.log(maxIndicator)
+
+          d3.selectAll('.country')
+              .attr('class', function(d) {
+                  if (codes.includes(getId(d))) {
+                    return "country oilRent"
+                  } else {
+                    return "country default"
+                  };})
+
+          d3.selectAll(".oilRent")
+            .attr("fill-opacity", function(d) {
+              for (i in oilRent) {
+                if (oilRent[i].code === getId(d)) {
+                  return Math.round(Math.sqrt(+oilRent[i].value / maxIndicator)*10)/10
+                }
+              }
+            })
+        })
+
+
+        });
+      };
+
+      function drawGraticule() {
+                const graticule = d3.geoGraticule()
+                    .step([20, 20]);
+
+                g.append("path")
+                    .datum(graticule)
+                    .attr("class", "graticule")
+                    .attr("d", path)
+                    .style("fill", "#fff")
+                    .style("stroke", "#ccc");
+
+                // draw the sphere around the globe
+                g.append('path')
+                    .attr('class', 'sphere')
+                    .attr('d', path({type: 'Sphere'}));
+      }
+
+      function drawFlow(flow) {
+        d3.json(`static/data/${flow}.geojson`, function(error, dataset) {
+              console.log(getColor(flow))
+              // console.log(dataset);
+              var features = dataset.features;
+              console.log(features);
+              countryCodes=[];
+
+              for (i in dataset.features) {
+                countryCodes.push(dataset.features[i].properties.code)
+
+              };
+              console.log(countryCodes) // do we want it to be unique only?
+
+
+              // inspired by: http://bl.ocks.org/Andrew-Reid/35d89fbcfbcfe9e819908ea77fc5bef6
+              var maxVolume = d3.max(features, function(d) {  return d.properties["volume"]; });
+              console.log(maxVolume);
+
+              features.forEach( function(d,i) {
+                  var flowLine = g1
+                      .append("path")
+                      .attr("d", line(d.geometry.coordinates))
+                      .attr("class", "flow-line")
+                      .style("stroke", getColor(flow))
+                      .attr("stroke-opacity", Math.sqrt((+d.properties.volume / maxVolume)*2) )
+                      .attr("stroke-width", 5);
+
+                  var totalLength = flowLine.node().getTotalLength() +10;
+
+                  flowLine
+                  .attr("stroke-dasharray", totalLength + " " + totalLength)
+                  .attr("stroke-dashoffset", totalLength)
+                  .transition()
+                  .duration(2000)
+                  // .on("start", colorCountry(d) )
+                  .attr("stroke-dashoffset", 0);
+              });
+
+            // changing the color of countries based on if they are or not in the list of export/import countries
+            // maybe add some transition?
+            d3.selectAll('.country')
+              .attr('class', function(d) {
+                  if(getId(d)==="USA") {
+                    return "country usa"
+                  } if (countryCodes.includes(getId(d))) {
+                    return "country partner"
+                  } else {
+                    return "country default"
+                  };
+              })
+
+              // d3.selectAll('.partner')
+
+
+          });
+
+      };
+
+    drawGlobe();
+    drawGraticule();
+
+
+    // helpers functions:
+    function getId(f) {
+      return f.properties.id;
+    };
+
+    //  /**
+    //  * source: https://data-map-d3.readthedocs.io/en/latest/index.html#
+    //  * Calculate the scale factor and the center coordinates of a GeoJSON
+    //  * FeatureCollection. For the calculation, the height and width of the
+    //  * map container is needed.
+    //  *
+    //  * Thanks to: http://stackoverflow.com/a/17067379/841644
+    //  *
+    //  * @param {object} features - A GeoJSON FeatureCollection object
+    //  *   containing a list of features.
+    //  *
+    //  * @return {object} An object containing the following attributes:
+    //  *   - scale: The calculated scale factor.
+    //  *   - center: A list of two coordinates marking the center.
+    //  */
+    // function calculateScaleCenter(countries) {
+    //     // Get the bounding box of the paths (in pixels!) and calculate a
+    //     // scale factor based on the size of the bounding box and the map
+    //     // size.
+    //     var bbox_path = path.bounds(countries),
+    //         scale = 0.95 / Math.max(
+    //         (bbox_path[1][0] - bbox_path[0][0]) / width,
+    //         (bbox_path[1][1] - bbox_path[0][1]) / height
+    //         );
+
+    //     // Get the bounding box of the features (in map units!) and use it
+    //     // to calculate the center of the features.
+    //     var bbox_feature = d3.geoBounds(countries),
+    //         center = [
+    //         (bbox_feature[1][0] + bbox_feature[0][0]) / 2,
+    //         (bbox_feature[1][1] + bbox_feature[0][1]) / 2];
+
+    //     return {
+    //     'scale': scale,
+    //     'center': center
+    //     };
+    // };
+
+  </script>
+  {% endblock %}
+</body>
+</html>
