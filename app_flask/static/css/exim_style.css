@@ -1,0 +1,37 @@
+.usa {
+  fill: green;
+  fill-opacity: 0.6;
+}
+path {
+  /* fill: none; */
+  stroke: #aaa;
+  stroke-width: 1px;
+  
+}
+
+.flow-line {
+  fill: none;
+  stroke: #aaa;
+  stroke-width: 1px;
+  
+}
+
+.default {
+  fill: steelblue;
+  fill-opacity: 0.5;
+}
+
+.partner {
+  fill: orange;
+  fill-opacity:0.8
+}
+
+.oilRent {
+  fill: red;
+}
+
+.sphere {
+    fill: none;
+    stroke:black;
+    stroke-opacity: 0.5;
+}

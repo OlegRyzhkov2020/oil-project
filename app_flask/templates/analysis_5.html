@@ -10,7 +10,7 @@
       fill-opacity: 0.6;
     }
     path {
-      /* fill: none; */
+      fill: none;
       stroke: #aaa;
       stroke-width: 1px;
       
@@ -60,7 +60,7 @@
 
   <script type=text/javascript src="{{url_for('static', filename='js/config.js') }}"></script>
 
-  <!-- <link rel="stylesheet" type="text/css" href="static/css/ex_im_style.css"> -->
+  <!-- <link rel="stylesheet" type="text/css" href="static/css/exim_style.css"> -->
 
 </head>
 <body>
@@ -276,7 +276,7 @@
 
       function drawGraticule() {
                 const graticule = d3.geoGraticule()
-                    .step([10, 10]);
+                    .step([20, 20]);
 
                 g.append("path")
                     .datum(graticule)
