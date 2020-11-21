@@ -196,7 +196,7 @@
           var g2 = svg.append("g");
 
           var data = d3.map();
-
+          
           var buttons = g2.selectAll(".flowButton")
                 .data(flow)
                 .enter()
@@ -283,10 +283,12 @@
                       .attr('d', path)
                       // .attr("fill", "lightblue");
 
-            d3.csv("static/data/oil_rent.csv", function(error,oilRent) {
+            d3.csv("static/data/oil_rent_new.csv", function(error,oilRent) {
               console.log(oilRent)
+              // console.log(len(oilRent))
               var codes= [];
               for (i in oilRent) {
+                    console.log(`${i} : ${oilRent[i].code} : ${oilRent[i].value}`)
                     codes.push(oilRent[i].code)
                   };
               console.log(codes)
@@ -318,6 +320,7 @@
           function drawFlow(flow) {
             d3.selectAll(".circleCountry").remove();
             d3.selectAll(".country-label").remove();
+            // d3.selectAll(".partner").remove();
             
             d3.json(`static/data/${flow}.geojson`, function(error, dataset) {
                   console.log(getColor(flow))
@@ -344,7 +347,7 @@
                           .attr("d", line(d.geometry.coordinates))
                           .attr("class", "flow-line")
                           .style("stroke", getColor(flow))
-                          .attr("stroke-opacity", Math.sqrt((+d.properties.volume / maxVolume)) )
+                          .attr("stroke-opacity", Math.sqrt((+d.properties.volume / maxVolume)*4) )
                           .attr("stroke-width", 5);
 
                       var totalLength = flowLine.node().getTotalLength() +10;
@@ -371,9 +374,7 @@
                       };
                   })
 
-                  // d3.selectAll('.partner')
-
-                  function nameCountries(d) {
+              function nameCountries(d) {
                     var point = g2.append("circle")
                       .attr("cx", projection(d.geometry.coordinates[getPosition(flow)])[0])
                       .attr("cy", projection(d.geometry.coordinates[getPosition(flow)])[1])
@@ -382,7 +383,7 @@
                       .attr("opacity",0.1)
                       .transition().duration(2000)
                       // .attr("id",d.arr.replace(" ", "-")) 
-                      .attr("opacity",1);
+                      .attr("opacity",0.5);
                       
                     var text = g2.append("text")
                       .attr("x", projection(d.geometry.coordinates[getPosition(flow)])[0] + -10)
@@ -391,7 +392,7 @@
                       .attr("opacity",0.1)
                       .attr("class","country-label")
                       .transition().duration(2000)
-                      .attr("opacity",1)
+                      .attr("opacity",0.5)
                       // .attr("id",d.arr.replace(" ", "-") + "-label");
                   }
 
