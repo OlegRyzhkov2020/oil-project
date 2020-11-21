@@ -13,14 +13,22 @@
       fill: none;
       stroke: #aaa;
       stroke-width: 1px;
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
     }
 
     .flow-line {
       fill: none;
       stroke: #aaa;
       stroke-width: 1px;
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
     }
     .default {
       fill: steelblue;
@@ -74,22 +82,28 @@
           <h5>USA Export/Import Map</h5>
           <br>
           <div id="mapD3"></div>
+<<<<<<< HEAD
           <!-- <canvas id="container" style="height: 400px; min-width: 310px"></canvas> -->
 
+=======
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
         </div>
 
         <div class="col-md-4 analysisClass text-center" >
-          <h5>Oil Consumption Trend Prediction</h5>
+
           <div class="card">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/R_exploration.png')}}">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_1.png')}}">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_2.png')}}">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_3.png')}}">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_4.png')}}">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_5.png')}}">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_6.png')}}">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_7.png')}}">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_8.png')}}">
+            <h5>Exploratory Data Analysis</h5>
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/import.png')}}">
+            <br>
+            <h5>Exploratory Data Analysis</h5>
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/export.png')}}">
+            <br>
+            <h5>Oil Consumption Trend Prediction</h5>
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/cormatrix.png')}}">
+            <br>
+            <h5>Oil Consumption Trend Prediction</h5>
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/cons_1.png')}}">
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/cons_2.png')}}">
 
           </div>
         </div>
@@ -97,7 +111,11 @@
     </div>
   <script>
 
+<<<<<<< HEAD
   
+=======
+
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
       var svgWidth = parseInt(d3.select(".col-md-8").style("width"));
       console.log("svgWidth=")
       var svgHeight = 500;
@@ -112,7 +130,11 @@
       // calculating height/width for the chart
       var width = svgWidth - margin.left - margin.right;
       var height = svgHeight - margin.top - margin.bottom;
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
       // var height = 500;
       // var width = 960;
 
@@ -126,12 +148,21 @@
           custom.point = function(x,y) {
             x = +x, y = +y;
             switch (this._point) {
+<<<<<<< HEAD
               case 0: this._point = 1; 
                 this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y);
                 this.x0 = x; this.y0 = y;        
                 break;
               case 1: this._point = 2;
               default: 
+=======
+              case 0: this._point = 1;
+                this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y);
+                this.x0 = x; this.y0 = y;
+                break;
+              case 1: this._point = 2;
+              default:
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
                 var x1 = this.x0 * 0.5 + x * 0.5;
                 var y1 = this.y0 * 0.5 + y * 0.5;
                 var m = 1/(y1 - y)/(x1 - x);
@@ -143,9 +174,15 @@
                 else {
                   y1 += k;
                   x1 += m*k;
+<<<<<<< HEAD
                 }     
                 this._context.quadraticCurveTo(x1,y1,x,y); 
                 this.x0 = x; this.y0 = y;        
+=======
+                }
+                this._context.quadraticCurveTo(x1,y1,x,y);
+                this.x0 = x; this.y0 = y;
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
                 break;
             }
           }
@@ -157,7 +194,11 @@
           .rotate([-215, 0])
           .translate([width/2, height/2])
           .precision(0.1);
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
         var line=d3.line()
         .x(function(d) {
           return projection (d)[0];
@@ -191,7 +232,11 @@
             .attr("fill","#aaa").attr("stroke","#999")
             .attr("class","flowButton")
                   .on("click",function(d) { updateFlow(d); });
+<<<<<<< HEAD
                   
+=======
+
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
       var buttonsText = g2.selectAll(".flowLabel")
             .data(flow).enter()
             .append("text")
@@ -218,7 +263,11 @@
           .attr("stroke-dashoffset",  function() { return -this.getTotalLength(); })
           .transition().duration(0).remove();
 
+<<<<<<< HEAD
           drawFlow(flow);  
+=======
+          drawFlow(flow);
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
       }
 
       function drawGlobe(world) {
@@ -226,7 +275,11 @@
         d3.json("static/data/world-topo.json",function(error,world) {
 
           var countriesData = topojson.feature(world, world.objects.countries);
+<<<<<<< HEAD
           console.log(countriesData.features) 
+=======
+          console.log(countriesData.features)
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
 
             // var scaleCenter = calculateScaleCenter(countriesData);
 
@@ -241,7 +294,11 @@
                   .attr('class', 'country default')
                   .attr('d', path)
                   // .attr("fill", "lightblue");
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
         d3.csv("static/data/oil_rent.csv", function(error,oilRent) {
           console.log(oilRent)
           var codes= [];
@@ -268,9 +325,15 @@
                 }
               }
             })
+<<<<<<< HEAD
         }) 
           
          
+=======
+        })
+
+
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
         });
       };
 
@@ -305,20 +368,35 @@
               };
               console.log(countryCodes) // do we want it to be unique only?
 
+<<<<<<< HEAD
           
               // inspired by: http://bl.ocks.org/Andrew-Reid/35d89fbcfbcfe9e819908ea77fc5bef6
               var maxVolume = d3.max(features, function(d) {  return d.properties["volume"]; });
               console.log(maxVolume);
               
+=======
+
+              // inspired by: http://bl.ocks.org/Andrew-Reid/35d89fbcfbcfe9e819908ea77fc5bef6
+              var maxVolume = d3.max(features, function(d) {  return d.properties["volume"]; });
+              console.log(maxVolume);
+
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
               features.forEach( function(d,i) {
                   var flowLine = g1
                       .append("path")
                       .attr("d", line(d.geometry.coordinates))
                       .attr("class", "flow-line")
+<<<<<<< HEAD
                       .style("stroke", getColor(flow)) 
                       .attr("stroke-opacity", Math.sqrt((+d.properties.volume / maxVolume)*2) )
                       .attr("stroke-width", 5);
                   
+=======
+                      .style("stroke", getColor(flow))
+                      .attr("stroke-opacity", Math.sqrt((+d.properties.volume / maxVolume)*2) )
+                      .attr("stroke-width", 5);
+
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
                   var totalLength = flowLine.node().getTotalLength() +10;
 
                   flowLine
@@ -342,17 +420,30 @@
                     return "country default"
                   };
               })
+<<<<<<< HEAD
             
               // d3.selectAll('.partner')
               
 
           });
           
+=======
+
+              // d3.selectAll('.partner')
+
+
+          });
+
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
       };
 
     drawGlobe();
     drawGraticule();
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
 
     // helpers functions:
     function getId(f) {

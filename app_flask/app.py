@@ -8,7 +8,7 @@ from datetime import datetime
 from wtforms import Form, DateField, SelectField, validators
 from flask_pymongo import PyMongo
 
-import regression_model, ml_model
+# import regression_model, ml_model
 
 #######################################################
 # Flask Setup
@@ -20,7 +20,7 @@ app = Flask(__name__)
 # Database Setup
 #######################################################
 # Use PyMongo to establish Mongo connection
-mongo = PyMongo(app, uri="mongodb://localhost:27017/oil_db")
+# mongo = PyMongo(app, uri="mongodb://localhost:27017/oil_db")
 
 #######################################################
 # Input Data Class Object
@@ -63,21 +63,21 @@ class InputFormML(Form):
 def home():
 
     # Find records of data from the mongo database
-    news_data = mongo.db.oil_news
-    latest_news = []
-    id = 1
-    for s in news_data.find():
-        latest_news.append({'ID':id, 'Date' : s['Date'], 'News_Title' : s['News_Title'],
-                            'News_Paragraph': s['News_Paragraph'], 'Author':s['Author'],
-                            'Image_URL':s['Image_URL']})
-        if id == 1: head_news = [s['News_Title'], s['News_Paragraph']]
-        id +=1
-    latest_news = latest_news[21:]
-    prices_data = mongo.db.oil_prices_new
-    latest_prices = []
-    for p in prices_data.find():
-        latest_prices.append({'ID':id, 'Oil' : p['Oil_Symbol'], 'Price' : p['Oil_Price'],
-                            'Price_Change':p['Oil_Change_Value']})
+    # news_data = mongo.db.oil_news
+    # latest_news = []
+    # id = 1
+    # for s in news_data.find():
+    #     latest_news.append({'ID':id, 'Date' : s['Date'], 'News_Title' : s['News_Title'],
+    #                         'News_Paragraph': s['News_Paragraph'], 'Author':s['Author'],
+    #                         'Image_URL':s['Image_URL']})
+    #     if id == 1: head_news = [s['News_Title'], s['News_Paragraph']]
+    #     id +=1
+    # latest_news = latest_news[21:]
+    # prices_data = mongo.db.oil_prices_new
+    # latest_prices = []
+    # for p in prices_data.find():
+    #     latest_prices.append({'ID':id, 'Oil' : p['Oil_Symbol'], 'Price' : p['Oil_Price'],
+    #                         'Price_Change':p['Oil_Change_Value']})
     # Return template and data
     return render_template("home.html", data=latest_news, head_news = head_news, prices = latest_prices)
 

@@ -19,25 +19,26 @@
     <span class="anchor" id="Analysis_6"></span>
 
     <div class="row">
-        <div class="col-md-6 text-center" >
+        <div class="col-md-4 analysisClass text-center" >
           <h5>ARIMA MODEL, Daily Data Analysis</h5>
-
-          <!-- <canvas id="container" style="height: 400px; min-width: 310px"></canvas> -->
+          <div class="card">
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/analysis/WTI ARIMA time series model - daily data.png')}}">
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/analysis/WTI ARIMA time series model- monthly data.png')}}">
+          </div>
 
         </div>
-
-        <div class="col-md-6 analysisClass text-center" >
-          <h5>Recurrent Neural Network Model, Daily Data Analysis</h5>
+        <div class="col-md-3 text-center" >
+          <h5>Neural Network</h5>
           <div class="card">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/R_exploration.png')}}">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_1.png')}}">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_2.png')}}">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_3.png')}}">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_4.png')}}">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_5.png')}}">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_6.png')}}">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_7.png')}}">
-            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/timeSeries_8.png')}}">
+            <img class="card-img-bottom" style="height: 500px" src='https://i.pinimg.com/originals/a2/c3/7b/a2c37b5974c353b39326d786959db6e9.gif'>
+          </div>
+        </div>
+        <div class="col-md-5 analysisClass text-center" >
+          <div class="card">
+            <h5>Recurrent Neural Network Model, BRENT</h5>
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/analysis/BRENT RNN-LTSM model- daily oil price.png')}}">
+              <h5>Recurrent Neural Network Model, WTI</h5>
+            <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/analysis/WTI RNN-LTSM model- daily oil price.png')}}">
 
           </div>
         </div>
