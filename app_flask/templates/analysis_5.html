@@ -13,22 +13,12 @@
       fill: none;
       stroke: #aaa;
       stroke-width: 1px;
-<<<<<<< HEAD
-      
-=======
-
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
     }
 
     .flow-line {
       fill: none;
       stroke: #aaa;
       stroke-width: 1px;
-<<<<<<< HEAD
-      
-=======
-
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
     }
     .default {
       fill: steelblue;
@@ -51,6 +41,10 @@
         stroke:black;
         stroke-opacity: 0.5;
     }
+
+    /* .graticule {
+      fill: none;
+    } */
   </style>
 
   <!--D3 cdn-->
@@ -82,11 +76,6 @@
           <h5>USA Export/Import Map</h5>
           <br>
           <div id="mapD3"></div>
-<<<<<<< HEAD
-          <!-- <canvas id="container" style="height: 400px; min-width: 310px"></canvas> -->
-
-=======
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
         </div>
 
         <div class="col-md-4 analysisClass text-center" >
@@ -111,11 +100,6 @@
     </div>
   <script>
 
-<<<<<<< HEAD
-  
-=======
-
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
       var svgWidth = parseInt(d3.select(".col-md-8").style("width"));
       console.log("svgWidth=")
       var svgHeight = 500;
@@ -130,11 +114,7 @@
       // calculating height/width for the chart
       var width = svgWidth - margin.left - margin.right;
       var height = svgHeight - margin.top - margin.bottom;
-<<<<<<< HEAD
       
-=======
-
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
       // var height = 500;
       // var width = 960;
 
@@ -148,21 +128,12 @@
           custom.point = function(x,y) {
             x = +x, y = +y;
             switch (this._point) {
-<<<<<<< HEAD
               case 0: this._point = 1; 
                 this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y);
                 this.x0 = x; this.y0 = y;        
                 break;
               case 1: this._point = 2;
               default: 
-=======
-              case 0: this._point = 1;
-                this._line ? this._context.lineTo(x, y) : this._context.moveTo(x, y);
-                this.x0 = x; this.y0 = y;
-                break;
-              case 1: this._point = 2;
-              default:
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
                 var x1 = this.x0 * 0.5 + x * 0.5;
                 var y1 = this.y0 * 0.5 + y * 0.5;
                 var m = 1/(y1 - y)/(x1 - x);
@@ -174,15 +145,9 @@
                 else {
                   y1 += k;
                   x1 += m*k;
-<<<<<<< HEAD
                 }     
                 this._context.quadraticCurveTo(x1,y1,x,y); 
                 this.x0 = x; this.y0 = y;        
-=======
-                }
-                this._context.quadraticCurveTo(x1,y1,x,y);
-                this.x0 = x; this.y0 = y;
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
                 break;
             }
           }
@@ -190,15 +155,11 @@
         }
 
         var projection = d3.geoKavrayskiy7()
-          // .scale(1)
+          .scale(1)
           .rotate([-215, 0])
           .translate([width/2, height/2])
           .precision(0.1);
-<<<<<<< HEAD
           
-=======
-
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
         var line=d3.line()
         .x(function(d) {
           return projection (d)[0];
@@ -232,11 +193,7 @@
             .attr("fill","#aaa").attr("stroke","#999")
             .attr("class","flowButton")
                   .on("click",function(d) { updateFlow(d); });
-<<<<<<< HEAD
                   
-=======
-
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
       var buttonsText = g2.selectAll(".flowLabel")
             .data(flow).enter()
             .append("text")
@@ -263,11 +220,7 @@
           .attr("stroke-dashoffset",  function() { return -this.getTotalLength(); })
           .transition().duration(0).remove();
 
-<<<<<<< HEAD
           drawFlow(flow);  
-=======
-          drawFlow(flow);
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
       }
 
       function drawGlobe(world) {
@@ -275,30 +228,39 @@
         d3.json("static/data/world-topo.json",function(error,world) {
 
           var countriesData = topojson.feature(world, world.objects.countries);
-<<<<<<< HEAD
           console.log(countriesData.features) 
-=======
-          console.log(countriesData.features)
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
 
-            // var scaleCenter = calculateScaleCenter(countriesData);
+            var scaleCenter = calculateScaleCenter(countriesData);
 
             // apply scale, center and translate parameters:
-            // projection.scale(scaleCenter.scale)
+            projection.scale(scaleCenter.scale)
                     // .center(scaleCenter.center)
                     // .translate([width/2, height/2]);
+          
+          // draw graticule
+          const graticule = d3.geoGraticule()
+                    .step([20, 20]);
 
+          g.append("path")
+                    .datum(graticule)
+                    .attr("class", "graticule")
+                    .attr("d", path)
+                    .style("fill", "#fff")
+                    .style("stroke", "#ccc");
+          
+          // draw countries
           var countries = g.selectAll('path')
               .data(countriesData.features)
               .enter().append('path')
                   .attr('class', 'country default')
                   .attr('d', path)
                   // .attr("fill", "lightblue");
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
+          // draw the sphere around the globe
+          g.append('path')
+                    .attr('class', 'sphere')
+                    .attr('d', path({type: 'Sphere'}));
+
         d3.csv("static/data/oil_rent.csv", function(error,oilRent) {
           console.log(oilRent)
           var codes= [];
@@ -325,34 +287,11 @@
                 }
               }
             })
-<<<<<<< HEAD
         }) 
           
          
-=======
-        })
-
-
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
         });
       };
-
-      function drawGraticule() {
-                const graticule = d3.geoGraticule()
-                    .step([20, 20]);
-
-                g.append("path")
-                    .datum(graticule)
-                    .attr("class", "graticule")
-                    .attr("d", path)
-                    .style("fill", "#fff")
-                    .style("stroke", "#ccc");
-
-                // draw the sphere around the globe
-                g.append('path')
-                    .attr('class', 'sphere')
-                    .attr('d', path({type: 'Sphere'}));
-      }
 
       function drawFlow(flow) {
         d3.json(`static/data/${flow}.geojson`, function(error, dataset) {
@@ -368,35 +307,20 @@
               };
               console.log(countryCodes) // do we want it to be unique only?
 
-<<<<<<< HEAD
           
               // inspired by: http://bl.ocks.org/Andrew-Reid/35d89fbcfbcfe9e819908ea77fc5bef6
               var maxVolume = d3.max(features, function(d) {  return d.properties["volume"]; });
               console.log(maxVolume);
               
-=======
-
-              // inspired by: http://bl.ocks.org/Andrew-Reid/35d89fbcfbcfe9e819908ea77fc5bef6
-              var maxVolume = d3.max(features, function(d) {  return d.properties["volume"]; });
-              console.log(maxVolume);
-
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
               features.forEach( function(d,i) {
                   var flowLine = g1
                       .append("path")
                       .attr("d", line(d.geometry.coordinates))
                       .attr("class", "flow-line")
-<<<<<<< HEAD
                       .style("stroke", getColor(flow)) 
                       .attr("stroke-opacity", Math.sqrt((+d.properties.volume / maxVolume)*2) )
                       .attr("stroke-width", 5);
                   
-=======
-                      .style("stroke", getColor(flow))
-                      .attr("stroke-opacity", Math.sqrt((+d.properties.volume / maxVolume)*2) )
-                      .attr("stroke-width", 5);
-
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
                   var totalLength = flowLine.node().getTotalLength() +10;
 
                   flowLine
@@ -420,73 +344,57 @@
                     return "country default"
                   };
               })
-<<<<<<< HEAD
             
-              // d3.selectAll('.partner')
-              
+                  
 
           });
           
-=======
-
-              // d3.selectAll('.partner')
-
-
-          });
-
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
       };
 
     drawGlobe();
-    drawGraticule();
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> 4f45c48c744fc2a4da4d51e15a94375d53532413
-
+   
     // helpers functions:
     function getId(f) {
       return f.properties.id;
     };
 
-    //  /**
-    //  * source: https://data-map-d3.readthedocs.io/en/latest/index.html#
-    //  * Calculate the scale factor and the center coordinates of a GeoJSON
-    //  * FeatureCollection. For the calculation, the height and width of the
-    //  * map container is needed.
-    //  *
-    //  * Thanks to: http://stackoverflow.com/a/17067379/841644
-    //  *
-    //  * @param {object} features - A GeoJSON FeatureCollection object
-    //  *   containing a list of features.
-    //  *
-    //  * @return {object} An object containing the following attributes:
-    //  *   - scale: The calculated scale factor.
-    //  *   - center: A list of two coordinates marking the center.
-    //  */
-    // function calculateScaleCenter(countries) {
-    //     // Get the bounding box of the paths (in pixels!) and calculate a
-    //     // scale factor based on the size of the bounding box and the map
-    //     // size.
-    //     var bbox_path = path.bounds(countries),
-    //         scale = 0.95 / Math.max(
-    //         (bbox_path[1][0] - bbox_path[0][0]) / width,
-    //         (bbox_path[1][1] - bbox_path[0][1]) / height
-    //         );
+     /**
+     * source: https://data-map-d3.readthedocs.io/en/latest/index.html#
+     * Calculate the scale factor and the center coordinates of a GeoJSON
+     * FeatureCollection. For the calculation, the height and width of the
+     * map container is needed.
+     *
+     * Thanks to: http://stackoverflow.com/a/17067379/841644
+     *
+     * @param {object} features - A GeoJSON FeatureCollection object
+     *   containing a list of features.
+     *
+     * @return {object} An object containing the following attributes:
+     *   - scale: The calculated scale factor.
+     *   - center: A list of two coordinates marking the center.
+     */
+    function calculateScaleCenter(countries) {
+        // Get the bounding box of the paths (in pixels!) and calculate a
+        // scale factor based on the size of the bounding box and the map
+        // size.
+        var bbox_path = path.bounds(countries),
+            scale = 0.95 / Math.max(
+            (bbox_path[1][0] - bbox_path[0][0]) / width,
+            (bbox_path[1][1] - bbox_path[0][1]) / height
+            );
 
-    //     // Get the bounding box of the features (in map units!) and use it
-    //     // to calculate the center of the features.
-    //     var bbox_feature = d3.geoBounds(countries),
-    //         center = [
-    //         (bbox_feature[1][0] + bbox_feature[0][0]) / 2,
-    //         (bbox_feature[1][1] + bbox_feature[0][1]) / 2];
+        // Get the bounding box of the features (in map units!) and use it
+        // to calculate the center of the features.
+        var bbox_feature = d3.geoBounds(countries),
+            center = [
+            (bbox_feature[1][0] + bbox_feature[0][0]) / 2,
+            (bbox_feature[1][1] + bbox_feature[0][1]) / 2];
 
-    //     return {
-    //     'scale': scale,
-    //     'center': center
-    //     };
-    // };
+        return {
+        'scale': scale,
+        'center': center
+        };
+    };
 
   </script>
   {% endblock %}
