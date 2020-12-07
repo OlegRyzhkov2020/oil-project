@@ -14,6 +14,7 @@ import base64
 import quandl
 from yahoo_fin.stock_info import get_data
 from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Lasso
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error
 
@@ -190,3 +191,51 @@ def randomForest_plot(model_target='EOG resources', startdate = datetime.strptim
     pngImageB64String += base64.b64encode(bytes_image.getvalue()).decode('utf8')
 
     return sorted(model_dict.items(), key=lambda x: x[1], reverse=True), pngImageB64String
+
+def lasso_output(model_target='EOG resources', startdate = datetime.strptime('01011990', "%d%m%Y").date(),
+                middate = datetime.strptime('01112019', "%d%m%Y").date(), enddate = datetime.strptime('11112020', "%d%m%Y").date()):
+    model_set = {
+                "Baker Hughes": "baker_close", "Chevron": "chevron_close", "Conoco Philis": "conoco_close",
+                "Exxon Mobile": "exxon_close", "EOG resources": "eog_close", "Valero energy": "valero_close"
+                }
+    model_x = list(model_set.values())
+    model_x.remove(model_set[model_target])
+    model_x.append('WTI')
+
+    target_scaled = model_target+'_scaled'
+    oil_data = stocks_data(startdate, enddate)
+    oil_data.index = pd.to_datetime(oil_data.index).date
+
+    conditions = [
+    (oil_data.index <= middate),
+    (oil_data.index > middate)
+    ]
+    values = ['train', 'test']
+    oil_data['SPLIT'] = np.select(conditions, values)
+    oil_train = oil_data[oil_data['SPLIT'] == 'train']
+    oil_test = oil_data[oil_data['SPLIT'] == 'test']
+    y_train = oil_train[model_set[model_target]].values.reshape(-1, 1)
+    y_test = oil_test[model_set[model_target]].values.reshape(-1, 1)
+
+    X_train = oil_train[model_x]
+    X_test = oil_test[model_x]
+
+    lasso = Lasso(alpha=.01).fit(X_train, y_train)
+
+    predictions = lasso.predict(X_test)
+
+    lasso_coef = lasso.coef_
+    MSE = mean_squared_error(y_test, predictions)
+    r2 = lasso.score(X_test, y_test)
+
+
+    model_dict = { "Mean Square Error": MSE }
+
+    indices=list(X_train)
+    for f in range(X_train.shape[1]):
+        model_dict.update({indices[f] : lasso_coef[f]})
+
+
+    print('LASSO model:', model_dict)
+
+    return sorted(model_dict.items(), key=lambda x: x[1], reverse=True)

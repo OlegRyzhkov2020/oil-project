@@ -153,9 +153,8 @@ def an_2():
     # Return template and data
     return render_template("analysis_2.html")
 
-
-@app.route("/an_4", methods=['GET','POST'])
-def an_4():
+@app.route("/an_3", methods=['GET','POST'])
+def an_3():
     formML = InputFormML(request.form)
 
     if request.method == 'POST' and formML.validate():
@@ -180,7 +179,6 @@ def an_4():
                                 'Image_URL':s['Image_URL']})
         # print(target_intro)
 
-
     if "submit-randomforest" in request.form:
 
         print("submit-randomforest")
@@ -199,31 +197,6 @@ def an_4():
             prediction = {}
             return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=target_intro)
 
-    if "submit-lasso" in request.form:
-
-        print("submit-lasso")
-        if request.method == 'POST' and formML.validate():
-            print('POST TRUE: processing for lasso model request with form data')
-            print('Target:', ml_target)
-            print('Period:', ml_start, ml_end, ml_test)
-            print('Requesting the function random forest plot')
-            prediction = ml_model.lasso_output(ml_target, ml_start, ml_end, ml_test)
-
-            image = 0
-            model_output = {}
-
-
-            return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=target_intro)
-        else:
-            print('POST FALSE: processing for lasso model request with default data')
-            prediction = ml_model.lasso_output(ml_target, ml_start, ml_end, ml_test)
-
-            image = 0
-            model_output = {}
-            
-
-            # return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=target_intro)
-
 
     elif "submit-classification" in request.form:
 
@@ -240,6 +213,38 @@ def an_4():
             model_output = {}
             prediction = {}
         return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=target_intro)
+
+    print("Server received request for regression model")
+    form = InputForm(request.form)
+
+    model_start = form.Train_start.data
+    model_end = form.Train_end.data
+    model_target = form.Target.data
+    model_predictor_1 = form.Predictor_1.data
+    model_predictor_2 = form.Predictor_2.data
+    model_predictor_3 = form.Predictor_3.data
+
+    print('Reg Target selection:', model_target)
+    print('Reg Period:', model_start, model_end)
+    print('Reg Request method:', request.method)
+
+    if request.method == 'POST' and form.validate():
+        print('POST TRUE: processing for regreesion plot request with form data')
+        image = regression_model.reg_plot(model_target, model_predictor_1, model_predictor_2, model_predictor_3, model_start, model_end)
+        model_output = regression_model.reg_output(model_target, model_predictor_1, model_predictor_2, model_predictor_3)
+        prediction = regression_model.reg_prediction(model_target, model_predictor_1, model_predictor_2, model_predictor_3, model_start, model_end)
+    else:
+        print('POST FALSE: processing for regreesion plot request with daefault data')
+        image = regression_model.reg_plot()
+        model_output = {}
+        prediction = {}
+
+    # image_time = datetime.now()
+    # Return template and data
+    return render_template("analysis_3.html", form=form, image=image, output = model_output, result= prediction)
+
+@app.route("/an_4", methods=['GET','POST'])
+def an_4():
 
     print("Server received request for classification model")
     # Find records of data from the mongo database
@@ -260,16 +265,50 @@ def an_4():
     ml_end = formML.Training_end.data
     ml_test = formML.Test_end.data
 
+    if "submit-randomforest" in request.form:
+
+        print("submit-randomforest")
+        if request.method == 'POST' and formML.validate():
+            print('POST TRUE: processing for classification plot request with form data')
+            print('Target:', ml_target)
+            print('Period:', ml_start, ml_end, ml_test)
+            print('Requesting the function random forest plot')
+            prediction, image = ml_model.randomForest_plot(ml_target, ml_start, ml_end, ml_test)
+            print(prediction)
+            return render_template("analysis_4.html", form=formML, image=image, result= prediction, data=target_intro)
+        else:
+            print('POST FALSE: processing for classification plot request with default data')
+            image = ml_model.cluster_plot()
+            model_output = {}
+            prediction = {}
+            return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=target_intro)
+
+
+    elif "submit-classification" in request.form:
+
+
+        print("submit-classification")
+        if request.method == 'POST' and formML.validate():
+            print('POST TRUE: processing for classification plot request with form data')
+            image = ml_model.cluster_plot(ml_target, ml_start, ml_end)
+            model_output = {}
+            prediction = {}
+        else:
+            print('POST FALSE: processing for classification plot request with default data')
+            image = ml_model.cluster_plot()
+            model_output = {}
+            prediction = {}
+        return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=target_intro)
+
     if request.method == 'POST' and formML.validate():
         print('POST TRUE: processing for classification plot request with form data')
         image = ml_model.cluster_plot(ml_target, ml_start, ml_end)
         # prediction = regression_model.reg_prediction(model_target, model_predictor_1, model_predictor_2, model_predictor_3, model_start, model_end)
     else:
         print('POST FALSE: processing for classification plot request with default data')
-        image = 0
+        image = ml_model.cluster_plot()
         model_output = {}
         prediction = {}
-
     # Return template and data
     return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=baker_news)
 
