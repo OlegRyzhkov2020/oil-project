@@ -239,3 +239,57 @@ def lasso_output(model_target='EOG resources', startdate = datetime.strptime('01
     print('LASSO model:', model_dict)
 
     return sorted(model_dict.items(), key=lambda x: x[1], reverse=True)
+
+def test_summary(model_target='EOG resources', startdate = datetime.strptime('01011990', "%d%m%Y").date(),
+                middate = datetime.strptime('01112019', "%d%m%Y").date(), enddate = datetime.strptime('11112020', "%d%m%Y").date()):
+    model_set = {
+                "Baker Hughes": "baker_close", "Chevron": "chevron_close", "Conoco Philis": "conoco_close",
+                "Exxon Mobile": "exxon_close", "EOG resources": "eog_close", "Valero energy": "valero_close"
+                }
+    model_x = list(model_set.values())
+    model_x.remove(model_set[model_target])
+    model_x.append('WTI')
+
+    target_scaled = model_target+'_scaled'
+    oil_data = stocks_data(startdate, enddate)
+    oil_data.index = pd.to_datetime(oil_data.index).date
+
+    conditions = [
+    (oil_data.index <= middate),
+    (oil_data.index > middate)
+    ]
+    values = ['train', 'test']
+    oil_data['SPLIT'] = np.select(conditions, values)
+    oil_train = oil_data[oil_data['SPLIT'] == 'train']
+    oil_test = oil_data[oil_data['SPLIT'] == 'test']
+    y_train = oil_train[model_set[model_target]].values.reshape(-1, 1)
+    y_test = oil_test[model_set[model_target]].values.reshape(-1, 1)
+
+    X_train = oil_train[model_x]
+    X_test = oil_test[model_x]
+
+     # Random Forest model
+    regressor = RandomForestRegressor(n_estimators=200, max_depth=5 )
+
+    # Train data
+    clf=regressor.fit(X_train, y_train)
+
+    # Predict
+    rf_predict =regressor.predict(X_test)
+
+    # LASSO model
+
+    lasso = Lasso(alpha=.01).fit(X_train, y_train)
+
+    lasso_predict = lasso.predict(X_test)
+
+    # Output dictionary
+
+    test_date = oil_test.index.to_list()
+
+    model_dict = {}
+
+    for f in range(len(test_date)):
+        model_dict.update({test_date[f].strftime('%m/%d/%Y') : [y_test[f][0], lasso_predict[f], rf_predict[f]]})
+
+    return model_dict

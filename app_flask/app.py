@@ -191,13 +191,13 @@ def an_4():
             print('Requesting the function random forest plot')
             prediction, image = ml_model.randomForest_plot(ml_target, ml_start, ml_end, ml_test)
             print(prediction)
-            return render_template("analysis_4.html", form=formML, image=image, result= prediction, data=target_intro)
+            return render_template("analysis_4.html", form=formML, image=image, result= prediction, sum={}, data=target_intro)
         else:
             print('POST FALSE: processing for classification plot request with default data')
             image = ml_model.cluster_plot()
             model_output = {}
             prediction = {}
-            return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=target_intro)
+            return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, sum={}, data=target_intro)
 
     if "submit-lasso" in request.form:
 
@@ -213,19 +213,43 @@ def an_4():
             model_output = {}
 
 
-            return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=target_intro)
+            return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, sum={}, data=target_intro)
         else:
             print('POST FALSE: processing for lasso model request with default data')
             prediction = ml_model.lasso_output(ml_target, ml_start, ml_end, ml_test)
 
             image = 0
             model_output = {}
-            
+
+
+            # return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=target_intro)
+
+    if "submit-summary" in request.form:
+
+        print("submit-summary")
+        if request.method == 'POST' and formML.validate():
+            print('POST TRUE: processing for summary request with form data')
+            print('Target:', ml_target)
+            print('Period:', ml_start, ml_end, ml_test)
+            print('Requesting the function random forest plot')
+            prediction = ml_model.test_summary(ml_target, ml_start, ml_end, ml_test)
+
+            image = "SUMMARY"
+            model_output = {}
+
+            return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= {}, sum=prediction, data=target_intro)
+        else:
+            print('POST FALSE: processing for summary request with default data')
+            prediction = ml_model.lasso_output(ml_target, ml_start, ml_end, ml_test)
+
+            image = "SUMMARY"
+            model_output = {}
+            print("Image=", image)
 
             # return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=target_intro)
 
 
-    elif "submit-classification" in request.form:
+    if "submit-classification" in request.form:
 
 
         print("submit-classification")
@@ -239,7 +263,7 @@ def an_4():
             image = ml_model.cluster_plot()
             model_output = {}
             prediction = {}
-        return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=target_intro)
+        return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, sum={}, data=target_intro)
 
     print("Server received request for classification model")
     # Find records of data from the mongo database
@@ -271,7 +295,7 @@ def an_4():
         prediction = {}
 
     # Return template and data
-    return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, data=baker_news)
+    return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, sum={}, data=baker_news)
 
 # Route that will trigger the hemisphere html page
 @app.route("/an_5")

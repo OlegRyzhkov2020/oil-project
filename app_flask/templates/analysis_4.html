@@ -16,12 +16,28 @@
   <script>
       var modelData = {{ result | tojson }};
       console.log(modelData);
+
       if (modelData && modelData.length) {
         window.addEventListener('load', function () {
           buildMLPlot(modelData);
         })
       }
   </script>
+  <script>
+      var image_value = '{{ image }}';
+
+      var modelSum = {{ sum | tojson }};
+      console.log(image_value);
+
+      console.log(modelSum);
+
+      if (image_value == "SUMMARY") {
+        window.addEventListener('load', function () {
+          buildSUBPlot(modelSum);
+        })
+      }
+  </script>
+
 
 </head>
 <body>
@@ -49,11 +65,14 @@
       </div>
       <div class="col-md-5 text-center">
         <h5>Model Output</h5>
-        {% if image == 0 %}
+
           <div id="chart" class ="chart">
           </div>
-        {% endif %}
-        {% if image != 0 %}
+
+          <div id="myDiv" class ="chart">
+          </div>
+
+        {% if (image != 0) and (image != "SUMMARY") %}
         <img style="height: 500px" src={{image}}>
         {% endif %}
 
@@ -82,7 +101,7 @@
               <div>
               </form>
               <div class="text-center" >
-                <h5>Performance Metrics/Features Importance</h5>
+                <h5>Model Performance</h5>
               </div>
               <!-- {% if result|length > 0 %}
               <table id="t01">
@@ -567,12 +586,14 @@
 
 
     }
-    // When the browser loads, makeResponsive() is called.
-    makeResponsive();
 
-    // When the browser window is resized, makeResponsive() is called.
-    d3.select(window).on("resize", makeResponsive);
+    if (image_value == 0) {
+      // When the browser loads, makeResponsive() is called.
+      makeResponsive();
 
+      // When the browser window is resized, makeResponsive() is called.
+      d3.select(window).on("resize", makeResponsive);
+    }
     </script>
 
 
