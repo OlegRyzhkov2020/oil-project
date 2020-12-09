@@ -85,9 +85,9 @@
 
           <h5>Exploratory Data Analysis</h5>
           <select id="selDataset" onchange="getData(this.value)">
-            <option value="Consumption">Crude Oil Consumption</option>
-            <option value="Export">Crude Oild Export</option>
-            <option value="Import">Crude Oil Import</option>
+            <option value="Production">Production</option>
+            <option value="Import">Import</option>
+            <option value="Export">Export</option>
           </select>
           <div id="boxPlot"></div>
 
@@ -467,7 +467,7 @@
 
     function init() {
         d3.csv("static/data/oildata_summary.csv", function(dataset) {
-            console.log(dataset);
+            // console.log(dataset);
         
             dataset.Consumption = +dataset.consumption
             dataset["Crude.Oil.Exports.1000.Barrels."]=+dataset["Crude.Oil.Exports.1000.Barrels."]
@@ -491,7 +491,7 @@
                 var ySingleArray = []
                 var decadeArray = dataset.filter(function(d) {return d.DateDecade == decades[i]})
                 for (j=0; j<decadeArray.length; j++) {
-                    ySingleArray.push(+(decadeArray[j].Consumption))
+                    ySingleArray.push(+(decadeArray[j]["Crude.Oil.Production..1000.Barrels."]))
                 };
                 yValues.push(ySingleArray); 
             };
@@ -512,13 +512,13 @@
             // console.log(data)
 
             var layout = {
-                title: 'US Crude Oil Consumption',
+                title: 'US Crude Oil Production',
                 xaxis: {
                     showticklabels: true,
                     title: 'decades'
                 },
                 yaxis: {
-                    title: 'barrels per day'
+                    title: 'thousand barrels per month'
                 },
                 showlegend:false
             };
@@ -540,8 +540,8 @@
 
                 // console.log(dataset);
         
-            dataset.Consumption = +dataset.consumption
-            dataset["Crude.Oil.Exports.1000.Barrels."]=+dataset["Crude.Oil.Exports.1000.Barrels."]
+            // dataset.Consumption = +dataset.consumption
+            // dataset["Crude.Oil.Exports.1000.Barrels."]=+dataset["Crude.Oil.Exports.1000.Barrels."]
     
             // get unique labels/decades from dataset
             // https://medium.com/@jakubsynowiec/unique-array-values-in-javascript-7c932682766c
@@ -558,18 +558,18 @@
             var names=["1973 - 79", "1980 - 89", "1990 - 99", "2000 - 09", "2010 - 19"];
 
 
-                if (datasetSelection == 'Consumption') {
+                if (datasetSelection == 'Production') {
                     // create Y values
                     for (i=0; i<boxNumber; i++) {
                         var ySingleArray = []
                         var decadeArray = dataset.filter(function(d) {return d.DateDecade == decades[i]})
                         for (j=0; j<decadeArray.length; j++) {
-                            ySingleArray.push(+(decadeArray[j].Consumption))
+                            ySingleArray.push(+(decadeArray[j]["Crude.Oil.Production..1000.Barrels."]))
                         };
                         yValues.push(ySingleArray); 
                     };
 
-                    console.log(yValues)
+                    // console.log(yValues)
 
                     // create traces
                     for(var i = 0; i < boxNumber;  i++ ){
@@ -582,13 +582,13 @@
                     };
                 
                     var layout = {
-                        title: 'US Crude Oil Consumption',
+                        title: 'US Crude Oil Production',
                         xaxis: {
                             showticklabels: true,
                             title: 'decades'
                         },
                         yaxis: {
-                            title: 'barrels per day'
+                            title: 'thousand barrels per month'
                         },
                         showlegend:false
                     };
@@ -623,7 +623,7 @@
                             title: 'decades'
                         },
                         yaxis: {
-                            title: 'barrels per day'
+                            title: 'thousand barrels per month'
                         },
                         showlegend:false
                     };
@@ -658,7 +658,7 @@
                             title: 'decades'
                         },
                         yaxis: {
-                            title: 'barrels per day'
+                            title: 'thousand barrels per day'
                         },
                         showlegend:false
                     };
