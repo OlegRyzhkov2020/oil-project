@@ -9,31 +9,33 @@
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="./static/js/plot.js"></script>
   <script src="./static/js/subplot.js"></script>
+  <script src="./static/js/lasso_plot.js"></script>
+
 
   <script type=text/javascript src="{{url_for('static', filename='js/regression.js') }}"></script>
 
 
   <script>
       var modelData = {{ result | tojson }};
-      console.log(modelData);
 
       if (modelData && modelData.length) {
         window.addEventListener('load', function () {
           buildMLPlot(modelData);
         })
       }
-  </script>
-  <script>
+
       var image_value = '{{ image }}';
-
       var modelSum = {{ sum | tojson }};
-      console.log(image_value);
-
-      console.log(modelSum);
 
       if (image_value == "SUMMARY") {
         window.addEventListener('load', function () {
           buildSUBPlot(modelSum);
+        })
+      }
+
+      if (image_value == "LASSO") {
+        window.addEventListener('load', function () {
+          buildLassoPlot(modelSum);
         })
       }
   </script>
@@ -72,7 +74,7 @@
           <div id="myDiv" class ="chart">
           </div>
 
-        {% if (image != 0) and (image != "SUMMARY") %}
+        {% if (image != 0) and (image != "SUMMARY") and (image != "LASSO")%}
         <img style="height: 500px" src={{image}}>
         {% endif %}
 
@@ -97,7 +99,7 @@
               <p><input type = "submit" name="submit-classification" value = "Clustering" />
                 <input type = "submit" name="submit-randomforest"  value = "RF Regressor" />
                 <input type = "submit" name="submit-lasso"  value = "LASSO" />
-                 <input type = "submit" name="submit-summary"  value = "Summary" /></p>
+                 <input type = "submit" name="submit-summary"  value = "Summary" style="margin-left:60px" /></p>
               <div>
               </form>
               <div class="text-center" >
@@ -198,7 +200,8 @@
               // regression data
               var XaxisData = censusData.map(function(d) { return d[chosenXAxis]; });
               var YaxisData = censusData.map(function(d) { return d[chosenYAxis]; });
-              regression = leastSquaresequation(XaxisData,YaxisData)
+              regression = leastSquaresequation(XaxisData,YaxisData);
+              linePlot(YaxisData, chosenYAxis);
 
               var line = d3.line()
                 .x(function(d) { return xLinearScale(d[chosenXAxis]); })
@@ -237,7 +240,7 @@
                 .append("circle")
                 .attr("cx", d => xLinearScale(d[chosenXAxis]))
                 .attr("cy", d => yLinearScale(d[chosenYAxis]))
-                .attr("r", 5)
+                .attr("r", 4)
                 .attr("fill", "cadetblue")
                 .attr("opacity", ".8");
 
@@ -524,6 +527,8 @@
                 .duration(1000)
                 .text(formula);
 
+              linePlot(newYaxisData, chosenYAxis);
+
               // Update table data
               // buildTable(StatesData, newXaxisData, newYaxisData, chosenXAxis, chosenYAxis);
 
@@ -586,10 +591,91 @@
 
 
     }
+    function getDateArray (start, end) {
+      var arr = [];
+      var startDate = new Date(start);
+      var endDate = new Date(end);
+      while (startDate <= endDate) {
+          arr.push(new Date(startDate.setMonth(startDate.getMonth() + 1)));
+          }
+      return arr;
+    }
+    // The code for the chart is wrapped inside a function that
+    // automatically resizes the chart
+    function linePlot(yData, yName) {
+
+      switch (yName) {
+          case 'poverty':
+              yName = 'Monthly oil production (Jan 1990-June 2020)';
+              break;
+          case 'smokes':
+              yName = 'Monthly fuel consumption (Jan 1990-June 2020)';
+              break;
+          case 'health':
+              yName = 'Monthly RIG count (Jan 1990-June 2020)';
+              break;
+          default:
+              default_statement;
+      }
+
+     var plotTitle = yName;
+     var z = "Jan-1990"; var y = "Jun-2020"
+     var dateArr = getDateArray(z, y);
+
+      trace = {
+        type: 'scatter',
+        x: dateArr,
+        y: yData,
+        xaxis: 'x1',
+        yaxis: 'y1',
+        mode: 'lines',
+        name: 'Red',
+        line: {
+          color: 'rgb(219, 64, 82)',
+          width: 3
+      }
+    };
+
+
+    // define subplot axes
+    var axis = {
+      showline: true,
+      zeroline: false,
+      showgrid: true,
+      mirror:true,
+      ticklen: 4,
+      gridcolor: '#008B8B',
+      tickfont: {size: 10},
+    }
+
+    var axis1 = {domain: [0, 1], anchor: 'y1'}
+
+    var axis2 = {domain: [0.5, 0.98], anchor: 'x1'}
+
+
+    var linelayout = {
+      title: plotTitle,
+      width: 500,
+      height: 500,
+      showlegend: false,
+      xaxis1: Object.assign(axis1,axis),
+
+
+      yaxis1: Object.assign(axis2,axis)
+
+
+    };
+
+    var data = [trace];
+
+    Plotly.newPlot('bar', data, linelayout);
+
+  };
 
     if (image_value == 0) {
       // When the browser loads, makeResponsive() is called.
       makeResponsive();
+      linePlot()
 
       // When the browser window is resized, makeResponsive() is called.
       d3.select(window).on("resize", makeResponsive);

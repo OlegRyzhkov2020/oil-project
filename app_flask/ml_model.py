@@ -222,10 +222,10 @@ def lasso_output(model_target='EOG resources', startdate = datetime.strptime('01
 
     lasso = Lasso(alpha=.01).fit(X_train, y_train)
 
-    predictions = lasso.predict(X_test)
+    lasso_predict = lasso.predict(X_test)
 
     lasso_coef = lasso.coef_
-    MSE = mean_squared_error(y_test, predictions)
+    MSE = mean_squared_error(y_test, lasso_predict)
     r2 = lasso.score(X_test, y_test)
 
 
@@ -235,10 +235,15 @@ def lasso_output(model_target='EOG resources', startdate = datetime.strptime('01
     for f in range(X_train.shape[1]):
         model_dict.update({indices[f] : lasso_coef[f]})
 
+    yTest = oil_test[model_set[model_target]]
+    test_date = oil_test.index.to_list()
 
-    print('LASSO model:', model_dict)
+    model_output = {}
 
-    return sorted(model_dict.items(), key=lambda x: x[1], reverse=True)
+    for f in range(len(test_date)):
+        model_output.update({test_date[f].strftime('%m/%d/%Y') : [y_test[f][0], lasso_predict[f], X_test['WTI'][f]]})
+
+    return sorted(model_dict.items(), key=lambda x: x[1], reverse=True), model_output
 
 def test_summary(model_target='EOG resources', startdate = datetime.strptime('01011990', "%d%m%Y").date(),
                 middate = datetime.strptime('01112019', "%d%m%Y").date(), enddate = datetime.strptime('11112020', "%d%m%Y").date()):

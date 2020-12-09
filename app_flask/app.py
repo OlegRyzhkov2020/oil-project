@@ -72,8 +72,8 @@ def home():
                             'Image_URL':s['Image_URL']})
         if id == 1: head_news = [s['News_Title'], s['News_Paragraph']]
         id +=1
-    latest_news = latest_news[21:]
-    prices_data = mongo.db.oil_prices_new
+    latest_news = latest_news[40:]
+    prices_data = mongo.db.oil_prices_dec
     latest_prices = []
     for p in prices_data.find():
         latest_prices.append({'ID':id, 'Oil' : p['Oil_Symbol'], 'Price' : p['Oil_Price'],
@@ -207,18 +207,18 @@ def an_4():
             print('Target:', ml_target)
             print('Period:', ml_start, ml_end, ml_test)
             print('Requesting the function random forest plot')
-            prediction = ml_model.lasso_output(ml_target, ml_start, ml_end, ml_test)
+            prediction, sum = ml_model.lasso_output(ml_target, ml_start, ml_end, ml_test)
 
-            image = 0
+            image = "LASSO"
             model_output = {}
 
 
-            return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, sum={}, data=target_intro)
+            return render_template("analysis_4.html", form=formML, image=image, output = model_output, result= prediction, sum=sum, data=target_intro)
         else:
             print('POST FALSE: processing for lasso model request with default data')
-            prediction = ml_model.lasso_output(ml_target, ml_start, ml_end, ml_test)
+            prediction, sum = ml_model.lasso_output(ml_target, ml_start, ml_end, ml_test)
 
-            image = 0
+            image = "LASSO"
             model_output = {}
 
 

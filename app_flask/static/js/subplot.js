@@ -7,6 +7,7 @@ function buildSUBPlot(predict_summary) {
     var actualValues = [];
     var lassoValues = [];
     var rfValues = [];
+    var dateArray = []
     var i=0;
     // Read key
     for (var key in predict_summary) {
@@ -19,6 +20,8 @@ function buildSUBPlot(predict_summary) {
     var modelValues = [dateValues, actualValues, lassoValues, rfValues];
     console.log(modelValues);
 
+    dateArray = dateValues.map(date => new Date(date));
+    console.log(dateArray);
     // header values
 
     var headerValues = ['Date','Actual', 'LASSO','RF'];
@@ -50,7 +53,7 @@ function buildSUBPlot(predict_summary) {
 
     // create 1st plot
     var trace1 = {
-      x: dateValues,
+      x: dateArray,
       y: actualValues,
       xaxis: 'x1',
       yaxis: 'y1',
@@ -60,7 +63,7 @@ function buildSUBPlot(predict_summary) {
     }
     // create 2nd plot
     var trace2 = {
-      x: dateValues,
+      x: dateArray,
       y: lassoValues,
       xaxis: 'x2',
       yaxis: 'y2',
@@ -71,7 +74,7 @@ function buildSUBPlot(predict_summary) {
 
     // create 3rd plot
     var trace3 = {
-      x: dateValues,
+      x: dateArray,
       y: rfValues,
       xaxis: 'x3',
       yaxis: 'y3',
@@ -113,7 +116,7 @@ function buildSUBPlot(predict_summary) {
       yaxis3: Object.assign(axis6,axis)
     }
 
-    Plotly.newPlot('myDiv', data, subplotlayout);
+    Plotly.newPlot('chart', data, subplotlayout);
 
     var trace1 = {
       x: rfValues,
