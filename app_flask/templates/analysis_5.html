@@ -53,6 +53,8 @@
   <script src ="https://d3js.org/d3.v4.min.js"></script>
   <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
   <script src="https://d3js.org/d3-queue.v3.min.js"></script>
+  <!-- plotly -->
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
    <!-- geo projections lib -->
    <script src="https://d3js.org/d3-geo-projection.v3.min.js"></script>
   <script src="https://d3js.org/topojson.v1.min.js"></script>
@@ -81,7 +83,15 @@
 
         <div class="col-md-4 analysisClass text-center" >
 
-             <div class="card">
+          <h5>Exploratory Data Analysis</h5>
+          <select id="selDataset" onchange="getData(this.value)">
+            <option value="Consumption">Crude Oil Consumption</option>
+            <option value="Export">Crude Oild Export</option>
+            <option value="Import">Crude Oil Import</option>
+          </select>
+          <div id="boxPlot"></div>
+
+             <!-- <div class="card">
                <h5>Exploratory Data Analysis</h5>
                <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/import.png')}}">
                <br>
@@ -96,7 +106,7 @@
                <br>
                <h5>Oil Consumption Trend Prediction</h5>
                <img class="card-img-bottom" style="height: 500px" src="{{url_for('static', filename='images/jil2.png')}}">
-
+ -->
              </div>
         </div>
       </div>
@@ -447,6 +457,225 @@
     makeResponsive();
 
     d3.select(window).on("resize", makeResponsive);
+
+
+    // PLOTLY BOX PLOTS 
+
+    var decades=[]
+    var data=[]
+    var yValues=[]
+
+    function init() {
+        d3.csv("static/data/oildata_summary.csv", function(dataset) {
+            console.log(dataset);
+        
+            dataset.Consumption = +dataset.consumption
+            dataset["Crude.Oil.Exports.1000.Barrels."]=+dataset["Crude.Oil.Exports.1000.Barrels."]
+    
+            // get unique labels/decades from dataset
+            // https://medium.com/@jakubsynowiec/unique-array-values-in-javascript-7c932682766c
+            for (i=0; i<dataset.length; i++) {
+                var decade = dataset[i].DateDecade
+                if (!decades.includes(decade)) decades.push(dataset[i].DateDecade);
+            };
+            // console.log(decades);
+
+            // get number of bozes to be plot
+            var boxNumber = decades.length
+            // console.log(boxNumber)
+
+            var names=["1973 - 79", "1980 - 89", "1990 - 99", "2000 - 09", "2010 - 19"];
+
+            // create Y values
+            for (i=0; i<boxNumber; i++) {
+                var ySingleArray = []
+                var decadeArray = dataset.filter(function(d) {return d.DateDecade == decades[i]})
+                for (j=0; j<decadeArray.length; j++) {
+                    ySingleArray.push(+(decadeArray[j].Consumption))
+                };
+                yValues.push(ySingleArray); 
+            };
+
+            // console.log(yValues)
+
+            // create traces
+            for(var i = 0; i < boxNumber;  i++ ){
+                // console.log(yValues[i])
+                var result = {
+                    y: yValues[i],
+                    type: 'box',
+                    name: names[i]
+                };
+                data.push(result);
+            };
+        
+            // console.log(data)
+
+            var layout = {
+                title: 'US Crude Oil Consumption',
+                xaxis: {
+                    showticklabels: true,
+                    title: 'decades'
+                },
+                yaxis: {
+                    title: 'barrels per day'
+                },
+                showlegend:false
+            };
+
+            Plotly.newPlot('boxPlot', data, layout);
+        });
+        
+    };
+
+    // Function called by DOM changes
+    function getData() {
+        d3.csv("static/data/oildata_summary.csv", function(dataset) {
+                var dropdownMenu = d3.select("#selDataset");
+                // Assign the value of the dropdown menu option to a variable
+                var datasetSelection = dropdownMenu.property("value");
+                // Initialize an empty array for data
+                var data = [];
+                var yValues= [];
+
+                // console.log(dataset);
+        
+            dataset.Consumption = +dataset.consumption
+            dataset["Crude.Oil.Exports.1000.Barrels."]=+dataset["Crude.Oil.Exports.1000.Barrels."]
+    
+            // get unique labels/decades from dataset
+            // https://medium.com/@jakubsynowiec/unique-array-values-in-javascript-7c932682766c
+            for (i=0; i<dataset.length; i++) {
+                var decade = dataset[i].DateDecade
+                if (!decades.includes(decade)) decades.push(dataset[i].DateDecade);
+            };
+            // console.log(decades);
+
+            // get number of bozes to be plot
+            var boxNumber = decades.length
+            // console.log(boxNumber)
+
+            var names=["1973 - 79", "1980 - 89", "1990 - 99", "2000 - 09", "2010 - 19"];
+
+
+                if (datasetSelection == 'Consumption') {
+                    // create Y values
+                    for (i=0; i<boxNumber; i++) {
+                        var ySingleArray = []
+                        var decadeArray = dataset.filter(function(d) {return d.DateDecade == decades[i]})
+                        for (j=0; j<decadeArray.length; j++) {
+                            ySingleArray.push(+(decadeArray[j].Consumption))
+                        };
+                        yValues.push(ySingleArray); 
+                    };
+
+                    console.log(yValues)
+
+                    // create traces
+                    for(var i = 0; i < boxNumber;  i++ ){
+                        var result = {
+                            y: yValues[i],
+                            type: 'box',
+                            name: names[i]
+                        };
+                        data.push(result);
+                    };
+                
+                    var layout = {
+                        title: 'US Crude Oil Consumption',
+                        xaxis: {
+                            showticklabels: true,
+                            title: 'decades'
+                        },
+                        yaxis: {
+                            title: 'barrels per day'
+                        },
+                        showlegend:false
+                    };
+                }
+                else if (datasetSelection == 'Export') {
+                    // create Y values
+                    for (i=0; i<boxNumber; i++) {
+                        var ySingleArray = []
+                        var decadeArray = dataset.filter(function(d) {return d.DateDecade == decades[i]})
+                        for (j=0; j<decadeArray.length; j++) {
+                            ySingleArray.push(+(decadeArray[j]['Crude.Oil.Exports.1000.Barrels.']))
+                        };
+                        yValues.push(ySingleArray); 
+                    };
+
+                    // console.log(yValues)
+
+                    // create traces
+                    for(var i = 0; i < boxNumber;  i++ ){
+                        var result = {
+                            y: yValues[i],
+                            type: 'box',
+                            name: names[i]
+                        };
+                        data.push(result);
+                    };
+                
+                    var layout = {
+                        title: 'US Crude Oil Export',
+                        xaxis: {
+                            showticklabels: true,
+                            title: 'decades'
+                        },
+                        yaxis: {
+                            title: 'barrels per day'
+                        },
+                        showlegend:false
+                    };
+                }
+                else if (datasetSelection == 'Import') {
+                    // create Y values
+                    for (i=0; i<boxNumber; i++) {
+                        var ySingleArray = []
+                        var decadeArray = dataset.filter(function(d) {return d.DateDecade == decades[i]})
+                        for (j=0; j<decadeArray.length; j++) {
+                            ySingleArray.push(+(decadeArray[j]['Crude.Oil.Imports']))
+                        };
+                        yValues.push(ySingleArray); 
+                    };
+
+                    // create traces
+                    for(var i = 0; i < boxNumber;  i++ ){
+                        var result = {
+                            y: yValues[i],
+                            type: 'box',
+                            name: names[i]
+                        };
+                        data.push(result);
+                    };
+                
+                    // console.log(data);
+
+                    var layout = {
+                        title: 'US Crude Oil Import',
+                        xaxis: {
+                            showticklabels: true,
+                            title: 'decades'
+                        },
+                        yaxis: {
+                            title: 'barrels per day'
+                        },
+                        showlegend:false
+                    };
+                }
+                // Call function to update the chart
+                Plotly.newPlot('boxPlot', data, layout);
+            
+
+        })}
+        
+
+    // On change to the DOM, call getData()
+    d3.selectAll("#selDataset").on("change", getData);
+
+
+
+    init();
 
   </script>
   {% endblock %}
