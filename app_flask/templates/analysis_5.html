@@ -23,7 +23,7 @@
 
     }
     .default {
-      fill: steelblue;
+      fill: lightsteelblue;
       fill-opacity: 0.5;
     }
 
@@ -32,8 +32,8 @@
       fill-opacity:0.8
     }
 
-    .oilRent {
-      fill: red;
+    .oilProduction {
+      fill: #a50f15; /* #08519c */
       /* fill-opacity: 0.3 */
     }
 
@@ -84,11 +84,6 @@
         <div class="col-md-4 analysisClass text-center" >
 
           <h5>Exploratory Data Analysis</h5>
-          <!-- <select id="selDataset" onchange="getData(this.value)">
-            <option value="Production">Production</option>
-            <option value="Import">Import</option>
-            <option value="Export">Export</option>
-          </select> -->
           <div id="boxPlot"></div>
 
              <!-- <div class="card">
@@ -289,35 +284,37 @@
                   .enter().append('path')
                       .attr('class', 'country default')
                       .attr('d', path)
-
-
-            d3.csv("static/data/oil_rent_new.csv", function(error,oilRent) {
-              // console.log(oilRent)
+                                    
+ 
+            d3.csv("static/data/bp_national_production.csv", function(error,oilProduction) {
+              // console.log(oilProduction)
 
               var codes= [];
-              for (i in oilRent) {
-                    codes.push(oilRent[i].code)
+              for (i in oilProduction) {
+                    codes.push(oilProduction[i].country_code)
                   };
               // console.log(codes)
-              var maxIndicator = d3.max(oilRent, function(d) {  return +d.value; });
+              var maxIndicator = d3.max(oilProduction, function(d) {  return +d["2019"]; });
               // console.log(maxIndicator)
 
               d3.selectAll('.country')
                   .attr('class', function(d) {
                       if (codes.includes(getId(d))) {
-                        return "country oilRent"
+                        return "country oilProduction"
                       } else {
                         return "country default"
                       };})
 
-              d3.selectAll(".oilRent")
+              d3.selectAll(".oilProduction")
                 .attr("fill-opacity", function(d) {
-                  for (i in oilRent) {
-                    if (oilRent[i].code === getId(d)) {
-                      return Math.round(Math.sqrt(+oilRent[i].value / maxIndicator)*10)/10
+                  for (i in oilProduction) {
+                    if (oilProduction[i].country_code === getId(d)) {
+                      return Math.round(Math.sqrt(+oilProduction[i]["2019"] / maxIndicator)*10)/10
                     }
                   }
                 })
+               
+
             })
 
 
@@ -539,7 +536,7 @@
                 var data = [];
                 var yValues= [];
 
-                console.log(dataset);
+                // console.log(dataset);
         
             // dataset.Consumption = +dataset.consumption
             // dataset["Crude.Oil.Exports.1000.Barrels."]=+dataset["Crude.Oil.Exports.1000.Barrels."]
@@ -550,7 +547,7 @@
                 var decade = dataset[i].DateDecade
                 if (!decades.includes(decade)) decades.push(dataset[i].DateDecade);
             };
-            console.log(decades);
+            // console.log(decades);
 
             // get number of bozes to be plot
             var boxNumber = decades.length
