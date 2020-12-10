@@ -84,11 +84,11 @@
         <div class="col-md-4 analysisClass text-center" >
 
           <h5>Exploratory Data Analysis</h5>
-          <select id="selDataset" onchange="getData(this.value)">
+          <!-- <select id="selDataset" onchange="getData(this.value)">
             <option value="Production">Production</option>
             <option value="Import">Import</option>
             <option value="Export">Export</option>
-          </select>
+          </select> -->
           <div id="boxPlot"></div>
 
              <!-- <div class="card">
@@ -251,6 +251,7 @@
               .transition().duration(0).remove();
 
               drawFlow(flow);
+              updateBoxPlot(flow);
           }
 
           function drawGlobe(world) {
@@ -529,16 +530,16 @@
     };
 
     // Function called by DOM changes
-    function getData() {
+    function updateBoxPlot(flow) {
         d3.csv("static/data/oildata_summary.csv", function(dataset) {
-                var dropdownMenu = d3.select("#selDataset");
+                // var dropdownMenu = d3.select("#selDataset");
                 // Assign the value of the dropdown menu option to a variable
-                var datasetSelection = dropdownMenu.property("value");
+                // var datasetSelection = dropdownMenu.property("value");
                 // Initialize an empty array for data
                 var data = [];
                 var yValues= [];
 
-                // console.log(dataset);
+                console.log(dataset);
         
             // dataset.Consumption = +dataset.consumption
             // dataset["Crude.Oil.Exports.1000.Barrels."]=+dataset["Crude.Oil.Exports.1000.Barrels."]
@@ -549,7 +550,7 @@
                 var decade = dataset[i].DateDecade
                 if (!decades.includes(decade)) decades.push(dataset[i].DateDecade);
             };
-            // console.log(decades);
+            console.log(decades);
 
             // get number of bozes to be plot
             var boxNumber = decades.length
@@ -558,7 +559,7 @@
             var names=["1973 - 79", "1980 - 89", "1990 - 99", "2000 - 09", "2010 - 19"];
 
 
-                if (datasetSelection == 'Production') {
+                if (flow == 'production') {
                     // create Y values
                     for (i=0; i<boxNumber; i++) {
                         var ySingleArray = []
@@ -593,7 +594,7 @@
                         showlegend:false
                     };
                 }
-                else if (datasetSelection == 'Export') {
+                else if (flow == 'export') {
                     // create Y values
                     for (i=0; i<boxNumber; i++) {
                         var ySingleArray = []
@@ -628,7 +629,7 @@
                         showlegend:false
                     };
                 }
-                else if (datasetSelection == 'Import') {
+                else if (flow == 'import') {
                     // create Y values
                     for (i=0; i<boxNumber; i++) {
                         var ySingleArray = []
@@ -671,7 +672,7 @@
         
 
     // On change to the DOM, call getData()
-    d3.selectAll("#selDataset").on("change", getData);
+    // d3.selectAll("#selDataset").on("change", getData);
 
 
 
